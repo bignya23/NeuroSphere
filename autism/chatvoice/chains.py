@@ -1,5 +1,5 @@
 from langchain_core.prompts import PromptTemplate
-from prompts import AUTISM_PROMPT, AUTISM_SUPPORT_PROMPT
+from prompts import AUTISM_PROMPT
 from langchain_core.output_parsers import StrOutputParser
 
 def conversation_chain(llm):
@@ -8,7 +8,7 @@ def conversation_chain(llm):
         template= AUTISM_PROMPT,
         input_variables= [
                 "name",
-                "age" ,
+                "age",
                 "conversation_history"
         ]
     )

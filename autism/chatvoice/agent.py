@@ -26,9 +26,9 @@ while True:
 
     start = time.time()
     response = get_response(conversation_history)
-    tts_file = text_to_speech(response)
-    print(tts_file)
-    playsound.playsound(tts_file)
+    # tts_file = text_to_speech(response)
+    # print(tts_file)
+    # playsound.playsound(tts_file)
     print(f"Autism Agent: {response}")
     conversation_history += f"Autism Agent: {response}\n"
     end = time.time()
