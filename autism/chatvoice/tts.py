@@ -48,11 +48,11 @@ def text_to_speech(input_response="Hello this is me"):
     start_in = time.time()
     url = "https://waves-api.smallest.ai/api/v1/lightning/get_speech"
     payload = {
-        "voice_id": "deepika",
+        "voice_id": "nisha",
         "text": input_response,
         "sample_rate": 8000,
         "add_wav_header": True,
-        "speed" : 1.3
+        "speed" : 1.1
     }
     headers = {
         "Authorization": f"Bearer {token}",
