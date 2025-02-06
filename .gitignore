@@ -2,3 +2,4 @@
 .env
 audio_segment.wav
 audio
+venv
