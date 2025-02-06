@@ -1,52 +1,52 @@
-from pathlib import Path
-
-import click
 import cv2
-from matplotlib import pyplot as plt
+import numpy as np
+from transformers import AutoFeatureExtractor, AutoModelForImageClassification
+import torch
 
-from fer import FER
-from fer.utils import draw_annotations
-from fer.classes import Video
+# Load Microsoft ResNet-50 model and feature extractor
+model_name = "microsoft/resnet-50"
+feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
+model = AutoModelForImageClassification.from_pretrained(model_name)
 
-mtcnn_help = "Use slower but more accurate mtcnn face detector"
+# Emotion labels (adjust based on your dataset)
+emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
 
+# Function to predict emotion
+def predict_emotion(face_img):
+    face_resized = cv2.resize(face_img, (224, 224))  # Resize to ResNet-50 input size
+    face_rgb = cv2.cvtColor(face_resized, cv2.COLOR_BGR2RGB)
+    inputs = feature_extractor(images=face_rgb, return_tensors="pt")
+    outputs = model(**inputs)
+    predicted_class = torch.argmax(outputs.logits, dim=-1).item()
+    return emotion_labels[predicted_class % len(emotion_labels)]  # Prevent index error
 
-@click.group()
-def cli():
-    pass
+# Initialize webcam
+cap = cv2.VideoCapture(0)
 
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
 
-@cli.command()
-@click.argument("device", default=0, help="webcam device (usually 0 or 1)")
-@click.option("--mtcnn", is_flag=True, help=mtcnn_help)
-def webcam(device, mtcnn):
-    detector = FER(mtcnn=mtcnn)
-    cap = cv2.VideoCapture(device)
+    # Convert to grayscale
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    if not cap.isOpened():
-        print("Cannot open camera")
-        exit()
+    # Face detection
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-    while True:
-        # Capture frame-by-frame
-        ret, frame = cap.read()
+    for (x, y, w, h) in faces:
+        face = frame[y:y+h, x:x+w]
+        emotion = predict_emotion(face)
 
-        if not ret:
-            print("Can't receive frame (stream end?). Exiting ...")
-            break
+        # Draw rectangle and display emotion
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        cv2.putText(frame, emotion, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
-        frame = cv2.flip(frame, 1)
-        emotions = detector.detect_emotions(frame)
-        frame = draw_annotations(frame, emotions)
+    cv2.imshow('Emotion Detection (ResNet-50)', frame)
 
-        # Display the resulting frame
-        cv2.imshow("frame", frame)
-        if cv2.waitKey(1) == ord("q"):
-            break
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-    cap.release()
-    cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    cli()
+cap.release()
+cv2.destroyAllWindows()

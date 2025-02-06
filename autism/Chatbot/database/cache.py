@@ -34,7 +34,6 @@ def get_chat_history(user_id):
     return json.loads(existing_history) if existing_history else []
 
 
-
 if __name__ == "__main__":
     user_id = "abc123"
 
