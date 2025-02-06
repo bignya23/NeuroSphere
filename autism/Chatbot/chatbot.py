@@ -2,7 +2,6 @@ from langchain_core.prompts import PromptTemplate
 from prompt import AUTISM_PROMPT_CHATBOT
 from langchain_core.output_parsers import StrOutputParser
 from llm import gemini_llm
-from database.cache import get_chat_history, store_chat_history
 
 
 def conversation_chain(llm):
@@ -36,19 +35,17 @@ def get_response(conversation_history=""):
     except Exception as e:
         return f"Error: {str(e)}"
 
-
+conversation_history = ""
 user_input = ""
-user_id = "ravi"
 while True:
 
-    response = get_response(get_chat_history(user_id))
-    print(get_chat_history(user_id))
+    response = get_response(conversation_history)
     print(f"Autism Chatbot: {response}")
+    conversation_history += f"Autism Agent: {response}\n"
 
     user_input = input("User : ")
 
-    store_chat_history(user_id, user_input, response)
-
+    conversation_history += f"User : {user_input}\n"
 
 
      
