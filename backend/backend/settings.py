@@ -106,8 +106,8 @@ DATABASES = {
 
 # Redis settings
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
-REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
-REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'IGEr9VJHCrzbleeCX5mtLAbeZMtesfYp')
+REDIS_PORT = int(os.getenv('REDIS_PORT', ''))
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', '')
 
 # JWT settings
 SIMPLE_JWT = {
@@ -142,10 +142,10 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-         "LOCATION": "redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19672.c330.asia-south1-1.gce.redns.redis-cloud.com:19672/0",
+        "LOCATION": f"redis://default:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PASSWORD": "DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd"
+            "PASSWORD": os.getenv("REDIS_PASSWORD")
         },
     }
 }
