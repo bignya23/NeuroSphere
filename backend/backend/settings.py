@@ -47,6 +47,7 @@ REST_FRAMEWORK = {
     )
 }
 
+<<<<<<< HEAD
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -59,6 +60,10 @@ CHANNEL_LAYERS = {
 # Application definition
 INSTALLED_APPS = [
     "daphne",
+=======
+# Application definition
+INSTALLED_APPS = [
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,9 +75,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth_chat',
     'channels',
+<<<<<<< HEAD
     'chatroom',
      
    
+=======
+    'autism',
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 
 ]
 
@@ -106,7 +115,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+<<<<<<< HEAD
 ASGI_APPLICATION = 'backend.asgi.application'
+=======
+
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -117,11 +130,18 @@ DATABASES = {
     }
 }
 
+<<<<<<< HEAD
 
 # Redis settings
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
 REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'IGEr9VJHCrzbleeCX5mtLAbeZMtesfYp')
+=======
+# Redis settings
+REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+REDIS_PORT = int(os.getenv('REDIS_PORT', ''))
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', '')
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 
 # JWT settings
 SIMPLE_JWT = {
@@ -156,6 +176,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
+<<<<<<< HEAD
          "LOCATION": "redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19672.c330.asia-south1-1.gce.redns.redis-cloud.com:19672/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -164,6 +185,16 @@ CACHES = {
     }
 }
 
+=======
+        "LOCATION": f"redis://default:{REDIS_PASSWORD}@{REDIS_HOST}/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": os.getenv("REDIS_PASSWORD")
+        },
+    }
+}
+# print(CACHES)
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

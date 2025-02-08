@@ -4,7 +4,11 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
+<<<<<<< HEAD
 from rest_framework.permissions import IsAuthenticated, AllowAny
+=======
+from rest_framework.permissions import AllowAny
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 from django.core.exceptions import ObjectDoesNotExist
 
 User = get_user_model()
@@ -82,6 +86,7 @@ def login(request):
         print(f"Login error: {str(e)}")  # For debugging
         return Response({
             'error': 'An error occurred during login'
+<<<<<<< HEAD
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
         
         
@@ -105,3 +110,6 @@ def logout(request):
 
     except Exception as e:
         return Response({'error': 'Invalid token', 'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+=======
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa

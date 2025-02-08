@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
 
 const Chat = () => {
@@ -160,3 +161,16 @@ const Chat = () => {
 };
 
 export default Chat;
+=======
+import React from 'react'
+
+const Chat = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default Chat
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa

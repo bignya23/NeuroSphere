@@ -2,4 +2,5 @@
 .env
 audio_segment.wav
 audio
-venv
+venv*.pyc
+__pycache__/

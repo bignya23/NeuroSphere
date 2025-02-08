@@ -27,7 +27,11 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
       // Redirect to dashboard or home page
+<<<<<<< HEAD
       navigate("/dashboard");
+=======
+      navigate("/chat");
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
     } catch (err) {
       setError(err.response?.data?.error || "An error occurred during login");
     }
