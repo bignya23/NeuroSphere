@@ -19,11 +19,7 @@ from django.urls import path, include  # Added include import
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
     path('api/chat/', include('chatroom.urls')),
-    path('api/auth/', include('auth_chat.urls'))  # Fixed the include statement
-=======
-    path('api/auth/', include('auth_chat.urls')),  
+    path('api/auth/', include('auth_chat.urls')), # Fixed the include statement
     path('api/autism/', include('autism.urls')) 
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 ]

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Signup from "./components/Singup";
 import Login from "./components/Login";
@@ -8,24 +7,11 @@ import DashboardRoutes from "./components/DashboardRoutes";
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("access_token");
-=======
-
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Signup from "./components/Singup"
-import Login from "./components/Login"
-
-import Chat from './components/Chat';
-
-const PrivateRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('user_id');
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 const App = () => {
   return (
-<<<<<<< HEAD
     <AuthProvider>
       <Router>
         <Routes>
@@ -47,18 +33,3 @@ const App = () => {
 };
 
 export default App;
-=======
-    <Router>
-      <Routes>
-      
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/chat" element={<Chat />} />
- 
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa

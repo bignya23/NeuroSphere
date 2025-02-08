@@ -10,10 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@tailwindcss/forms": "^0.5.10",
-=======
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
     "@tailwindcss/vite": "^4.0.3",
     "axios": "^1.7.9",
     "jwt-decode": "^4.0.0",
@@ -21,36 +18,21 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.5.1",
-<<<<<<< HEAD
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.5",
     "tailwindcss": "^4.0.3"
-=======
-    "react-router-dom": "^7.1.5"
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
-<<<<<<< HEAD
-=======
-    "autoprefixer": "^10.4.20",
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
-<<<<<<< HEAD
-    "vite": "^6.0.5"
-  }
-=======
-    "postcss": "^8.5.1",
-    "tailwindcss": "^4.0.4",
     "vite": "^6.0.5"
   },
   "packageManager": "npm@11.1.0+sha512.acf301ad9b9ddba948fcb72341e2f0fcae477f56a95cc2a092934d133a7461062633cefbf93d5934a3dc0768674e2edee9f04dcfcc4bb4c327ff0e3a7d552a1b"
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
 }

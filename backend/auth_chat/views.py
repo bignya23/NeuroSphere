@@ -83,7 +83,6 @@ def login(request):
         print(f"Login error: {str(e)}")  # For debugging
         return Response({
             'error': 'An error occurred during login'
-<<<<<<< HEAD
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
         
         
@@ -107,6 +106,3 @@ def logout(request):
 
     except Exception as e:
         return Response({'error': 'Invalid token', 'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-=======
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
->>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
