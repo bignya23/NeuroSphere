@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth_chat',
     'channels',
+    'autism',
 
 ]
 
@@ -142,14 +143,14 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://default:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0",
+        "LOCATION": f"redis://default:{REDIS_PASSWORD}@{REDIS_HOST}/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PASSWORD": os.getenv("REDIS_PASSWORD")
         },
     }
 }
-
+# print(CACHES)
 
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
