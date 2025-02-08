@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 
 User = get_user_model()
@@ -83,3 +83,25 @@ def login(request):
         return Response({
             'error': 'An error occurred during login'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+        
+        
+        
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    try:
+        # Get refresh token from request
+        refresh_token = request.data.get('refresh_token')
+
+        if not refresh_token:
+            return Response({'error': 'Refresh token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Blacklist the refresh token
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+
+        return Response({'message': 'Successfully logged out'}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': 'Invalid token', 'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)

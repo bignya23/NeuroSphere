@@ -47,8 +47,18 @@ REST_FRAMEWORK = {
     )
 }
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ["redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19672.c330.asia-south1-1.gce.redns.redis-cloud.com:19672/0"]
+        },
+    },
+}
+
 # Application definition
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,6 +70,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth_chat',
     'channels',
+    'chatroom',
+     
+   
 
 ]
 
@@ -93,7 +106,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
+ASGI_APPLICATION = 'backend.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -103,6 +116,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Redis settings
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
