@@ -47,8 +47,28 @@ REST_FRAMEWORK = {
     )
 }
 
+<<<<<<< HEAD
 # Application definition
 INSTALLED_APPS = [
+=======
+<<<<<<< HEAD
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ["redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19672.c330.asia-south1-1.gce.redns.redis-cloud.com:19672/0"]
+        },
+    },
+}
+
+# Application definition
+INSTALLED_APPS = [
+    "daphne",
+=======
+# Application definition
+INSTALLED_APPS = [
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,7 +80,17 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth_chat',
     'channels',
+<<<<<<< HEAD
     'autism',
+=======
+<<<<<<< HEAD
+    'chatroom',
+     
+   
+=======
+    'autism',
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
 
 ]
 
@@ -94,7 +124,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+ASGI_APPLICATION = 'backend.asgi.application'
+=======
+
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -105,10 +143,24 @@ DATABASES = {
     }
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+# Redis settings
+REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
+REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'IGEr9VJHCrzbleeCX5mtLAbeZMtesfYp')
+=======
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
 # Redis settings
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
 REDIS_PORT = int(os.getenv('REDIS_PORT', ''))
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', '')
+<<<<<<< HEAD
+=======
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
 
 # JWT settings
 SIMPLE_JWT = {
@@ -143,6 +195,19 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+         "LOCATION": "redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19672.c330.asia-south1-1.gce.redns.redis-cloud.com:19672/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd"
+        },
+    }
+}
+
+=======
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
         "LOCATION": f"redis://default:{REDIS_PASSWORD}@{REDIS_HOST}/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -151,6 +216,10 @@ CACHES = {
     }
 }
 # print(CACHES)
+<<<<<<< HEAD
+=======
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
 
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

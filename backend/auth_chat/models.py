@@ -17,12 +17,29 @@ class User(AbstractUser):
     disease_level = models.CharField(max_length=20, null=True, blank=True)
     
     USERNAME_FIELD = 'email'
+<<<<<<< HEAD
     REQUIRED_FIELDS = ['name', 'username']  
+=======
+<<<<<<< HEAD
+    REQUIRED_FIELDS = ['name']  # Remove username from required fields
+
+=======
+    REQUIRED_FIELDS = ['name', 'username']  
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
     def __str__(self):
         return self.email
 
     class Meta:
+<<<<<<< HEAD
         unique_together = []  
+=======
+<<<<<<< HEAD
+        unique_together = []  # Remove any unique_together constraints
+=======
+        unique_together = []  
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
         
         
 

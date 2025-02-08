@@ -3,3 +3,6 @@
 audio_segment.wav
 audio
 venv
+*.pyc
+__pycache__/
+venv

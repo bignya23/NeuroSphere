@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('signup/', views.signup, name='signup'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),  # ✅ Add logout route
+]
+=======
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
 # auth_chat/urls.py
 from django.urls import path, re_path, include
 
@@ -8,4 +21,9 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'),
 
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> d5cd088afd3a660e8e692020b04f1969056278aa
+>>>>>>> dbd363c93d388599e1b908b4ade2ecb271d44300
