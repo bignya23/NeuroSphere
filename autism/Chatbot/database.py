@@ -24,7 +24,7 @@ def store_chat_history(user_id, user_message, bot_response):
 
     redis_client.ltrim(key, 0, 9)
 
-    print(f"Stored conversation for user {user_id}")
+    # print(f"Stored conversation for user {user_id}")
 
 
 def get_chat_history(user_id):
@@ -32,14 +32,14 @@ def get_chat_history(user_id):
     key = f"chat_history:{user_id}"
     history = redis_client.lrange(key, 0, -1)  
 
-    return [json.loads(entry) for entry in history]
+    return (reversed([json.loads(entry) for entry in history]))
 
 
 if __name__ == "__main__":
 
     store_chat_history("user_123", "Hey!", "Hello! How can I help?")
-    for i in range(0, 10):
-        store_chat_history("user_123", "I'm feeling a little down.", "I'm here for you. Want to talk about it?")
+
+    store_chat_history("user_123", "I'meeling a little down.", "I'm here for you. Want to talk about it?")
 
     history = get_chat_history("user_123")
 

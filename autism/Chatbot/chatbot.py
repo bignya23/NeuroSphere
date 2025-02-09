@@ -3,7 +3,7 @@ from prompt import AUTISM_PROMPT_CHATBOT, SUICIDE_CHECK_PROMPT
 from langchain_core.output_parsers import StrOutputParser
 from llm import gemini_llm
 from tools import send_alert_email
-
+from database import store_chat_history, get_chat_history
 
 def conversation_chain(llm):
     """To get the Conversation Stage"""
@@ -70,11 +70,13 @@ def get_response_mail(conversation_history=""):
         return f"Error: {str(e)}"
 
 
-conversation_history = ""
+
 user_input = ""
 
 if __name__ == "__main__":
     while True:
+        conversation_history = get_chat_history("ram@gmail.com")
+        print(conversation_history)
         response_mail = get_response_mail(conversation_history)
         print(f"Response Mail : {response_mail}")
         if(response_mail == "yes"):
@@ -83,11 +85,11 @@ if __name__ == "__main__":
     
         response = get_response("ram", "34" , "cubing", "3", "MALE", conversation_history)
         print(f"Autism Chatbot: {response}")
-        conversation_history += f"Autism Agent: {response}\n"
+        
 
         user_input = input("User : ")
 
-        conversation_history += f"User : {user_input}\n"
+        store_chat_history("ram@gmail.com", user_input, response)
 
 
      
