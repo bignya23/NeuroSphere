@@ -1,12 +1,16 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def send_alert_email(parent_email, user_name, message_content):
-    sender_email = "254d12ab-016e-49ad-907d-85527b68aab9@mailslurp.biz"  # Your email
-    sender_password = ""  # Use a secure way to store this, like environment variables
-    smtp_server = "mxslurp.click"  # Change this based on your provider
-    smtp_port = 2525  # Standard port for TLS
+    sender_email = os.getenv("EMAIL_TOOLS")
+    sender_password = os.getenv("EMAIL_PASS")
+    smtp_server = "smtp.gmail.com"  
+    smtp_port = 587  # Standard port for TLS
 
     subject = f"Urgent: {user_name} may need support"
     body = f"""
@@ -22,6 +26,7 @@ def send_alert_email(parent_email, user_name, message_content):
     Sincerely,  
     Your Support AI
     """
+
 
     msg = MIMEMultipart()
     msg['From'] = sender_email

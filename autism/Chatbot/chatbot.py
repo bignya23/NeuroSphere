@@ -14,6 +14,7 @@ def conversation_chain(llm):
                 "age",
                 "conversation_history",
                 "hobbies",
+                "gender",
                 "level"
         ]
     )
@@ -39,7 +40,7 @@ def conversation_chain_mail(llm):
 
 
 
-def get_response(name = "", age = "", hobbies = "", level = "", conversation_history=""):
+def get_response(name = "", age = "", hobbies = "", level = "", gender = "", conversation_history=""):
 
     chain = conversation_chain(gemini_llm())
     try:
@@ -48,6 +49,7 @@ def get_response(name = "", age = "", hobbies = "", level = "", conversation_his
                 "age" : age,
                 "hobbies" : hobbies,
                 "level" : level,
+                "gender"  : gender,
                 "conversation_history" : conversation_history
                 })
 
@@ -77,9 +79,9 @@ if __name__ == "__main__":
         print(f"Response Mail : {response_mail}")
         if(response_mail == "yes"):
             print(send_alert_email("bignya18@gmail.com","ram", conversation_history))
-            print("done")
+          
     
-        response = get_response("ram", "34" , "cubing", "1", conversation_history)
+        response = get_response("ram", "34" , "cubing", "3", "MALE", conversation_history)
         print(f"Autism Chatbot: {response}")
         conversation_history += f"Autism Agent: {response}\n"
 
