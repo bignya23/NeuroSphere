@@ -9,7 +9,11 @@ def conversation_chain(llm):
         input_variables= [
                 "name",
                 "age",
-                "conversation_history"
+                "conversation_history",
+                "hobbies",
+                "gender",
+                "user_input",
+                "level"
         ]
     )
 
