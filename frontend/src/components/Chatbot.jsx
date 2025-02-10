@@ -38,7 +38,7 @@ const Chatbot = () => {
   const getAIResponse = async (userMessage) => {
     try {
       // Replace with actual API request
-      const response = await axios.post("https://dummy-backend.com/chatbot", {
+      const response = await axios.post("http://127.0.0.1:8000/api/autism/chatbot/", {
         message: userMessage,
       });
       return response.data.reply;
