@@ -1,10 +1,10 @@
-from model import gemini_llm
-from chains import conversation_chain
-from variables import *
+from .model import gemini_llm
+from .chains import conversation_chain
+from .variables import *
 import time
 import playsound
-from stt import audio_file, speech_to_text
-from tts import text_to_speech
+from .stt import audio_file, speech_to_text
+from .tts import text_to_speech
 
 def get_response(name = "", age = "", hobbies = "", level = "", gender = "", user_input = "", conversation_history=""):
 
