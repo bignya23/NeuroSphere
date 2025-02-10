@@ -15,6 +15,7 @@ def conversation_chain(llm):
                 "conversation_history",
                 "hobbies",
                 "gender",
+                "user_input",
                 "level"
         ]
     )
@@ -29,6 +30,7 @@ def conversation_chain_mail(llm):
     prompt = PromptTemplate(
         template= SUICIDE_CHECK_PROMPT,
         input_variables= [
+                "user_input",
                 "conversation_history"
              
         ]
@@ -40,7 +42,7 @@ def conversation_chain_mail(llm):
 
 
 
-def get_response(name = "", age = "", hobbies = "", level = "", gender = "", conversation_history=""):
+def get_response(name = "", age = "", hobbies = "", level = "", gender = "", user_input = "", conversation_history=""):
 
     chain = conversation_chain(gemini_llm())
     try:
@@ -50,6 +52,7 @@ def get_response(name = "", age = "", hobbies = "", level = "", gender = "", con
                 "hobbies" : hobbies,
                 "level" : level,
                 "gender"  : gender,
+                "user_input" : user_input,
                 "conversation_history" : conversation_history
                 })
 
@@ -57,11 +60,12 @@ def get_response(name = "", age = "", hobbies = "", level = "", gender = "", con
     except Exception as e:
         return f"Error: {str(e)}"
     
-def get_response_mail(conversation_history=""):
+def get_response_mail(user_input = "", conversation_history=""):
 
     chain = conversation_chain_mail(gemini_llm())
     try:
         response = chain.invoke({
+                "user_input" : user_input,
                 "conversation_history" : conversation_history
                 })
 

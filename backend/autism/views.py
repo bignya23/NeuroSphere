@@ -20,14 +20,13 @@ def chatbot(request):
     parents_email = user.parents_email
     conversation_history = database.get_chat_history(email)
     print(conversation_history)
-    response_mail = "no"
+    response_mail = chatbot_1.get_response_mail(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
     if(response_mail == "yes"):
         print(tools.send_alert_email(parents_email, name , conversation_history))
           
-    
-    # response = chatbot_1.get_response(name, age , "cubing", level, "MALE", conversation_history)
-    response = "Hello test"
+    response = chatbot_1.get_response(name, age , "cubing", level, "MALE", user_input, conversation_history)
+    # response = "Hello test"
     print(f"Autism Chatbot: {response}")
         
     database.store_chat_history(email, user_input, response)
@@ -37,18 +36,5 @@ def chatbot(request):
     })
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])  # Ensure user is logged in
-def get_current_user(request):
-    """Retrieve details of the currently logged-in user"""
-    user = request.user  # Get the logged-in user
-
-    user_data = {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-    }
-
-    return Response(user_data)
 
 

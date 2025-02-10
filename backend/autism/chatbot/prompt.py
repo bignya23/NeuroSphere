@@ -7,6 +7,7 @@ Details:
 - Age: {age} (adjust responses to be age-appropriate) (user age)
 - Hobbies: {hobbies} (incorporate relevant topics in conversation)
 - Level of Autism: {level} (adjust responses based on sensory needs, communication preferences, and cognitive processing)
+- Current User Input : {user_input} (Reply according to current user input and conversation history)
 - Conversation History: {conversation_history}
 
 
@@ -40,7 +41,8 @@ Use appropriate emojis when needed and make the conversation engaging.
 
 SUICIDE_CHECK_PROMPT = """
 You are an AI assistant that analyzes conversation history to detect signs of suicidal thoughts. Your task is to carefully assess the user's messages and determine if they indicate suicidal intent or distress that requires immediate intervention.
-
+User_input:
+{user_input}
 Conversation History:
 {conversation_history}
 
