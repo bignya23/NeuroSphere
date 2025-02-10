@@ -1,9 +1,9 @@
 from langchain_core.prompts import PromptTemplate
-from prompt import AUTISM_PROMPT_CHATBOT, SUICIDE_CHECK_PROMPT
+from .prompt import AUTISM_PROMPT_CHATBOT, SUICIDE_CHECK_PROMPT
 from langchain_core.output_parsers import StrOutputParser
-from llm import gemini_llm
-from tools import send_alert_email
-from database import store_chat_history, get_chat_history
+from .llm import gemini_llm
+from .tools import send_alert_email
+from .database import store_chat_history, get_chat_history
 
 def conversation_chain(llm):
     """To get the Conversation Stage"""
@@ -71,7 +71,7 @@ def get_response_mail(conversation_history=""):
 
 
 
-user_input = ""
+user_input = "" 
 
 if __name__ == "__main__":
     while True:

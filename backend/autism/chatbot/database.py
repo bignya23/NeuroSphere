@@ -10,7 +10,7 @@ redis_client = redis.Redis(host="redis-12856.c330.asia-south1-1.gce.redns.redis-
     password=os.getenv("REDIS_DB_PASS"))
 
 
-def store_chat_history(user_id, user_message, bot_response):
+def store_chat_history(user_id, user_message = "", bot_response = ""):
     """Store last 10 conversations in Redis for a given user."""
     key = f"chat_history:{user_id}"
 
