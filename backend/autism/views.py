@@ -18,6 +18,8 @@ def chatbot(request):
     age = user.age
     level = user.disease_level
     parents_email = user.parents_email
+    hobbies = user.hobbies
+    gender = user.gender
     conversation_history = database.get_chat_history(email)
     print(conversation_history)
     response_mail = chatbot_1.get_response_mail(user_input, conversation_history)
@@ -25,7 +27,7 @@ def chatbot(request):
     if(response_mail == "yes"):
         print(tools.send_alert_email(parents_email, name , conversation_history))
           
-    response = chatbot_1.get_response(name, age , "cubing", level, "MALE", user_input, conversation_history)
+    response = chatbot_1.get_response(name, age , hobbies, level, gender, user_input, conversation_history)
     # response = "Hello test"
     print(f"Autism Chatbot: {response}")
         
@@ -36,5 +38,50 @@ def chatbot(request):
     })
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def chatvoice(request):
+    pass
 
 
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def tasks(request):
+
+    return Response({
+    "tasks": [
+    {
+      "id": 1,
+      "category": "Social Interaction",
+      "task": "Say 'Hi' to someone today."
+    },
+    {
+      "id": 2,
+      "category": "Social Interaction",
+      "task": "Ask someone, 'How are you today?'"
+    },
+    {
+      "id": 3,
+      "category": "Social Interaction",
+      "task": "Wave goodbye when you leave a room."
+    },
+    {
+      "id": 4,
+      "category": "Social Interaction",
+      "task": "Introduce yourself to someone new. ('My name is __.')"
+    },
+    {
+      "id": 5,
+      "category": "Social Interaction",
+      "task": "Ask a friend what their favorite color or food is."
+    },
+    {
+      "id": 6,
+      "category": "Social Interaction",
+      "task": "Share something about your favorite activity."
+    }
+  ]
+}
+)
