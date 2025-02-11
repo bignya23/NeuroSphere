@@ -171,10 +171,10 @@ def sos_alert(request):
 
     if not parents_email:
         return Response({"error": "No guardian email found."}, status=400)
-    
-    message = f"""🚨 SOS Alert: Emergency Situation 🚨
+    subject = "🚨 SOS Alert: Emergency Situation 🚨"
+    message = f"""
         {user.name} has triggered an SOS alert. Please check on them immediately.""",
-    send_mail_gmail.send_alert_email(parents_email, message)
+    send_mail_gmail.send_alert_email(parents_email, subject, message)
 
     return Response({"message": "SOS alert sent successfully."})
 
