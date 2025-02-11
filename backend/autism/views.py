@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 from .chatbot import chatbot_1, database, tools
-from .chatvoice import chains, agent, tts, stt, database
-
+from .chatvoice import agent, database_voice, tts, stt
+from .support import send_mail_gmail
+from .tasks_system import generate_tasks
 User = get_user_model()
 
 @api_view(['POST'])
@@ -22,7 +23,7 @@ def chatbot(request):
     parents_email = user.parents_email
     hobbies = user.hobbies
     gender = user.gender
-    conversation_history = database.get_chat_history(email)
+    conversation_history = database_voice.get_chat_history(email)
     print(conversation_history)
     response_mail = chatbot_1.get_response_mail(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
@@ -54,12 +55,12 @@ def chatvoice(request):
     parents_email = user.parents_email
     hobbies = user.hobbies
     gender = user.gender
-    conversation_history = database.get_chat_history(f"{email}_voice")
+    conversation_history = database_voice.get_chat_history(f"{email}_voice")
     response = agent.get_response(name, age , hobbies, level, gender, user_input, conversation_history)
     tts_file = tts.text_to_speech(response)
     print(f"Autism Agent: {response}")
     
-    database.store_chat_history(f"{email}_voice",user_input, response)
+    database_voice.store_chat_history(f"{email}_voice",user_input, response)
 
     path = tts_file
     return Response({
@@ -67,7 +68,7 @@ def chatvoice(request):
         "conversation_history" : conversation_history
     })
     
-     
+
 
 @api_view(['GET']) 
 @permission_classes([IsAuthenticated])  
@@ -100,4 +101,81 @@ def tasks(request):
         {"id": 22, "category": "School & Learning", "task": "Follow a short instruction from your teacher or parent."},
         {"id": 23, "category": "School & Learning", "task": "Sit quietly and listen to a short story."}
     ]
+    return Response({"tasks": tasks_list})    
+
+@api_view(['GET']) 
+@permission_classes([IsAuthenticated])  
+def tasks_generate(request):
+    user = request.user
+    conv_hist = database.get_chat_history(user.email)
+    conv_hist += database_voice.get_chat_history(f"{user.email}_voice")
+    tasks_list = generate_tasks.generate_tasks(user.name, user.age, user.disease_level, user.hobbies, conv_hist)
+
+
     return Response({"tasks": tasks_list})
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def emergency(request):
+    return Response({
+        "emergency_contacts": [
+            {
+                "id": 1,
+                "name": "National Autism Helpline",
+                "contact": "+1 800 123 4567",
+                "type": "Helpline"
+            },
+            {
+                "id": 2,
+                "name": "Parent Contact",
+                "contact": "+1 234 567 8901",
+                "type": "Guardian"
+            }
+        ],
+        "nearest_hospitals": [
+            {
+                "id": 1,
+                "name": "Autism Care Hospital",
+                "location": "123 Main St, New York",
+                "contact": "+1 555 678 9012",
+                "navigation_link": "https://maps.google.com/xyz"
+            }
+        ],
+        "my_doctors": [
+            {
+                "id": 1,
+                "name": "Dr. Emily Davis",
+                "specialty": "Autism Specialist",
+                "contact": "+1 987 654 3210",
+                "location": "Los Angeles, USA"
+            },
+            {
+                "id": 2,
+                "name": "Dr. Ravi kumar",
+                "specialty": "Autism Specialist",
+                "contact": "+1 345 654 3210",
+                "location": "Munbai, India"
+            }
+        ]
+    })
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def sos_alert(request):
+    user = request.user  
+    parents_email = user.parents_email  
+
+    if not parents_email:
+        return Response({"error": "No guardian email found."}, status=400)
+    
+    message = f"""🚨 SOS Alert: Emergency Situation 🚨
+        {user.name} has triggered an SOS alert. Please check on them immediately.""",
+    send_mail_gmail.send_alert_email(parents_email, message)
+
+    return Response({"message": "SOS alert sent successfully."})
+
+
