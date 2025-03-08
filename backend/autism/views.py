@@ -42,6 +42,7 @@ def chatbot(request):
     })
 
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def chatvoice(request):
@@ -102,6 +103,7 @@ def tasks(request):
         {"id": 23, "category": "School & Learning", "task": "Sit quietly and listen to a short story."}
     ]
     return Response({"tasks": tasks_list})    
+
 
 @api_view(['GET']) 
 @permission_classes([IsAuthenticated])  
