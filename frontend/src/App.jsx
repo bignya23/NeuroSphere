@@ -4,10 +4,10 @@ import Login from "./components/Login";
 import { AuthProvider } from "./context/AuthContext";
 import Dashboard from "./components/Dashboard";
 import DashboardRoutes from "./components/DashboardRoutes";
-
+import ResumeInput from "./components/ResumeInput"
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("access_token");
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/" />;
 };
 
 const App = () => {
@@ -15,17 +15,19 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Routes */}
+
+          <Route  path="/" element={<ResumeInput />}/>
+       
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           
-          {/* Protected Dashboard Routes */}
-          <Route path="/dashboard/*" element={<PrivateRoute><Dashboard /></PrivateRoute>}>
-            <Route path="*" element={<DashboardRoutes />} /> {/* Load DashboardRoutes */}
-          </Route>
+         
+        <Route path="/dashboard/*" element={<PrivateRoute><Dashboard /></PrivateRoute>}>
+            <Route path="*" element={<DashboardRoutes />} /> 
+         </Route> 
 
-          {/* Catch-All Route */}
-          <Route path="*" element={<Navigate to="/login" />} />
+        
+         <Route path="*" element={<Navigate to="/login" />} /> 
         </Routes>
       </Router>
     </AuthProvider>

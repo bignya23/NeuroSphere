@@ -9,6 +9,10 @@ from .chatbot import chatbot_1, database, tools
 from .chatvoice import agent, database_voice, tts, stt
 from .support import send_mail_gmail
 from .tasks_system import generate_tasks
+from .resume_maker.resume_to_pdf import generate_resume_pdf
+from django.http import FileResponse
+import os
+
 User = get_user_model()
 
 @api_view(['POST'])
@@ -179,5 +183,30 @@ def sos_alert(request):
     send_mail_gmail.send_alert_email(parents_email, subject, message)
 
     return Response({"message": "SOS alert sent successfully."})
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def generate_resume(request):
+    user = request.user
+    name = user.name
+    phno = user.phno
+    email = user.email
+    linkedin = user.linkedin
+    education = user.education
+    skills = user.skills
+    projects = user.projects
+    experience = user.experience
+
+    filename = "resume.pdf"
+    file_path = os.path.join(os.getcwd(), filename)  
+    generate_resume_pdf(name, phno, email, linkedin, education, skills, projects, experience, file_path)
+
+    pdf_file = open(file_path, 'rb')
+    response = FileResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    
+    return response
 
 
