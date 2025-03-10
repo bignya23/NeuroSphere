@@ -3,7 +3,9 @@ from google import genai
 from dotenv import load_dotenv
 import os
 import numpy as np
-from job_description import job_listings  # Ensure job_listings is defined in job_data.py
+from job_description import job_listings  
+from job_input import collect_candidate_profile
+
 
 # Load environment variables from .env
 load_dotenv()
@@ -101,4 +103,5 @@ def main():
         print("-" * 40)
 
 if __name__ == "__main__":
+
     main()

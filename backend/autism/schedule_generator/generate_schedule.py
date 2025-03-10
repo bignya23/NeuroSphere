@@ -43,7 +43,7 @@ def generate_schedule_of_user(user_data : str = ""):
 
 if __name__ == "__main__":
     # value = get_user_input()
-    generate_tasks(user_data="""{
+    generate_schedule_of_user(user_data="""{
   "tasks": [
     {
       "task": "coding practise",

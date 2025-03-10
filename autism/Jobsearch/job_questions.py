@@ -1,5 +1,3 @@
-
-
 job_search_questions = [
     {
         "question": "What are your skills and interests?"
