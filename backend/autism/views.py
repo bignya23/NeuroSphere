@@ -11,6 +11,7 @@ from .support import send_mail_gmail
 from .tasks_system import generate_tasks
 from .resume_maker.resume_to_pdf import generate_resume_pdf
 from django.http import FileResponse
+from .schedule_generator.generate_schedule import generate_schedule_of_user
 import os
 
 User = get_user_model()
@@ -208,5 +209,46 @@ def generate_resume(request):
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
     return response
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def initial_assessment(request):
+
+    assessment_questions = [
+        {
+            "question": "What are your skills and interests?"
+        },
+        {
+            "question": "What type of work do you prefer?",
+            "options": ["Remote", "Hybrid", "On-site"]
+        },
+        {
+            "question": "What work environment do you feel comfortable in?",
+            "options": ["Quiet", "Structured", "Flexible", "Team-based", "Solo work"]
+        },
+        {
+            "question": "Do you have any specific needs or accommodations for your job?",
+            "options": ["Flexible schedule", "Noise-free space", "Clear instructions"]
+        },
+        {
+            "question": "What is your preferred job schedule?",
+            "options": ["Full-time", "Part-time", "Freelance", "Flexible Hours"]
+        }
+    ]
+    return Response({"questions" : assessment_questions})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def generateSchedule(request):
+    user_schedule = request.user_schedule
+    print(user_schedule)
+
+    schedule = generate_schedule_of_user(user_data=user_schedule)
+
+    return Response({"Schedule" : schedule})
+
+
 
 

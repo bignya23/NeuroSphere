@@ -17,7 +17,7 @@ class Tasks(BaseModel):
     task : str = Field(description="Tasks heading")
 
 
-def generate_tasks(user_data : str = ""):
+def generate_schedule_of_user(user_data : str = ""):
     prompt_template = f"""
     You are a highly skilled daily schedule generator. Below is the user input data in JSON format
     {user_data}.

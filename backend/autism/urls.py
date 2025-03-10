@@ -9,5 +9,6 @@ urlpatterns = [
     path("tasks_generate/", views.tasks_generate, name="tasks_generate"),
     path("sos/", views.sos_alert, name="sos_alert"),
     path("emergency/", views.emergency, name="emergency"),
-    path("resume_generate/", views.generate_resume, name="generate_resume")
+    path("resume_generate/", views.generate_resume, name="generate_resume"),
+    path("schedule_generate/", views.generateSchedule, name="generateSchedule")
 ]
