@@ -27,9 +27,6 @@ def format_text(text):
 def generate_resume_pdf(name, phno, email, linkedin, education, skills, projects, experience, filename="resume.pdf"):
     resume_text = generate_resume(name, phno, email, linkedin, education, skills, projects, experience)
 
-
- 
-
     # print(resume_text)
     doc = SimpleDocTemplate(filename, pagesize=letter)
     styles = getSampleStyleSheet()

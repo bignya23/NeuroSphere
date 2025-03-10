@@ -1,0 +1,30 @@
+{
+  "tasks": [
+    {
+      "task": "coding practise",
+      "priority": 3
+    },
+    {
+      "task": "playing batminton",
+      "priority": 2
+    },
+    {
+      "task": "cycling in the outdoor",
+      "priority": 4
+    },
+    {
+      "task": "watching movie",
+      "priority": 4
+    },
+    {
+      "task": "lunch"
+    },
+    {
+      "task": "dinner"
+    },
+    {
+      "task": "bathing"
+    }
+  ],
+  "day_description": "chill but do all the activities"
+}
