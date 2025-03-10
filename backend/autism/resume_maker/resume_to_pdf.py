@@ -3,7 +3,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from resume_maker import generate_resume
+from .resume_maker import generate_resume
 import re
 import os
 def format_text(text):

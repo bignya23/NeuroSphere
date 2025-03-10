@@ -83,6 +83,7 @@ def audio_file():
 
     except KeyboardInterrupt:
         print("Recording stopped.")
+        # Save any remaining audio
         if audio_frames:
             filename = f"audio_segment_{file_count}.wav"
             save_audio(filename, audio_frames, RATE)
@@ -94,8 +95,11 @@ def audio_file():
         p.terminate()
 
 def speech_to_text(filename):
+    
     client = Groq(api_key= os.getenv("GROQ_API_KEY"))
 
+
+    # Open the audio file
     with open(filename, "rb") as file:
         transcription = client.audio.transcriptions.create(
         file=(filename, file.read()), 

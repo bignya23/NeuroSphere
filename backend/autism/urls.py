@@ -10,5 +10,6 @@ urlpatterns = [
     path("sos/", views.sos_alert, name="sos_alert"),
     path("emergency/", views.emergency, name="emergency"),
     path("resume_generate/", views.generate_resume, name="generate_resume"),
-    path("schedule_generate/", views.generateSchedule, name="generateSchedule")
+    path("schedule_generate/", views.generateSchedule, name="generateSchedule"),
+    path("job_search/" , views.job_search , name="job_search")
 ]
