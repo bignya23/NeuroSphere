@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { FiHome, FiMessageSquare, FiHeadphones, FiClipboard, FiLogOut, FiMenu, FiX } from "react-icons/fi";
-import { RiGamepadLine, RiGroupLine } from "react-icons/ri";  
+import { RiGamepadLine, RiGroupLine } from "react-icons/ri"; 
+import { MdOutlineWork } from "react-icons/md"; 
 import axios from "axios";
 
 const Dashboard = () => {
@@ -41,7 +42,7 @@ const Dashboard = () => {
       </button>
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 w-72 bg-white shadow-lg transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform md:relative md:translate-x-0 flex flex-col`}>
+      <aside className={`fixed inset-y-0 left-0 w-72 bg-white shadow-lg transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform md:translate-x-0 md:relative md:w-72 flex flex-col overflow-hidden`}>
         <div className="p-8 flex flex-col items-center border-b">
           <img src="https://avatar.iran.liara.run/public" alt="Profile" className="w-20 h-20 rounded-full border-4 border-blue-500" />
           <h2 className="mt-4 text-xl font-semibold">{user.name}</h2>
@@ -58,8 +59,9 @@ const Dashboard = () => {
             <li><Link to="/dashboard/home" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><FiHome className="mr-4" size={22} /> Home</Link></li>
             <li><Link to="/dashboard/chatbot" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><FiMessageSquare className="mr-4" size={22} /> Chatbot</Link></li>
             <li><Link to="/dashboard/voice" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><FiHeadphones className="mr-4" size={22} /> Voice Agent</Link></li>
+            <li><Link to="/dashboard/employment" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><MdOutlineWork className="mr-4" size={22} /> Employment</Link></li>
             <li><Link to="/dashboard/tasks" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><FiClipboard className="mr-4" size={22} /> Task Manager</Link></li>
-            <li><Link to="/dashboard/games" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><RiGamepadLine className="mr-4" size={22} /> Games</Link></li>
+            <li><Link to="/dashboard/resume" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><RiGamepadLine className="mr-4" size={22} /> Resume</Link></li>
             <li><Link to="/dashboard/community-chat" className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"><RiGroupLine className="mr-4" size={22} /> Community Chat</Link></li>
           </ul>
         </nav>
@@ -73,7 +75,7 @@ const Dashboard = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-y-auto h-screen">
         <Outlet /> {/* Renders the nested DashboardRoutes */}
       </main>
     </div>

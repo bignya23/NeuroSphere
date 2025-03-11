@@ -5,6 +5,8 @@ import VoiceAgent from "./VoiceAgent";
 import TaskManager from "./TaskManager";
 import Games from "./Games";
 import Chat from "./Chat";
+import Employment from "./Employment";
+import ResumeInput from "./ResumeInput";
 
 const DashboardRoutes = () => {
   return (
@@ -12,8 +14,9 @@ const DashboardRoutes = () => {
       <Route path="home" element={<Home />} />
       <Route path="chatbot" element={<Chatbot />} />
       <Route path="voice" element={<VoiceAgent />} />
+      <Route path="employment" element={<Employment />} />
       <Route path="tasks" element={<TaskManager />} />
-      <Route path="games" element={<Games />} />
+      <Route path="resume" element={<ResumeInput />} />
       <Route path="community-chat" element={<Chat />} />
     </Routes>
   );

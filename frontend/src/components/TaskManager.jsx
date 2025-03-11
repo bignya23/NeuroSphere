@@ -43,15 +43,18 @@ const TaskManager = () => {
         newData.numTasks = parseInt(value) || 0;
         newData.tasks = [];
       } else if (key.startsWith("task-") && key.endsWith("-desc")) {
-        if (newData.tasks.length < newData.numTasks) {
-          newData.tasks = [...prev.tasks, { task: value, priority: null }];
-        }
+        const index = parseInt(key.split("-")[1]) - 1;
+        newData.tasks[index] = { 
+          task_description: value, 
+          task_no: index + 1, 
+          start_time: "", 
+          expected_end_time: "", 
+          task: value 
+        };
       } else if (key.startsWith("task-") && key.endsWith("-priority")) {
-        const index = newData.tasks.length - 1;
-        if (index >= 0 && index < newData.numTasks) {
-          newData.tasks = prev.tasks.map((t, i) =>
-            i === index ? { ...t, priority: parseInt(value) || null } : t
-          );
+        const index = parseInt(key.split("-")[1]) - 1;
+        if (newData.tasks[index]) {
+          newData.tasks[index].priority = parseInt(value) || null;
         }
       } else if (key === "addBreaks") {
         newData.addBreaks = value.toLowerCase();
@@ -63,9 +66,8 @@ const TaskManager = () => {
         newData.numBreaks = parseInt(value) || 0;
         newData.breaks = [];
       } else if (key.startsWith("break-")) {
-        if (newData.breaks.length < newData.numBreaks) {
-          newData.breaks = [...prev.breaks, { activity: value }];
-        }
+        const index = parseInt(key.split("-")[1]) - 1;
+        newData.breaks[index] = { activity: value };
       } else if (key === "dayDescription") {
         newData.dayDescription = value;
       }
@@ -80,11 +82,21 @@ const TaskManager = () => {
   useEffect(() => {
     if (step >= questions.length && !isSubmitting) {
       setIsSubmitting(true);
-      
+
+      // Format data to match backend expectations
       const finalData = {
-        tasks: responses.tasks.slice(0, responses.numTasks),
-        breaks: responses.breaks.slice(0, responses.numBreaks),
-        dayDescription: responses.dayDescription,
+        tasks: responses.tasks.slice(0, responses.numTasks).map(task => ({
+          task: task.task,
+          task_description: task.task_description,
+          task_no: task.task_no,
+          priority: task.priority || 1,
+          start_time: task.start_time,
+          expected_end_time: task.expected_end_time
+        })),
+        breaks: responses.breaks.slice(0, responses.numBreaks).map(breakItem => ({
+          activity: breakItem.activity
+        })),
+        day_description: responses.dayDescription,
       };
 
       console.log("Final Response Object:", finalData);
