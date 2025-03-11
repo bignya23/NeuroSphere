@@ -1,5 +1,5 @@
 import json
-from job_questions import job_search_questions
+from .job_questions import job_search_questions
 
 def collect_candidate_profile():
     """

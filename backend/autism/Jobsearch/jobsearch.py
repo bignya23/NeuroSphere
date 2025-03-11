@@ -1,6 +1,6 @@
 import json
-from job_description import job_listings  # Ensure your job_listings variable is defined.
-from job_input import collect_candidate_profile
+from .job_description import job_listings  # Ensure your job_listings variable is defined.
+from .job_input import collect_candidate_profile
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
