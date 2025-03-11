@@ -112,7 +112,7 @@ def tasks(request):
 
 
 @api_view(['GET']) 
-@permission_classes([IsAuthenticated])  
+# @permission_classes([IsAuthenticated])  
 def tasks_generate(request):
     user = request.user
     conv_hist = database.get_chat_history(user.email)
@@ -189,17 +189,17 @@ def sos_alert(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def generate_resume(request):
-    user = request.user_resume_data
-    name = user.name
-    phno = user.phno
-    email = user.email
-    linkedin = user.linkedin
-    education = user.education
-    skills = user.skills
-    projects = user.projects
-    experience = user.experience
+    data = request.data
+    name = data.get("name", "")
+    phno = data.get("phno", "")
+    email = data.get("email", "")
+    linkedin = data.get("linkedin", "")
+    education = data.get("education", "")
+    skills = data.get("skills", "")
+    projects = data.get("projects", [])
+    experience = data.get("experience", [])
 
     filename = "resume.pdf"
     file_path = os.path.join(os.getcwd(), filename)  
@@ -213,13 +213,13 @@ def generate_resume(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def generateSchedule(request):
-    user_schedule = request.user_schedule
-    print(user_schedule)
+    user_schedule = request.data.get("user_schedule")
+    # print(user_schedule)
 
     schedule = generate_schedule_of_user(user_data=user_schedule)
-
+    #print(schedule)
     return Response({"Schedule" : schedule})
 
 @api_view(['GET'])

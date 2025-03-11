@@ -3,7 +3,7 @@
 audio_segment.wav
 audio
 venv*.pyc
-__pycache__/
+_pycache_/
 venv
 .vscode
 neurosphere-453417-a13fa049f648.json

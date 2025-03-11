@@ -74,9 +74,9 @@ const ResumeInput = () => {
     setLoading(true);
 
     try {
-      const payload = {
+      const user_resume_data = {
         name: formData.name,
-        phno: formData.phone,
+        phno: formData.phone,  // Match key name
         email: formData.email,
         linkedin: formData.linkedin || formData.github,
         education: formData.education,
@@ -84,12 +84,13 @@ const ResumeInput = () => {
         projects: formatProjectsData(),
         experience: formatExperienceData(),
       };
-
-      const response = await axios.post("/api/generate-resume", payload, {
+      
+     console.log("payload: ", user_resume_data)
+      const response = await axios.post("http://127.0.0.1:8000/api/autism/resume_generate/", user_resume_data, {
         responseType: "blob", // Expecting a file response
         headers: { "Content-Type": "application/json" },
       });
-
+     console.log("response is  : ", response)
       const url = window.URL.createObjectURL(new Blob([response.data]));
       setDownloadLink(url);
     } catch (error) {
