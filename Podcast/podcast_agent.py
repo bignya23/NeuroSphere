@@ -7,6 +7,7 @@ from prompts import STAGES, AGENT_1_PROMPT, AGENT_2_PROMPT, USER_HANDELING_PROMP
 import json
 from tts import text_to_speech_male, text_to_speech_female
 import playsound
+from summary import summary_generator
 load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -68,8 +69,10 @@ if __name__ == "__main__":
     conversation_history = ""
     conversation_stage = 1
     cnt = 0
+    summary = summary_generator()
+    print(summary)
     while True:
-        alex = json.loads(podcast_1(pdf_content=PDF_CONTENT, conversation_history=conversation_history, current_stage=conversation_stage))
+        alex = json.loads(podcast_1(pdf_content=summary, conversation_history=conversation_history, current_stage=conversation_stage))
         conversation_history += f"Alex: {alex['agent_output']}"
         conversation_stage = alex['conversation_stage']
         print(f"Alex: {alex['agent_output']}")
@@ -77,7 +80,7 @@ if __name__ == "__main__":
         file_path_male = text_to_speech_male(alex['agent_output'])
         playsound.playsound(sound=file_path_male)
         print("\n\n")
-        emma = json.loads(podcast_2(pdf_content=PDF_CONTENT, conversation_history=conversation_history, current_stage=conversation_stage))
+        emma = json.loads(podcast_2(pdf_content=summary, conversation_history=conversation_history, current_stage=conversation_stage))
         conversation_history += f"Emma: {emma['agent_output']}"
         conversation_stage = emma['conversation_stage']
         print(f"Emma: {emma['agent_output']}")

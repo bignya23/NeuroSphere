@@ -232,7 +232,38 @@ def job_search(request):
 
     return Response({"jobs" : jobs_list})
 
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def second_assessment(request):
 
+    assessment = {
+  "Social Interaction": [
+    "Imagine you are at a social event where most people are strangers. How would you initiate a conversation and build a connection with someone new?",
+    "Picture a scenario where you notice a group of people engaged in a discussion, but you feel hesitant to join. What steps would you take to approach them?",
+    "Consider a situation where you see someone who appears upset in a social setting. How might you approach them to offer support?"
+  ],
+  "Team Collaboration": [
+    "Imagine you're in a team meeting and your idea is different from others. How would you present your viewpoint and invite feedback?",
+    "Picture a scenario where a project is facing challenges and the team seems divided. How would you help bridge the gap and encourage collaboration?",
+    "Consider a situation where one team member is struggling with their task. How would you approach them to offer help while ensuring the project stays on track?"
+  ],
+  "Structured Team Based Activities": [
+    "Imagine you are participating in a structured team-based activity with clear roles, and midway the instructions suddenly change. How would you adapt to the new situation?",
+    "Picture a scenario where you are unsure about your role in a team activity. What steps would you take to clarify your responsibilities?",
+    "Consider a situation where your team is given a complex task with a time limit. What strategies would you use to communicate effectively and ensure everyone contributes?"
+  ]
+}
+    
+    return Response({"second_assessment" : assessment})
+
+
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def voice_interview(request):
+    
+    job_details = request.job_details
+
+    
 
 
 

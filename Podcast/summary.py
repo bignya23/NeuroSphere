@@ -2,7 +2,7 @@ import vertexai
 from vertexai.language_models import TextGenerationModel
 from extract import extract_text_from_pdf 
 
-PROJECT_ID = 
+PROJECT_ID = "neurosphere-453417"
 
 def generate_summary(project_id, text):
     """Generates a summary using Vertex AI's text generation model."""
@@ -22,12 +22,16 @@ def generate_summary(project_id, text):
     print(f"Response from Model: {response.text}")
     return response.text  # Return summary for further use
 
-def main():
+def summary_generator():
     extracted_text = extract_text_from_pdf()
 
-    if extracted_text.strip():  # Ensure extracted text is not empty
-        summary = generate_summary(PROJECT_ID, extracted_text)
-    else:
-        print("No text extracted from the PDF.")
+    # if extracted_text.strip():  # Ensure extracted text is not empty
+    #     summary = generate_summary(PROJECT_ID, extracted_text)
+    # else:
+    #     print("No text extracted from the PDF.")
 
-    return summary
+    return extracted_text
+
+if __name__ == "__main__":
+    print(summary_generator())
+
