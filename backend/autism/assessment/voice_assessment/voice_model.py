@@ -22,7 +22,7 @@ class Voice_Assessment:
         llm = ChatGoogleGenerativeAI(
             model="gemini-2.0-flash-exp",
             temperature=0.3,
-            max_tokens=512,
+            max_tokens=50,
             max_retries=2,
         )
 
@@ -86,7 +86,8 @@ class Voice_Assessment:
                 {user_input}
 
                 Generate each response in around 30-40 words each and follow each step one by one and generate short responses.
-                if the question if long break it into two question and ask next but generate each output in 30 words max. Dont mention any other things in response other than question. Dont mention the states in output just see the conversation history and see which stage are you in and then ask the question. Go one stage at a time and give only the question in output.
+                if the question if long break it into two question and ask next but generate each output in 30 words max. Dont mention any other things in response other than question. Dont mention the states in output just see the conversation history and see which stage are you in and then ask the question. Go one stage at a time and give only the question in output. 
+                This interview is mainly for autistic individuals so handle them accordingly.
 """
         prompt = PromptTemplate(
             template= job_prompt,

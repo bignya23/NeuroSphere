@@ -65,4 +65,4 @@ def job_search():
     
     return response_json
 if __name__ == "__main__":
-    job_search()
+    print(job_search())

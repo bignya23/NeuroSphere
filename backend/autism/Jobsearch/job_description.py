@@ -1,5 +1,3 @@
-# job_data.py
-
 job_listings = [
     {
         "job_number": 1,
