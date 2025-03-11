@@ -224,12 +224,12 @@ def generateSchedule(request):
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
-def job_search(request):
+def job_search_route(request):
     
-    initial_assessment = request.assessment
-
-    jobs_list = job_search(initial_assessment)
-
+    assessment_data = request.data.get('assessment')
+    #print(assessment_data)
+    jobs_list = job_search(assessment_data)
+    #print(jobs_list)
     return Response({"jobs" : jobs_list})
 
 
