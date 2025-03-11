@@ -222,13 +222,19 @@ def generateSchedule(request):
     #print(schedule)
     return Response({"Schedule" : schedule})
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
 def job_search(request):
+    
+    initial_assessment = request.assessment
 
-    Value = job_search()
+    jobs_list = job_search(initial_assessment)
 
-    return Value
+    return Response({"jobs" : jobs_list})
+
+
+
+
 
 
 

@@ -23,13 +23,13 @@ def create_job_text(job):
     )
     return job_text
 
-def job_search():
+def job_search(profile : str = ""):
     # Collect candidate profile data via user input.
-    profile = collect_candidate_profile()
+    profile = profile
 
-    # Optionally, save the candidate profile to a JSON file.
-    with open("candidate_profile.json", "w") as f:
-        json.dump(profile, f, indent=2)
+    # # Optionally, save the candidate profile to a JSON file.
+    # with open("candidate_profile.json", "w") as f:
+    #     json.dump(profile, f, indent=2)
 
     # Create text representations.
     candidate_text = create_candidate_text(profile)
@@ -64,5 +64,6 @@ def job_search():
     response_json = json.dumps(response, indent=2)
     
     return response_json
+
 if __name__ == "__main__":
     print(job_search())
