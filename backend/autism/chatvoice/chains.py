@@ -1,5 +1,5 @@
 from langchain_core.prompts import PromptTemplate
-from prompts import AUTISM_PROMPT_1
+from .prompts import AUTISM_PROMPT_1
 from langchain_core.output_parsers import StrOutputParser
 
 def conversation_chain(llm):

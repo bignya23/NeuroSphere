@@ -228,7 +228,6 @@ def job_search(request):
 
     Value = job_search()
 
-
     return Value
 
 
