@@ -7,6 +7,7 @@ from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.permissions import AllowAny
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 
 User = get_user_model()
 
@@ -107,3 +108,11 @@ def logout(request):
     except Exception as e:
         return Response({'error': 'Invalid token', 'details': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def check_authentication(request):
+    if request.user.is_authenticated:
+        return JsonResponse({"authenticated": True, "user": request.user.username})
+    else:
+        return JsonResponse({"authenticated": False})

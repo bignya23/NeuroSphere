@@ -1,9 +1,14 @@
 import React from 'react'
+import Navbar from '../miniComponents/Navbar'
+import Hero from '../miniComponents/Hero'
+import WhatWeDo from '../miniComponents/WhatWeDo'
 
 const Home = () => {
   return (
     <div>
-      home page
+  
+      <Hero />
+      <WhatWeDo />
     </div>
   )
 }
