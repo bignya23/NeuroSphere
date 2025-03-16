@@ -23,7 +23,7 @@ def podcast_1(user_name : str = "", pdf_content : str = "", current_stage : int 
         current_stage=current_stage,
         user_input=user_input,
         pdf_content=pdf_content,
-        stages=STAGES,
+      
         user_name=user_name)
 
 
