@@ -5,6 +5,7 @@ from prompts import DISLEXIA_PROMPT
 from google import genai 
 from  google.generativeai import client
 import os
+import playsound
 
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -14,12 +15,13 @@ class Question_agent(BaseModel):
     agent_output : str = Field(description="Current output of agent")
 
 
-def question_agent(user_name = "", text_content : str = "", conversation_history : str = "", user_input : str = ""):
+def question_agent(user_name = "", text_content : str = "", conversation_history : str = "", user_input : str = "", age = ""):
     prompt_template = DISLEXIA_PROMPT.format(
         conversation_history=conversation_history,
         user_input=user_input,
         text_content= text_content,
-        username=user_name)
+        username=user_name,
+        age = age)
 
     # print(prompt_template)
 
@@ -35,17 +37,21 @@ def question_agent(user_name = "", text_content : str = "", conversation_history
     return response.text
 
 
-def process_text():
-    text_to_speech = Text_to_speech()
-    processing = Text_processing()
-    text = "bihu in assam"
-    processed_text = processing.summarise(text)
-    output_file = text_to_speech.text_to_speech_female(processed_text)
-    return output_file
-
 
 if __name__ == "__main__":
-    process_text()
+    conversation_history = ""
+    text_to_speech = Text_to_speech()
+    processing = Text_processing()
+
+    text = "bihu in assam"
+    processed_text = processing.summarise(text)
+    while True:
+        user_input = input("user : ")
+        response = question_agent(user_name="Ram", text_content=processed_text, conversation_history=conversation_history, user_input=user_input, age = "20")
+        print(response)
+        output_file = text_to_speech.text_to_speech_female(processed_text)
+        playsound.playsound(output_file)
+    
 
 
     

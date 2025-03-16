@@ -3,7 +3,7 @@ from google.cloud import texttospeech
 import uuid
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_CLOUD")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\neurosphere-453417-a13fa049f648.json"
 
 class Text_to_speech:
     def __init__(self):
@@ -13,12 +13,12 @@ class Text_to_speech:
 
         synthesis_input = texttospeech.SynthesisInput(text=text)
         uuid_ = uuid.uuid4()
-        output_file = f"dyslexia/output/female_{uuid_}.mp3"
+        output_file = f"/dyslexia/output/female_{uuid_}.mp3"
         
         voice = texttospeech.VoiceSelectionParams(
-            language_code="en-US",
-            name="en-US-Chirp-HD-F",
-            ssml_gender=texttospeech.SsmlVoiceGender .FEMALE
+            language_code="hi-IN",
+            name="hi-IN-Chirp3-HD-Aoede",
+            ssml_gender=texttospeech.SsmlVoiceGender.FEMALE
         )
 
         audio_config = texttospeech.AudioConfig(
@@ -37,4 +37,10 @@ class Text_to_speech:
             out.write(response.audio_content)
         
         print(f"Audio content written to {output_file}")
-        return output_file
+        return "../dyslexia/output/female_{uuid_}.mp3"
+    
+
+if __name__ == "__main__":
+    tts = Text_to_speech()
+
+    tts.text_to_speech_female("chalo ajj kuch karte hai")
