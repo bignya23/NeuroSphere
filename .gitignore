@@ -4,6 +4,7 @@ audio_segment.wav
 audio
 venv*.pyc
 _pycache_/
+__pycache__
 venv
 .vscode
 neurosphereai-9c5ea10a21b0.json

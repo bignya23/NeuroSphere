@@ -1,41 +1,31 @@
-from google import genai
+from pydantic import BaseModel,TypeAdapter, Field
 import os
+from google import genai
+from typing import List
 from dotenv import load_dotenv
-from pydantic import BaseModel
-
 from prompt import WORD_GENERATION_PROMPT
-
 load_dotenv()
 
-# Initialize the Google Gemini API client
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Define a request model using Pydantic
-class AIRequest(BaseModel):
-    model: str = "gemini-2.0-flash"
-    prompt: str
-    username: str 
 
-
-class GeminiAI:
-    def __init__(self):
-        self.client = client
+class Agent(BaseModel):
+    phoneme : str = Field(description="The full unit of sound in a word.")
+    word : str= Field(description="The word generated")
+    description : str = Field(description="Explain the word and how to pronounce the phonome in simple english")
     
-    def generate_response(self, request: AIRequest):
-        response = self.client.models.generate_content(
-            model=request.model,
-            contents=self.format_prompt(request.prompt, request.username),
-        )
-        return response.text
-    
-    @staticmethod
-    def format_prompt(prompt: str, username: str) -> str:
-        """
-        Format the prompt using a template to improve AI responses.
-        """
-        return WORD_GENERATION_PROMPT.format(query=prompt, username=username)
+def word_generation(username : str = "" ):
+    prompt_template =WORD_GENERATION_PROMPT.format(username=username)
+    response = client.models.generate_content(
+        model='gemini-2.0-flash',
+        contents=prompt_template,
+        config={
+            'response_mime_type': 'application/json',
+            'response_schema': list[Agent],
+        },
+    )
 
-gemini_ai = GeminiAI()
-request = AIRequest(prompt=WORD_GENERATION_PROMPT, username="CJ") 
-response = gemini_ai.generate_response(request)
-print(response)
+    return response.text
+
+print(word_generation(username="ram"))
+        
