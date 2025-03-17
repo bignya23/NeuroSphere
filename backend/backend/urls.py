@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/chat/', include('chatroom.urls')),
     path('api/auth/', include('auth_chat.urls')), # Fixed the include statement
-    path('api/autism/', include('autism.urls')) 
+    path('api/autism/', include('autism.urls')),
+    path('api/dyslexia/', include('dyslexia.urls'))
 ]
