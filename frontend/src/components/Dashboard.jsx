@@ -9,6 +9,7 @@ import {
   FiMenu,
   FiX,
 } from "react-icons/fi";
+import { IoLogoGameControllerB } from "react-icons/io";
 import { RiGamepadLine, RiGroupLine } from "react-icons/ri";
 import { MdOutlineWork } from "react-icons/md";
 import axios from "axios";
@@ -107,10 +108,10 @@ const Dashboard = () => {
             </li>
             <li>
               <Link
-                to="/dashboard/voice"
+                to="/dashboard/education"
                 className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"
               >
-                <FiHeadphones className="mr-4" size={22} /> Voice Agent
+                <MdOutlineWork className="mr-4" size={22} /> Education
               </Link>
             </li>
             <li>
@@ -121,28 +122,22 @@ const Dashboard = () => {
                 <MdOutlineWork className="mr-4" size={22} /> Employment
               </Link>
             </li>
-            <li>
-              <Link
-                to="/dashboard/tasks"
-                className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"
-              >
-                <FiClipboard className="mr-4" size={22} /> Task Manager
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/dashboard/resume"
-                className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"
-              >
-                <RiGamepadLine className="mr-4" size={22} /> Resume
-              </Link>
-            </li>
+        
             <li>
               <Link
                 to="/dashboard/community-chat"
                 className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"
               >
                 <RiGroupLine className="mr-4" size={22} /> Community Chat
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/dashboard/games"
+                className="flex items-center p-4 text-lg text-gray-700 hover:bg-blue-500 hover:text-white rounded-lg mx-4"
+              >
+                <IoLogoGameControllerB className="mr-4"  size={22}/> Games
+
               </Link>
             </li>
           </ul>
