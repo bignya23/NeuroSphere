@@ -32,7 +32,8 @@ def autism_chatbot(request):
     hobbies = user.hobbies
     gender = user.gender
     disease= user.disease
-    # print(conversation_history)
+
+
     chatbot_generate = chatbot_chat.ChatbotGenerate()
     conversation_history = database.get_chat_history(email)
     response_mail = chatbot_generate.content_checker(user_input, conversation_history)

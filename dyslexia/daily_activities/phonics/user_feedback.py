@@ -24,7 +24,7 @@ def record_audio(filename):
     print(f"Audio saved: {filename}")
 
 def main():
-    target_word = base_word()[0]  
+    target_word = base_word()[0]
     print(f"Target Word: {target_word}")
 
    
