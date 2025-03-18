@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path("chatbot/", views.chatbot, name="chatbot"),
+    path("chatbot/", views.autism_chatbot, name="autism_chatbot"),
     path("chatvoice/", views.chatvoice, name="chatvoice"),
     path("tasks/", views.tasks, name="tasks"),
     path("tasks_generate/", views.tasks_generate, name="tasks_generate"),

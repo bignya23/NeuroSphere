@@ -13,7 +13,7 @@ load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 class ChatVoice:
-    def __init__():
+    def __init__(self):
         pass
 
     class ChatVoice_response(BaseModel):
@@ -42,8 +42,6 @@ class ChatVoice:
         )
 
         return response.text
-
-
 
 
 conversation_history = ""

@@ -73,7 +73,8 @@ INSTALLED_APPS = [
     'channels',
     'chatroom',
     'autism',
-    'dyslexia'
+    'dyslexia',
+    'django_q'
 ]
 
 MIDDLEWARE = [

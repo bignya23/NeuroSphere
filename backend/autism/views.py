@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
-from .chatbot import chatbot_1, database, tools
-from .chatvoice import agent, database_voice, tts, stt
+from .chatbot import chatbot_chat, database, tools
+from .chatvoice import agent, database_voice, tts
 from .support import send_mail_gmail
 from .tasks_system import generate_tasks
 from .resume_maker.resume_to_pdf import generate_resume_pdf
@@ -14,12 +14,14 @@ from django.http import FileResponse
 from .schedule_generator.generate_schedule import generate_schedule_of_user
 import os
 from .Jobsearch.jobsearch import job_search
+# from django_q.tasks import async_task
+
 
 User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def chatbot(request):
+def autism_chatbot(request):
     user_input = request.data.get("query")
     user = request.user
     name = user.name
@@ -29,14 +31,16 @@ def chatbot(request):
     parents_email = user.parents_email
     hobbies = user.hobbies
     gender = user.gender
-    conversation_history = database_voice.get_chat_history(email)
-    print(conversation_history)
-    response_mail = chatbot_1.get_response_mail(user_input, conversation_history)
+    disease= user.disease
+    # print(conversation_history)
+    chatbot_generate = chatbot_chat.ChatbotGenerate()
+    conversation_history = database.get_chat_history(email)
+    response_mail = chatbot_generate.content_checker(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
     if(response_mail == "yes"):
-        print(tools.send_alert_email(parents_email, name , conversation_history))
+        print(tools.send_alert_email(parents_email, name, conversation_history))
           
-    response = chatbot_1.get_response(name, age , hobbies, level, gender, user_input, conversation_history)
+    response = chatbot_generate.chatbot_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,conversation_history=conversation_history)
   
     print(f"Autism Chatbot: {response}")
         
@@ -76,7 +80,6 @@ def chatvoice(request):
     })
     
 
-
 @api_view(['GET']) 
 @permission_classes([IsAuthenticated])  
 def tasks(request):
@@ -112,7 +115,7 @@ def tasks(request):
 
 
 @api_view(['GET']) 
-# @permission_classes([IsAuthenticated])  
+@permission_classes([IsAuthenticated]) 
 def tasks_generate(request):
     user = request.user
     conv_hist = database.get_chat_history(user.email)
@@ -121,7 +124,6 @@ def tasks_generate(request):
 
 
     return Response({"tasks": tasks_list})
-
 
 
 @api_view(['GET'])
@@ -187,9 +189,8 @@ def sos_alert(request):
     return Response({"message": "SOS alert sent successfully."})
 
 
-
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def generate_resume(request):
     data = request.data
     name = data.get("name", "")
@@ -213,7 +214,7 @@ def generate_resume(request):
 
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def generateSchedule(request):
     user_schedule = request.data.get("user_schedule")
     # print(user_schedule)
@@ -222,8 +223,9 @@ def generateSchedule(request):
     #print(schedule)
     return Response({"Schedule" : schedule})
 
+
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def job_search_route(request):
     
     assessment_data = request.data.get('assessment')
@@ -233,7 +235,7 @@ def job_search_route(request):
     return Response({"jobs" : jobs_list})
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def second_assessment(request):
 
     assessment = {
@@ -258,7 +260,7 @@ def second_assessment(request):
 
 
 @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def voice_interview(request):
     
     job_details = request.job_details

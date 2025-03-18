@@ -16,7 +16,7 @@ def text_to_speech_female(text):
         synthesis_input = texttospeech.SynthesisInput(text=text)
         uuid_ = uuid.uuid4()
 
-        # ✅ Use proper absolute path
+      
         output_file = os.path.join(base_dir, f"female_{uuid_}.mp3")
 
         voice = texttospeech.VoiceSelectionParams(

@@ -36,9 +36,9 @@ The phonics session involves:
 - If **accuracy > 90%**, say:  
   - "Great job, {username}! Your pronunciation is almost perfect. Keep it up!"  
 - If **accuracy is between 60-90%**, say:  
-  - "Good attempt, {username}! You pronounced it mostly right, but try focusing on the sound **'{problematic_sound}'** to improve."  
+  - "Good attempt, {username}! You pronounced it mostly right, but try focusing on the sound  to improve."  
 - If **accuracy < 60%**, say:  
-  - "Keep practicing, {username}! You said **'{transcription_result}'** instead of **'{target_word}'**. Try emphasizing **'{corrected_sound}'** more clearly."  
+  - "Keep practicing, {username}! You said **'{transcription_result}'** instead of **'{target_word}'**. Try emphasizing more clearly."  
 
 ---  
 

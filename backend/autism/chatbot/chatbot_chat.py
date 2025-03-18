@@ -14,9 +14,9 @@ load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-class Chatbot:
+class ChatbotGenerate:
 
-    def __init__():
+    def __init__(self):
         pass
 
     class ChatBot_response(BaseModel):
@@ -64,21 +64,22 @@ class Chatbot:
         )
 
         return response.text
-
-
-conversation_history = ""
-
-chatbot = Chatbot()
-
-while True:
-
-    response_mail = chatbot.content_checker(conversation_history)
-    print(f"Response Mail : {response_mail}")
-    if(response_mail == "yes"):
-        print(send_alert_email("bignya18@gmail.com","ram", conversation_history))
-    response = chatbot.chatbot_response(name="ram", age="34", hobbies="cubing", disease="Dyslexia", gender="MALE",conversation_history=conversation_history)
-    print(response)
-    conversation_history += f"Chatbot: {response}"
     
-    user_input = input("User : ")
-    conversation_history += f"User : {user_input}"
+
+
+
+if __name__ == "__main__":
+
+    chatbot = ChatbotGenerate()
+
+    while True:
+        response_mail = chatbot.content_checker(conversation_history)
+        print(f"Response Mail : {response_mail}")
+        if(response_mail == "yes"):
+            print(send_alert_email("bignya18@gmail.com","ram", conversation_history))
+        response = chatbot.chatbot_response(name="ram", age="34", hobbies="cubing", disease="Dyslexia", gender="MALE",conversation_history=conversation_history)
+        print(response)
+        conversation_history += f"Chatbot: {response}"
+        
+        user_input = input("User : ")
+        conversation_history += f"User : {user_input}"

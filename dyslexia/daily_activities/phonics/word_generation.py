@@ -4,7 +4,12 @@ from google import genai
 from typing import List
 from dotenv import load_dotenv
 from prompt import WORD_GENERATION_PROMPT
+import json
+
+
+
 load_dotenv()
+
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
@@ -27,5 +32,18 @@ def word_generation(username : str = "" ):
 
     return response.text
 
-print(word_generation(username="ram"))
+def base_word():  
+    text = word_generation(username= "Ram")
+    response_data = json.loads(text)  
+
+    words = [item["word"] for item in response_data]
+    return words
+print (base_word())
+
+
+
+
+
+
+
         
