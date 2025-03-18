@@ -5,9 +5,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
-from .chatbot import chatbot_chat, database, tools
-from .chatvoice import agent, database_voice, tts
+from .chatbot.chatbot_chat import ChatbotGenerate
+from .chatbot import database_chat, tools
+from .chatvoice import database_voice, tts
+from .chatvoice.voice_agent import ChatVoice
 from .support import send_mail_gmail
+from .chatvoice.stt import transcribe_audio
 from .tasks_system import generate_tasks
 from .resume_maker.resume_to_pdf import generate_resume_pdf
 from django.http import FileResponse
@@ -15,27 +18,31 @@ from .schedule_generator.generate_schedule import generate_schedule_of_user
 import os
 from .Jobsearch.jobsearch import job_search
 # from django_q.tasks import async_task
-
+import playsound 
 
 User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def autism_chatbot(request):
-    user_input = request.data.get("query")
-    user = request.user
-    name = user.name
-    email = user.email
-    age = user.age
-    level = user.disease_level
-    parents_email = user.parents_email
-    hobbies = user.hobbies
-    gender = user.gender
-    disease= user.disease
+    user_input = request.data.get("query")  
+    print("User Input:", user_input)
+
+    user = request.user  
+    print("Authenticated User:", user)
+
+    name = getattr(user, 'name', 'Unknown')
+    email = getattr(user, 'email', 'Unknown')
+    age = getattr(user, 'age', 'Unknown')
+    level = getattr(user, 'disease_level', 'Unknown')
+    parents_email = getattr(user, 'parents_email', 'Unknown')
+    hobbies = getattr(user, 'hobbies', 'Unknown')
+    gender = getattr(user, 'gender', 'Unknown')
+    disease = getattr(user, 'disease', 'Unknown')
 
 
-    chatbot_generate = chatbot_chat.ChatbotGenerate()
-    conversation_history = database.get_chat_history(email)
+    chatbot_generate = ChatbotGenerate()
+    conversation_history = database_chat.get_chat_history(email)
     response_mail = chatbot_generate.content_checker(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
     if(response_mail == "yes"):
@@ -45,39 +52,45 @@ def autism_chatbot(request):
   
     print(f"Autism Chatbot: {response}")
         
-    database.store_chat_history(email, user_input, response)
+    database_chat.store_chat_history(email, user_input, response)
 
     return Response({
-        "chatbot" : response,
-        "conversation_history" : conversation_history
+        "chatbot" : response
     })
 
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def chatvoice(request):
-    audio_file = request.FILES("audio_file")
-    user_input = stt.speech_to_text(audio_file)
-    user = request.user
-    name = user.name
-    email = user.email
-    age = user.age
-    level = user.disease_level
-    parents_email = user.parents_email
-    hobbies = user.hobbies
-    gender = user.gender
-    conversation_history = database_voice.get_chat_history(f"{email}_voice")
-    response = agent.get_response(name, age , hobbies, level, gender, user_input, conversation_history)
-    tts_file = tts.text_to_speech(response)
-    print(f"Autism Agent: {response}")
+def autism_chatvoice(request):
+    audio_file = request.FILES.get("audio_file")
+    print(audio_file)
     
-    database_voice.store_chat_history(f"{email}_voice",user_input, response)
+    playsound.playsound(audio_file)
+    user_input = ""
+    
+    # transcribe_audio(audio_file)
+    user = request.user
+    name = getattr(user, 'name', 'Unknown') 
+    email = getattr(user, 'email', 'Unknown')
+    age = getattr(user, 'age', 'Unknown')
+    level = getattr(user, 'disease_level', 'Unknown')
+    parents_email = getattr(user, 'parents_email', 'Unknown')
+    hobbies = getattr(user, 'hobbies', 'Unknown')
+    gender = getattr(user, 'gender', 'Unknown')
+    disease = getattr(user, 'disease', 'Unknown')
+    # chat_voice = ChatVoice()
+    # conversation_history = database_voice.get_chat_history(f"{email}_voice")
+    # response = chat_voice.chatvoice_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,conversation_history=conversation_history)
+    # tts_file = tts.text_to_speech_female(response)
+    # print(f"Autism VoiceAgent: {response}")
+    
+    # print(response)
+    # database_voice.store_chat_history(f"{email}_voice",user_input, response)
 
-    path = tts_file
+    path = "asgasfd"
     return Response({
-        "file_path" : path,
-        "conversation_history" : conversation_history
+        "file_path" : path
     })
     
 

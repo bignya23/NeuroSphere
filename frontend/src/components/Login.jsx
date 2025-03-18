@@ -18,16 +18,13 @@ const Login = () => {
           password: password,  // Use password state directly
         }
       );
-
       // Store tokens in localStorage
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
       // Store user data
       localStorage.setItem("user", JSON.stringify(response.data.user));
-
       // Redirect to dashboard or home page
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.error || "An error occurred during login");
     }

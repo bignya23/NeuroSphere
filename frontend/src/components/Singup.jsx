@@ -39,7 +39,7 @@ const Signup = () => {
       localStorage.setItem("refresh_token", response.data.refresh);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      navigate("/chat");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data || "An error occurred during signup");
       console.error("Signup error:", err.response?.data);

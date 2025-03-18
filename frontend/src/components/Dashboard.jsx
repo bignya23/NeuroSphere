@@ -24,6 +24,8 @@ const Dashboard = () => {
     profilePic: "https://randomuser.me/api/portraits/men/45.jpg",
   };
 
+
+  // console.log("user is" ,user.disease)
   const handleLogout = async () => {
     try {
       const refreshToken = localStorage.getItem("refresh_token");

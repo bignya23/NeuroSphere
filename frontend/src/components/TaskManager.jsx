@@ -143,12 +143,17 @@ const TaskManager = () => {
 
     const sendData = async () => {
       try {
+        const token = localStorage.getItem("access_token")
         const response = await axios.post(
           "http://localhost:8000/api/autism/schedule_generate/",
           { user_schedule: JSON.stringify(user_schedule) },
-          { headers: { "Content-Type": "application/json" } }
-        );
-        
+          {
+            headers: {
+              "Content-Type": "application/json",
+              //Authorization: `Bearer ${token}`,
+            },
+          }
+        );      
         // Parse the Schedule string to get the schedule options
         const scheduleData = JSON.parse(response.data.Schedule);
         setScheduleOptions(scheduleData);

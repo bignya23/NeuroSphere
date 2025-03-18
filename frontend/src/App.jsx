@@ -16,35 +16,42 @@ import { Context } from "./main";
 import AboutUs from "./components/AboutUs";
 import Navbar from "./miniComponents/Navbar";
 import ContactUs from "./components/ContactUs";
-
+import axios from "axios"
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, user, setUser } =
     useContext(Context);
 
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const response = await fetch(
-          "http://127.0.0.1:8000/api/auth/check-auth/",
-          {
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error("Error checking authentication:", error);
+    useEffect(() => {
+      async function checkAuth() {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          console.error("Access token missing");
+          setIsAuthenticated(false);
+          return;
+        }
+  
+        try {
+          const response = await axios.get("http://127.0.0.1:8000/api/auth/check-auth/", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            withCredentials: true, 
+          });
+          console.log(response)
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.error("Error checking authentication:", error.response?.data || error.message);
+          setIsAuthenticated(false);
+        }
       }
-    }
+  
+      checkAuth();
 
-    checkAuth();
-
-    // Optionally, recheck auth status every few minutes
-    const interval = setInterval(checkAuth, 60000); // Every 60 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
+      const interval = setInterval(checkAuth, 60000);
+  
+      return () => clearInterval(interval);
+    }, []);
   return (
     <AuthProvider>
       <Router>

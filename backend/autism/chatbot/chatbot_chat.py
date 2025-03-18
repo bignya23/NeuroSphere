@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 import os
 from pydantic import BaseModel,TypeAdapter, Field
 from typing import List
-from prompt import NEURO_PROMPT_CHATBOT, SUICIDE_CHECK_PROMPT
-from database import get_chat_history, store_chat_history
-from tools import send_alert_email
+from .prompt import NEURO_PROMPT_CHATBOT, SUICIDE_CHECK_PROMPT
+from .database_chat import get_chat_history, store_chat_history
+from .tools import send_alert_email
 import json
 import playsound
 

@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.permissions import AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.forms.models import model_to_dict
+
 
 User = get_user_model()
 
@@ -113,6 +115,8 @@ def logout(request):
 @permission_classes([AllowAny])
 def check_authentication(request):
     if request.user.is_authenticated:
-        return JsonResponse({"authenticated": True, "user": request.user.username})
+        user_data = model_to_dict(request.user)
+        # print(user_data)
+        return JsonResponse({"authenticated": True, "user": user_data})
     else:
         return JsonResponse({"authenticated": False})

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Send, Bot, Mic, X } from "lucide-react";
+import { User } from 'lucide-react';
 import { toast } from "react-hot-toast";
 import VoiceAgent from "./VoiceAgent";
 
@@ -20,6 +21,7 @@ const Chatbot = () => {
 
     const newMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, newMessage]);
+    console.log(input)
     setInput("");
     setIsTyping(true);
 
@@ -38,13 +40,14 @@ const Chatbot = () => {
 
   const getAIResponse = async (userMessage) => {
     try {
-      const token = localStorage.getItem("access_token");
-      const user = localStorage.getItem("user");
+       const token = localStorage.getItem("access_token");
+      //  const user = localStorage.getItem("user");
       const response = await axios.post(
         "http://127.0.0.1:8000/api/autism/chatbot/",
-        { query: userMessage, user },
+        { query: userMessage},
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
       );
+      console.log(response)
       return response.data.chatbot;
     } catch (error) {
       return "Sorry, I couldn't process that.";

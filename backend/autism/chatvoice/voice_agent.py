@@ -3,11 +3,11 @@ from dotenv import load_dotenv
 import os
 from pydantic import BaseModel,TypeAdapter, Field
 from typing import List
-from prompts import NEURO_PROMPT_CHATVOICE
+from .prompts import NEURO_PROMPT_CHATVOICE
 import json
 import playsound
 import time
-from tts import Text_to_speech
+from .tts import *
 load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -48,7 +48,7 @@ conversation_history = ""
 user_input = ""
 
 chatvoice = ChatVoice()
-text_to_speech = Text_to_speech()
+text_to_speech = ""
 if __name__ == "__main__":
     while True:
         start = time.time()

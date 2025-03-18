@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from autism.chatbot.chatbot_chat import ChatbotGenerate
-from autism.chatbot import database
-from autism.chatbot import tools
+# from backend.autism.chatbot import database_chat
+# from autism.chatbot import tools
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -26,7 +26,7 @@ def dyslexia_chatbot(request):
     disease= user.disease
     # print(conversation_history)
     chatbot_generate = ChatbotGenerate()
-    conversation_history = database.get_chat_history(email)
+    conversation_history = database_chat.get_chat_history(email)
     response_mail = chatbot_generate.content_checker(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
     if(response_mail == "yes"):
@@ -36,7 +36,7 @@ def dyslexia_chatbot(request):
   
     print(f"Autism Chatbot: {response}")
         
-    database.store_chat_history(email, user_input, response)
+    database_chat.store_chat_history(email, user_input, response)
 
     return Response({
         "chatbot" : response,
