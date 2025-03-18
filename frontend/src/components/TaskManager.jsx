@@ -203,7 +203,7 @@ const TaskManager = () => {
       const selectedScheduleData = scheduleOptions[selectedSchedule];
       
       return (
-        <div className="p-6 bg-gray-100 mx-auto max-w-2xl shadow-md rounded-md">
+        <div className="p-6  mx-auto max-w-2xl rounded-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Your Daily Schedule</h2>
           
           <div className="bg-white p-5 rounded-lg shadow-sm">
