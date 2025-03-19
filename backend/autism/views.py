@@ -18,6 +18,7 @@ from .schedule_generator.generate_schedule import generate_schedule_of_user
 import os
 from .Jobsearch.jobsearch import job_search
 import playsound 
+from .assessment.second_assement import accuracy_score
 
 User = get_user_model()
 
@@ -248,7 +249,22 @@ def voice_interview(request):
     
     job_details = request.data.get("job_details")
 
-    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def second_assessment_result(request):
+
+    result = request.data.get('question_answer')
+
+    ans_result = accuracy_score(result)
+
+    return Response({
+        "results" : ans_result
+    })
+
+
+
+
 
 
 

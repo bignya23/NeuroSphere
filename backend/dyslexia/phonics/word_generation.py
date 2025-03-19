@@ -3,9 +3,9 @@ import os
 from google import genai
 from typing import List
 from dotenv import load_dotenv
-from prompt import WORD_GENERATION_PROMPT
+from .prompt import WORD_GENERATION_PROMPT
 import json
-from tts import text_to_speech_female
+from .tts import text_to_speech_female
 
 
 load_dotenv()

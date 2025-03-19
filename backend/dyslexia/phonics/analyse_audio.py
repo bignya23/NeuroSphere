@@ -3,7 +3,7 @@ from google.generativeai import client
 import os 
 from dotenv import load_dotenv
 from pydantic import BaseModel , Field
-from prompt import PHONICS_PROMPT
+from .prompt import PHONICS_PROMPT
 
 load_dotenv()
 
