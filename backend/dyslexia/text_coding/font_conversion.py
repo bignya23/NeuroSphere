@@ -144,8 +144,7 @@ def text_conversion(text_input):
         merger.close()
         
     except ImportError:
-        # Alternative method if PyPDF2 is not available
-        # Just save the first page as PDF and inform user
+
         print("PyPDF2 not found. Installing single page only.")
         if temp_image_paths:
             img = Image.open(temp_image_paths[0])
@@ -153,7 +152,7 @@ def text_conversion(text_input):
             if len(temp_image_paths) > 1:
                 print(f"Warning: Only the first of {len(temp_image_paths)} pages was saved.")
     
-    # Clean up temporary files
+
     for path in temp_image_paths:
         try:
             os.remove(path)

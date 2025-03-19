@@ -4,36 +4,42 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-# Connect to Redis
-redis_client = redis.Redis(host="redis-12856.c330.asia-south1-1.gce.redns.redis-cloud.com", port=12856, decode_responses=True,
+
+redis_client = redis.Redis(
+    host='redis-13307.c330.asia-south1-1.gce.redns.redis-cloud.com',
+    port=13307,
+    decode_responses=True,
     username="default",
-    password=os.getenv("REDIS_DB_PASS"))
+    password=os.getenv("REDIS_DB_PASS")
+)
 
-
-def store_chat_history(user_id, user_message = "", bot_response = ""):
-    """Store last 10 conversations in Redis for a given user."""
-    key = f"chat_history:{user_id}"
+def store_chat_history(email : str, user_input="", response=""):
+    """Store last 30 conversations in Redis for a given user."""
+    key = f"chat_history:{email}"
 
     conversation_entry = json.dumps({
-        "user": user_message,
-        "bot": bot_response
+        "Email": email,
+        "user_input": user_input,
+        "Response": response
     })
 
-
     redis_client.lpush(key, conversation_entry)
-
-    redis_client.ltrim(key, 0, 30)
-
-    # print(f"Stored conversation for user {user_id}")
-
+    redis_client.ltrim(key, 0, 30)  
+    print("Added to Database")
 
 def get_chat_history(user_id):
-    """Retrieve the last 10 messages of a user."""
+    """Retrieve the last 10 messages of a user as a single formatted string."""
     key = f"chat_history:{user_id}"
     history = redis_client.lrange(key, 0, 10)  
 
-    return (reversed([json.loads(entry) for entry in history]))
+    messages = [json.loads(entry) for entry in history]
+    messages.reverse() 
 
+    formatted_history = "\n".join(
+        f"{msg['Email']}: {msg['Response']}" for msg in messages
+    )
+
+    return formatted_history
 
 if __name__ == "__main__":
 
@@ -48,4 +54,3 @@ if __name__ == "__main__":
         print(f"User: {conv['user']}")
         print(f"Bot: {conv['bot']}")
         print("---")
-

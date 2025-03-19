@@ -1,46 +1,35 @@
 import os
 import io
 from google.cloud import speech
-from pydub import AudioSegment
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
-
-def convert_mp3_to_wav(mp3_path):
-    """Converts an MP3 file to WAV format."""
-    audio = AudioSegment.from_mp3(mp3_path)
-    wav_path = mp3_path.replace(".mp3", ".wav")
-    audio.export(wav_path, format="wav")
-    return wav_path
-
-
-def transcribe_audio(file_path):
-    """Transcribes audio using Google Cloud Speech-to-Text API."""
+def transcribe_audio(audio_file):
     client = speech.SpeechClient()
 
-
-    wav_path = convert_mp3_to_wav(file_path)
-
-
-    with io.open(wav_path, "rb") as audio_file:
-        content = audio_file.read()
+    with io.open(audio_file, "rb") as audio:
+        content = audio.read()
 
     audio = speech.RecognitionAudio(content=content)
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=16000,
-        language_code="en-IN"
+        language_code="en-US",
+        enable_speaker_diarization=True,
+        diarization_speaker_count=2,
+        enable_automatic_punctuation=True
     )
 
-    # Perform speech recognition
-    response = client.recognize(config=config, audio=audio)
+    operation = client.long_running_recognize(config=config, audio=audio)
+    print("Processing audio file... Please wait.")
 
-    # Print transcription
-    transcription = "\n".join(result.alternatives[0].transcript for result in response.results)
-    print("Transcription:\n", transcription)
-    return transcription
+    response = operation.result(timeout=600)
 
-if __name__ == "_main_":
-    file_path = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\Podcast\output.mp3"  # Replace with your MP3 file path
-    print(transcribe_audio(file_path))
-    
+    print("\n🎙 **Transcription with Speaker Diarization:**\n")
+    for result in response.results:
+        alternative = result.alternatives[0]
+        print(f"{alternative.transcript}")
+
+if __name__ == "__main__":
+    file_path = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\female_3346fa73-ada0-40ff-94dd-c492b6e150dc.wav"  
+    transcribe_audio(file_path)

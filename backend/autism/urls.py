@@ -5,7 +5,6 @@ from . import views
 urlpatterns = [
     path("chatbot/", views.autism_chatbot, name="autism_chatbot"),
     path("chatvoice/", views.autism_chatvoice, name="autism_chatvoice"),
-    path("tasks/", views.tasks, name="tasks"),
     path("tasks_generate/", views.tasks_generate, name="tasks_generate"),
     path("sos/", views.sos_alert, name="sos_alert"),
     path("emergency/", views.emergency, name="emergency"),

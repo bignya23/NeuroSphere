@@ -3,13 +3,9 @@ from . import views
 
 
 urlpatterns = [
-    # path("chatbot/", views.chatbot, name="chatbot"),
-    # path("chatvoice/", views.chatvoice, name="chatvoice"),
-    # path("tasks/", views.tasks, name="tasks"),
-    # path("tasks_generate/", views.tasks_generate, name="tasks_generate"),
-    # path("sos/", views.sos_alert, name="sos_alert"),
-    # path("emergency/", views.emergency, name="emergency"),
-    # path("resume_generate/", views.generate_resume, name="generate_resume"),
-    # path("schedule_generate/", views.generateSchedule, name="generateSchedule"),
-    # path("job_search/" , views.job_search_route , name="job_search")
-]
+    path("chatbot/", views.dyslexia_chatbot, name="dyslexia_chatbot"),
+    path("chatvoice/", views.dyslexia_chatvoice, name="dyslexia_chatvoice"),
+    path("font_conversion/" , views.font_change_pdf , name = "font_conversion"),
+    path("word_generation/" , views.word_generation , name = "word_generation"),
+    path("anslyse_voice/" , views.analyse_voice , name = "analyse_voice")
+]  

@@ -10,7 +10,7 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 class Tasks(BaseModel):
-    id : int = Field(description="Start from no 24")
+    id : int = Field(description="id of the task")
     category : str = Field(description="Category of the Tasks")
     task : str = Field(description="Tasks Description")
 
@@ -39,7 +39,7 @@ def generate_tasks(name = "", age = "", level = "", hobbies = "", conversation_h
     5. **Balanced Task Categories**: Include a mix of creative, logical, social, and relaxation tasks.
 
     ### **Task Format**:
-    Generate **3-5 tasks** in this JSON format:
+    Generate **10 tasks** in this JSON format:
     ```json
     {{
         {{"id": 1, "category": "Social Interaction", "task": "Say 'Hi' to someone today."}},

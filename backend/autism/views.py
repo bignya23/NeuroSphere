@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
 from .chatbot.chatbot_chat import ChatbotGenerate
 from .chatbot import database_chat, tools
@@ -17,7 +17,6 @@ from django.http import FileResponse
 from .schedule_generator.generate_schedule import generate_schedule_of_user
 import os
 from .Jobsearch.jobsearch import job_search
-# from django_q.tasks import async_task
 import playsound 
 
 User = get_user_model()
@@ -27,6 +26,7 @@ User = get_user_model()
 def autism_chatbot(request):
     user_input = request.data.get("query")  
     print("User Input:", user_input)
+
 
     user = request.user  
     print("Authenticated User:", user)
@@ -42,7 +42,7 @@ def autism_chatbot(request):
 
 
     chatbot_generate = ChatbotGenerate()
-    conversation_history = database_chat.get_chat_history(email)
+    conversation_history = database_chat.get_chat_history(f"{email}_chat")
     response_mail = chatbot_generate.content_checker(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
     if(response_mail == "yes"):
@@ -52,7 +52,7 @@ def autism_chatbot(request):
   
     print(f"Autism Chatbot: {response}")
         
-    database_chat.store_chat_history(email, user_input, response)
+    database_chat.store_chat_history(f"{email}_chat", user_input, response)
 
     return Response({
         "chatbot" : response
@@ -66,7 +66,6 @@ def autism_chatvoice(request):
     audio_file = request.FILES.get("audio_file")
     print(audio_file)
     
-    playsound.playsound(audio_file)
     user_input = ""
     
     # transcribe_audio(audio_file)
@@ -79,60 +78,27 @@ def autism_chatvoice(request):
     hobbies = getattr(user, 'hobbies', 'Unknown')
     gender = getattr(user, 'gender', 'Unknown')
     disease = getattr(user, 'disease', 'Unknown')
-    # chat_voice = ChatVoice()
-    # conversation_history = database_voice.get_chat_history(f"{email}_voice")
-    # response = chat_voice.chatvoice_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,conversation_history=conversation_history)
-    # tts_file = tts.text_to_speech_female(response)
-    # print(f"Autism VoiceAgent: {response}")
+    chat_voice = ChatVoice()
+    conversation_history = database_voice.get_chat_history(f"{email}_voice")
+    response = chat_voice.chatvoice_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,conversation_history=conversation_history)
+    tts_file = tts.text_to_speech_female(response)
+    print(f"Autism VoiceAgent: {response}")
     
-    # print(response)
-    # database_voice.store_chat_history(f"{email}_voice",user_input, response)
+    print(response)
+    database_voice.store_chat_history(f"{email}_voice",user_input, response)
 
-    path = "asgasfd"
+  
     return Response({
-        "file_path" : path
+        "file_path" : tts_file
     })
     
 
-@api_view(['GET']) 
-@permission_classes([IsAuthenticated])  
-def tasks(request):
-    tasks_list = [
-        {"id": 1, "category": "Social Interaction", "task": "Say 'Hi' to someone today."},
-        {"id": 2, "category": "Social Interaction", "task": "When someone says 'Hello,' respond back."},
-        {"id": 3, "category": "Social Interaction", "task": "Ask someone, 'How are you today?'"},
-        {"id": 4, "category": "Social Interaction", "task": "Wave goodbye when you leave a room."},
-        {"id": 5, "category": "Social Interaction", "task": "Say 'Thank you' when someone helps you."},
-        {"id": 6, "category": "Social Interaction", "task": "Introduce yourself to someone new. ('My name is __.')"},
-        {"id": 7, "category": "Social Interaction", "task": "Ask a friend what their favorite color or food is."},
-        {"id": 8, "category": "Social Interaction", "task": "Share something about your favorite activity."},
-        
-        {"id": 9, "category": "Daily Living & Self-Care", "task": "Brush your teeth today."},
-        {"id": 10, "category": "Daily Living & Self-Care", "task": "Wash your hands before eating."},
-        {"id": 11, "category": "Daily Living & Self-Care", "task": "Drink a glass of water."},
-        {"id": 12, "category": "Daily Living & Self-Care", "task": "Pick up your toys or clean your room."},
-        {"id": 13, "category": "Daily Living & Self-Care", "task": "Help set the table for a meal."},
-        {"id": 14, "category": "Daily Living & Self-Care", "task": "Choose your clothes and get dressed by yourself."},
-        {"id": 15, "category": "Daily Living & Self-Care", "task": "Put your shoes on before going outside."},
-
-        {"id": 16, "category": "Emotional & Sensory Regulation", "task": "Take five deep breaths when you feel overwhelmed."},
-        {"id": 17, "category": "Emotional & Sensory Regulation", "task": "Use a fidget toy or stress ball when you need to focus."},
-        {"id": 18, "category": "Emotional & Sensory Regulation", "task": "Listen to your favorite music when you feel upset."},
-        {"id": 19, "category": "Emotional & Sensory Regulation", "task": "Tell someone how you are feeling today. ('I feel happy/sad/tired.')"},
-        
-        {"id": 20, "category": "School & Learning", "task": "Complete one page of your workbook or school task."},
-        {"id": 21, "category": "School & Learning", "task": "Write or type your name."},
-        {"id": 22, "category": "School & Learning", "task": "Follow a short instruction from your teacher or parent."},
-        {"id": 23, "category": "School & Learning", "task": "Sit quietly and listen to a short story."}
-    ]
-    return Response({"tasks": tasks_list})    
-
-
-@api_view(['GET']) 
+@api_view(['POST']) 
 @permission_classes([IsAuthenticated]) 
 def tasks_generate(request):
-    user = request.user
-    conv_hist = database.get_chat_history(user.email)
+    user = request.user 
+
+    conv_hist = database_chat.get_chat_history(f"{user.email}_chat")
     conv_hist += database_voice.get_chat_history(f"{user.email}_voice")
     tasks_list = generate_tasks.generate_tasks(user.name, user.age, user.disease_level, user.hobbies, conv_hist)
 
@@ -201,6 +167,7 @@ def sos_alert(request):
     send_mail_gmail.send_alert_email(parents_email, subject, message)
 
     return Response({"message": "SOS alert sent successfully."})
+
 
 
 @api_view(['POST'])
@@ -273,11 +240,13 @@ def second_assessment(request):
     return Response({"second_assessment" : assessment})
 
 
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def voice_interview(request):
     
-    job_details = request.job_details
+    job_details = request.data.get("job_details")
 
     
 

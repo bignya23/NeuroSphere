@@ -60,11 +60,10 @@ def login(request):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        # Fetch user using email and check password
         user = User.objects.get(email=email)
 
-        if user.check_password(password):  # This checks the password securely
-            # Create refresh and access tokens
+        if user.check_password(password): 
+
             refresh = RefreshToken.for_user(user)
 
             return Response({
@@ -83,7 +82,7 @@ def login(request):
             'error': 'No account found with this email'
         }, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        print(f"Login error: {str(e)}")  # For debugging
+        print(f"Login error: {str(e)}")  
         return Response({
             'error': 'An error occurred during login'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
@@ -95,13 +94,11 @@ def login(request):
 @permission_classes([IsAuthenticated])
 def logout(request):
     try:
-        # Get refresh token from request
         refresh_token = request.data.get('refresh_token')
 
         if not refresh_token:
             return Response({'error': 'Refresh token is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Blacklist the refresh token
         token = RefreshToken(refresh_token)
         token.blacklist()
 
