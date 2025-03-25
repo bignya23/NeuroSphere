@@ -5,12 +5,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import get_user_model
-from .chatbot.chatbot_chat import ChatbotGenerate
+from .chatbot.chatbot_chat import chatbot_response, content_checker
 from .chatbot import database_chat, tools
 from .chatvoice import database_voice, tts
 from .chatvoice.voice_agent import ChatVoice
 from .support import send_mail_gmail
-from .chatvoice.stt import transcribe_audio
+from .chatvoice.stt import transcribe_file
 from .tasks_system import generate_tasks
 from .resume_maker.resume_to_pdf import generate_resume_pdf
 from django.http import FileResponse
@@ -19,16 +19,17 @@ import os
 from .Jobsearch.jobsearch import job_search
 import playsound 
 from .assessment.second_assement import accuracy_score
+import tempfile
 
 User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def autism_chatbot(request):
-    user_input = request.data.get("query")  
+    user_input = request.data.get("query") 
+ 
     print("User Input:", user_input)
-
-
+    
     user = request.user  
     print("Authenticated User:", user)
 
@@ -42,14 +43,15 @@ def autism_chatbot(request):
     disease = getattr(user, 'disease', 'Unknown')
 
 
-    chatbot_generate = ChatbotGenerate()
+
     conversation_history = database_chat.get_chat_history(f"{email}_chat")
-    response_mail = chatbot_generate.content_checker(user_input, conversation_history)
+    # print(conversation_history)
+    response_mail = content_checker(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
     if(response_mail == "yes"):
         print(tools.send_alert_email(parents_email, name, conversation_history))
           
-    response = chatbot_generate.chatbot_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,conversation_history=conversation_history)
+    response = chatbot_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender, user_input=user_input, conversation_history=conversation_history)
   
     print(f"Autism Chatbot: {response}")
         
@@ -65,10 +67,26 @@ def autism_chatbot(request):
 @permission_classes([IsAuthenticated])
 def autism_chatvoice(request):
     audio_file = request.FILES.get("audio_file")
-    print(audio_file)
     
-    # playsound.playsound(audio_file)
-    audio_stt = transcribe_audio(audio_file)
+    if not audio_file:
+        return Response({"error": "No audio file received"}, status=400)
+    
+    print(f"Received file: {audio_file.name}, Size: {audio_file.size} bytes")
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
+        for chunk in audio_file.chunks():
+            temp_audio.write(chunk)
+        temp_audio_path = temp_audio.name  
+
+    print(f"Saved temp audio file at: {temp_audio_path}")
+
+  
+    try:
+        current_context = transcribe_file(temp_audio_path)
+    except Exception as e:
+        return Response({"error": f"Transcription failed: {str(e)}"}, status=500)
+    print(current_context)
+
     user = request.user
     name = getattr(user, 'name', 'Unknown') 
     email = getattr(user, 'email', 'Unknown')
@@ -79,17 +97,19 @@ def autism_chatvoice(request):
     gender = getattr(user, 'gender', 'Unknown')
     disease = getattr(user, 'disease', 'Unknown')
     chat_voice = ChatVoice()
+
+    conversation_history = database_voice.store_chat_history(f"{email}_voice",current_context, "")
     conversation_history = database_voice.get_chat_history(f"{email}_voice")
-    response = chat_voice.chatvoice_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,conversation_history=conversation_history)
+    response = chat_voice.chatvoice_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,user_input=current_context,conversation_history=conversation_history)
     tts_file = tts.text_to_speech_female(response)
     print(f"Autism VoiceAgent: {response}")
     
     print(response)
-    database_voice.store_chat_history(f"{email}_voice",audio_stt, response)
+    database_voice.store_chat_history(f"{email}_voice",current_context, response)
 
   
     return Response({
-        "file_path" : "success"
+        "file_path" : tts_file
     })
     
 
@@ -273,13 +293,6 @@ def second_assessment(request):
     return Response({"second_assessment" : assessment})
 
 
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def voice_interview(request):
-    
-    job_details = request.data.get("job_details")
 
 
 @api_view(['POST'])

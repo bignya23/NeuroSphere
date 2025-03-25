@@ -1,35 +1,71 @@
-import os
-import io
-from google.cloud import speech
+# from google.cloud import speech
+# import os 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
-def transcribe_audio(audio_file):
-    client = speech.SpeechClient()
 
-    with io.open(audio_file, "rb") as audio:
-        content = audio.read()
 
-    audio = speech.RecognitionAudio(content=content)
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
-        sample_rate_hertz=16000,
-        language_code="en-US",
-        enable_speaker_diarization=True,
-        diarization_speaker_count=2,
-        enable_automatic_punctuation=True
-    )
 
-    operation = client.long_running_recognize(config=config, audio=audio)
-    print("Processing audio file... Please wait.")
+# def transcribe_file(audio_file: str) -> speech.RecognizeResponse:
+#     """Transcribe the given audio file.
+#     Args:
+#         audio_file (str): Path to the local audio file to be transcribed.
+#             Example: "resources/audio.wav"
+#     Returns:
+#         cloud_speech.RecognizeResponse: The response containing the transcription results
+#     """
 
-    response = operation.result(timeout=600)
+#     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
-    print("\n🎙 **Transcription with Speaker Diarization:**\n")
-    for result in response.results:
-        alternative = result.alternatives[0]
-        print(f"{alternative.transcript}")
+#     client = speech.SpeechClient()
 
-if __name__ == "__main__":
-    file_path = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\female_3346fa73-ada0-40ff-94dd-c492b6e150dc.wav"  
-    transcribe_audio(file_path)
+#     with open(audio_file, "rb") as f:
+#         audio_content = f.read()
+
+#     audio = speech.RecognitionAudio(content=audio_content)
+#     config = speech.RecognitionConfig(
+#         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+#         sample_rate_hertz=16000,
+#         language_code="en-US",
+#     )
+
+#     response = client.recognize(config=config, audio=audio)
+
+#     # Each result is for a consecutive portion of the audio. Iterate through
+#     # them to get the transcripts for the entire audio file.
+#     for result in response.results:
+#         # The first alternative is the most likely one for this portion.
+#         print(f"Transcript: {result.alternatives[0].transcript}")
+
+#     return response.speech_adaptation_info
+
+# if __name__ == "__main__":
+   
+#     print(transcribe_file(r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\female_bcc33ad8-0d13-4f9e-ac5e-b7bbd0c4e065.mp3"))
+
+
+import wave
+import time
+from collections import deque
+
+def transcribe_file(filename):
+    import os
+    from groq import Groq
+
+    client = Groq()
+
+    with open(filename, "rb") as file:
+        transcription = client.audio.transcriptions.create(
+        file=(filename, file.read()), 
+        model="whisper-large-v3-turbo", 
+        prompt="Specify context or spelling",  
+        response_format="json",  
+        language="en",  
+        temperature=0.0  
+        )
+
+        return transcription.text
+
+if __name__ == "_main_":
+    # filename = audio_file()
+    print(transcribe_file(r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\audio\female_3346fa73-ada0-40ff-94dd-c492b6e150dc.wav"))
+ 

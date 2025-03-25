@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphereai-9c5ea10a21b0.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
 
 # Define A4 size in pixels at 72 DPI
@@ -46,7 +46,7 @@ def text_conversion(text_input):
     A4_WIDTH, A4_HEIGHT = 595, 842
 
     # Load the OpenDyslexic font
-    font_path = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/backend/dyslexia/text_coding/OpenDyslexic-Regular.otf"
+    font_path = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\backend\dyslexia\text_coding\OpenDyslexic-Regular.otf"
     font_size = 15
     font = ImageFont.truetype(font_path, font_size)
 
@@ -174,9 +174,10 @@ if __name__ == "__main__":
     High-profile applications of AI include advanced web search engines (e.g., Google Search); recommendation systems (used by YouTube, Amazon, and Netflix); virtual assistants (e.g., Google Assistant, Siri, and Alexa); autonomous vehicles (e.g., Waymo); generative and creative tools (e.g., ChatGPT """
 
 
-    extracted_text = extract_text_from_pdf(file_path=r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\dyslexia\education\text_coding\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
+    extracted_text = extract_text_from_pdf(file_content= r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
 
-    text_conversion(extracted_text)
+    print(extracted_text)
+    # text_conversion(extracted_text)
 
 
 

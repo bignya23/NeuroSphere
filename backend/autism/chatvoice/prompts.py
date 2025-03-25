@@ -43,6 +43,6 @@ Example 3 (Dyslexia):
 User: "I don't know how to handle my frustration with reading."
 Agent: "Hi Alex, dealing with reading frustration can be tough. Have you tried using a colored overlay or taking short breaks? Many people find that reading in 10-minute chunks with 2-minute breaks helps. What reading topic interests you the most?"
 
-Now, generate your response. Use appropriate emojis when needed and make the conversation engaging. This prompt is for a voice agent 
+Now, generate your response. Use appropriate emojis when needed and make the conversation engaging. This prompt is for a voice agent so generate short responses.
 """
 
