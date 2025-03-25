@@ -5,7 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from autism.chatbot.chatbot_chat import ChatbotGenerate
-
+from django.http import JsonResponse
+import tempfile
 from django.contrib.auth import get_user_model
 import os
 from django.http import FileResponse
@@ -19,9 +20,22 @@ User = get_user_model()
 @permission_classes([IsAuthenticated])
 def font_change_pdf(request):
     data = request.FILES.get('pdf_file')
+    print(data)
     
-    text = extract_text_from_pdf(data)
+    
+    if not data:
+        return JsonResponse({"error": "No file uploaded"}, status=400)
 
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+        for chunk in data.chunks():
+            temp_file.write(chunk)
+        temp_file_path = temp_file.name
+        
+        
+
+    text = extract_text_from_pdf(temp_file_path)
+    print("text extracted: ",text)
     text_conversion(text)
 
     filename = "output.pdf"
@@ -31,7 +45,7 @@ def font_change_pdf(request):
     pdf_file = open(file_path, 'rb')
     response = FileResponse(pdf_file, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-    
+
     return response
 
 @api_view(['POST'])

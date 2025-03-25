@@ -62,8 +62,8 @@ def generate_tasks(name = "", age = "", level = "", hobbies = "", conversation_h
     )
 
     
-
-    print(response.text)
+    return response.text
+   
 
 
 

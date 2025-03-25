@@ -1,24 +1,26 @@
-import { useState } from "react";
-import { Mic, X, Send } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { useState, useRef } from "react";
 import axios from "axios";
+import { Send, Mic, X, Volume2 } from "lucide-react";
+import { toast } from "react-hot-toast";
 
-const VoiceAgent = () => {
+const VoiceAgent = ({ onClose }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-  const [responseAudio, setResponseAudio] = useState(null);
-  let mediaRecorder;
-  const audioChunks = [];
+  const [audioUrl, setAudioUrl] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunks = useRef([]);
 
   const recordAudio = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunks.current = [];
 
-      mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
+      mediaRecorder.ondataavailable = (event) => audioChunks.current.push(event.data);
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
         setAudioBlob(audioBlob);
         toast.success("Audio recorded successfully.");
       };
@@ -26,47 +28,39 @@ const VoiceAgent = () => {
       mediaRecorder.start();
       setIsRecording(true);
       toast.success("Recording started. Speak now.");
-
-      setTimeout(() => {
-        mediaRecorder.stop();
-        setIsRecording(false);
-      }, 5000); 
     } catch (error) {
       console.error("Error accessing microphone:", error);
       toast.error("Failed to access microphone.");
     }
   };
+
+  const handleStop = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
   const handleSend = async () => {
     if (!audioBlob) {
       toast.error("No audio recorded.");
       return;
     }
-  
-    if (!(audioBlob instanceof Blob)) {
-      console.error("Invalid audioBlob:", audioBlob);
-      toast.error("Audio data is not valid.");
-      return;
-    }
-  
+
     const formData = new FormData();
     formData.append("audio_file", audioBlob, "voice.wav");
-  
+
     try {
-      console.log("Sending audio to backend...");
+      const token = localStorage.getItem("access_token");
       const response = await axios.post(
         "http://127.0.0.1:8000/api/autism/chatvoice/",
         formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       if (response.data.file_path) {
-        const audio = new Audio(response.data.file_path);
-        audio.play();
-        toast.success("Response received and played.");
+        setAudioUrl(response.data.file_path);
+        toast.success("Response received and ready to play.");
       } else {
         toast.error("No audio response received.");
       }
@@ -75,31 +69,53 @@ const VoiceAgent = () => {
       toast.error("Failed to get response.");
     }
   };
-  
+
+  const playAudio = () => {
+    if (audioUrl) {
+      const audio = new Audio(audioUrl);
+      audio.play();
+      toast.success("Playing the response.");
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center p-4 space-y-4">
-      <h2 className="text-xl font-semibold">Voice Agent</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70">
+      <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-lg">
+        <h2 className="text-2xl font-bold text-blue-600 mb-4">Voice Agent</h2>
+        <p className="text-gray-600 mb-6">Click the mic to start recording your question.</p>
 
-     
-      <button
-        onClick={isRecording ? () => mediaRecorder.stop() : recordAudio}
-        className={`p-3 rounded-full transition ${
-          isRecording ? "bg-red-500" : "bg-blue-500"
-        } text-white hover:opacity-75`}
-      >
-        {isRecording ? <X className="w-6 h-6" /> : <Mic className="w-8 h-8" />}
-      </button>
+        <button
+          onClick={isRecording ? handleStop : recordAudio}
+          className={`p-4 rounded-full text-white ${isRecording ? "bg-red-500" : "bg-blue-500"}`}
+        >
+          {isRecording ? <X className="w-8 h-8" /> : <Mic className="w-8 h-8" />}
+        </button>
 
- 
-      <button
-        onClick={handleSend}
-        className="p-3 bg-green-500 text-white rounded-full hover:opacity-75"
-      >
-        <Send className="w-6 h-6" />
-      </button>
+        {audioBlob && !audioUrl && (
+          <button
+            onClick={handleSend}
+            className="p-4 bg-green-500 text-white rounded-full mt-4"
+          >
+            <Send className="w-8 h-8" />
+          </button>
+        )}
 
-      <p>{isRecording ? "Recording..." : "Click to start recording"}</p>
+        {audioUrl && (
+          <button
+            onClick={playAudio}
+            className="p-4 bg-blue-500 text-white rounded-full mt-4"
+          >
+            <Volume2 className="w-8 h-8" />
+          </button>
+        )}
+
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 bg-gray-300 text-gray-700 rounded-full"
+        >
+          <X className="w-6 h-6" />
+        </button>
+      </div>
     </div>
   );
 };

@@ -11,5 +11,6 @@ urlpatterns = [
     path("resume_generate/", views.generate_resume, name="generate_resume"),
     path("schedule_generate/", views.generateSchedule, name="generateSchedule"),
     path("job_search/" , views.job_search_route , name="job_search"),
+    path("second_assessment/" , views.second_assessment , name="second_assessment"),
     path("second_assessment_result/" , views.second_assessment_result , name="second_assessment_result")
 ]

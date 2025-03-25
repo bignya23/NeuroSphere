@@ -58,6 +58,7 @@ if __name__ == "__main__":
         print(tts_file)
 
         playsound.playsound(tts_file)
+        
         print(f"VoiceAgent: {response}")
         conversation_history += f"VoiceAgent: {response}\n"
         end = time.time()

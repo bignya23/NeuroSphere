@@ -32,42 +32,28 @@ const Chat = () => {
         }
       } catch (error) {
         setError("Error loading chat history");
-        console.error("Error:", error);
       }
     };
 
     let ws;
     const connectWebSocket = () => {
-      if (socket) return; // ✅ Prevent multiple WebSocket connections
+      if (socket) return;
 
       ws = new WebSocket(`ws://localhost:8000/ws/chat/${disease}/`);
 
-      ws.onopen = () => {
-        console.log(`Connected to ${disease} chat room`);
-        setError("");
-      };
+      ws.onopen = () => setError("");
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         setMessages((prev) => [
           ...prev,
-          {
-            content: data.message,
-            sender_email: data.sender_email,
-            timestamp: new Date().toISOString(),
-          },
+          { content: data.message, sender_email: data.sender_email, timestamp: new Date().toISOString() },
         ]);
       };
 
-      ws.onerror = (err) => {
-        console.error("WebSocket error:", err);
-        setError("Connection error. Please try again later.");
-      };
+      ws.onerror = () => setError("Connection error. Please try again later.");
 
-      ws.onclose = () => {
-        setError("Connection closed. Reconnecting...");
-        setTimeout(connectWebSocket, 3000);
-      };
+      ws.onclose = () => setTimeout(connectWebSocket, 3000);
 
       setSocket(ws);
     };
@@ -76,75 +62,60 @@ const Chat = () => {
     fetchChatHistory();
 
     return () => {
-      if (ws) ws.close(); // ✅ Proper WebSocket cleanup
+      if (ws) ws.close();
     };
   }, [disease, token]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  useEffect(scrollToBottom, [messages]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newMessage.trim() && socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(
-        JSON.stringify({
-          message: newMessage,
-          user_id: user.id,
-        })
-      );
+    if (newMessage.trim() && socket?.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ message: newMessage, user_id: user.id }));
       setNewMessage("");
     } else {
       setError("Connection lost. Please refresh the page.");
     }
   };
 
-  if (!disease) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">Unable to determine your support group.</span>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col h-full max-w-5xl mx-auto p-4 bg-white shadow-lg rounded-lg">
-      {/* Chat Header */}
-      <div className="bg-blue-500 text-white p-4 rounded-t-lg text-center text-lg font-semibold">
+    <div className="flex flex-col h-full max-w-4xl mx-auto p-4 bg-gray-50 rounded-lg shadow-md">
+      <div className="bg-blue-600 text-white p-4 rounded-t-lg text-center text-xl font-bold">
         {disease} Support Group Chat
       </div>
 
-      {/* Chat Messages */}
+      {error && (
+        <div className="text-red-600 p-2 text-center bg-red-100 border border-red-400 rounded-md mb-4">
+          {error}
+        </div>
+      )}
+
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
+        {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex ${message.sender_email === user.email ? "justify-end" : "justify-start"}`}
+            className={`flex ${msg.sender_email === user.email ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[75%] p-3 rounded-lg ${
-                message.sender_email === user.email ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+              className={`max-w-xs md:max-w-md p-4 rounded-xl text-white shadow-lg ${
+                msg.sender_email === user.email ? "bg-blue-500" : "bg-green-500"
               }`}
             >
-              <div className="text-sm font-semibold">{message.sender_email}</div>
-              <div>{message.content}</div>
-              <div className="text-xs mt-1 opacity-70">{new Date(message.timestamp).toLocaleTimeString()}</div>
+              <p className="font-semibold">{msg.sender_email}</p>
+              <p>{msg.content}</p>
+              <p className="text-xs mt-1 opacity-80">{new Date(msg.timestamp).toLocaleTimeString()}</p>
             </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Chat Input */}
       <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Type your message..."
         />
         <button

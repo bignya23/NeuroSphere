@@ -16,46 +16,68 @@ import { Context } from "./main";
 import AboutUs from "./components/AboutUs";
 import Navbar from "./miniComponents/Navbar";
 import ContactUs from "./components/ContactUs";
-import axios from "axios"
+import axios from "axios";
+import "./App.css"
+import Footer from "./components/Footer";
+
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, user, setUser } =
     useContext(Context);
 
-    useEffect(() => {
-      async function checkAuth() {
-        const token = localStorage.getItem("access_token");
-        if (!token) {
-          console.error("Access token missing");
-          setIsAuthenticated(false);
-          return;
-        }
-  
-        try {
-          const response = await axios.get("http://127.0.0.1:8000/api/auth/check-auth/", {
+  useEffect(() => {
+    async function checkAuth() {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        console.error("Access token missing");
+        setIsAuthenticated(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/auth/check-auth/",
+          {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
-            withCredentials: true, 
-          });
-          console.log(response)
-          setIsAuthenticated(true);
-        } catch (error) {
-          console.error("Error checking authentication:", error.response?.data || error.message);
-          setIsAuthenticated(false);
-        }
+            withCredentials: true,
+          }
+        );
+        const person = response.data.user;
+        setUser(person);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error(
+          "Error checking authentication:",
+          error.response?.data || error.message
+        );
+        setIsAuthenticated(false);
       }
-  
-      checkAuth();
+    }
 
-      const interval = setInterval(checkAuth, 60000);
-  
-      return () => clearInterval(interval);
-    }, []);
+    checkAuth();
+    const interval = setInterval(checkAuth, 60000);
+
+    return () => clearInterval(interval);
+  }, [setIsAuthenticated, setUser]);
+
+  const disease = user?.disease;
+  console.log(disease)
+ // console.log(user)
+  // Strictly enforce dyslexic font
+  useEffect(() => {
+    if (disease === 'Dyslexia') {
+      document.body.classList.add('dyslexic-font');
+    }
+  }, [disease]);
+
+
+  // console.log(user.disease)
   return (
     <AuthProvider>
       <Router>
-        <Navbar /> 
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
@@ -67,6 +89,7 @@ const App = () => {
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        {/* <Footer /> */}
       </Router>
     </AuthProvider>
   );

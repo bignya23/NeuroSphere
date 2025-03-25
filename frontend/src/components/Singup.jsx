@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -8,14 +8,17 @@ const Signup = () => {
     age: "",
     email: "",
     password: "",
-    parents_email: "", // Changed from parentsEmail
-    phone_number: "", // Changed from phoneNumber
+    parents_email: "",
+    phone_number: "",
     disease: "",
-    disease_level: "", // Changed from diseaseLevel
+    disease_level: "",
     username: "",
+    gender: "",
+    hobbies: "",
   });
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,12 +26,13 @@ const Signup = () => {
     setFormData({
       ...formData,
       [name]: value,
-      username: value, // Set username to be the same as email if the field is email
+      username: name === "email" ? value : formData.username,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/auth/signup/",
@@ -41,166 +45,85 @@ const Signup = () => {
 
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data || "An error occurred during signup");
-      console.error("Signup error:", err.response?.data);
+      setError(err.response?.data || "Oops! Something went wrong. Try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-md">
-        <h2 className="text-2xl font-bold text-gray-700 text-center mb-6">
-          Signup
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-purple-300 py-8 font-sans">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-lg p-8 border-4 border-purple-400">
+        <h2 className="text-5xl font-extrabold text-purple-700 text-center mb-6">🌈 Welcome to NeuroSphereAI!</h2>
+        <p className="text-gray-600 text-center mb-8">Create your personalized experience with us</p>
+
         {error && (
-          <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
-            {typeof error === "object"
-              ? Object.entries(error).map(([key, value]) => (
-                  <div key={key}>{`${key}: ${value}`}</div>
-                ))
-              : error}
-          </div>
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg animate-pulse">{error}</div>
         )}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {Object.entries(formData).map(([key, value]) => (
+            <div key={key}>
+              <label className="block text-gray-700 mb-2 capitalize font-semibold">{key.replace('_', ' ')}</label>
+              {key === "password" ? (
+                <input
+                  type="password"
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  className="w-full border border-purple-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-purple-400 text-lg"
+                  placeholder={`Enter your ${key}`}
+                  required
+                />
+              ) : key === "gender" || key === "disease" || key === "disease_level" ? (
+                <select
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  className="w-full border border-purple-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-purple-400 text-lg"
+                  required
+                >
+                  <option value="">Select {key.replace('_', ' ')}</option>
+                  {key === "gender" && ["Male", "Female", "Other"].map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                  {key === "disease" && ["Autism", "ADSD", "Dyslexia"].map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                  {key === "disease_level" && ["Level 1", "Level 2", "Level 3"].map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={key === "age" ? "number" : key === "phone_number" ? "text" : "text"}
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  className="w-full border border-purple-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-purple-400 text-lg"
+                  placeholder={`Enter your ${key}`}
+                  required
+                />
+              )}
+            </div>
+          ))}
 
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Age</label>
-            <input
-              type="number"
-              name="age"
-              value={formData.age}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your age"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Parent's Email</label>
-            <input
-              type="email"
-              name="parents_email"
-              value={formData.parents_email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter parent's email"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Phone Number</label>
-            <input
-              type="text"
-              name="phone_number"
-              value={formData.phone_number}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your phone number"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Disease</label>
-            <select
-              name="disease"
-              value={formData.disease}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <div className="col-span-2 mt-6">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3 bg-purple-600 text-white rounded-lg text-xl font-semibold hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
             >
-              <option value="">Select Disease</option>
-              <option value="Autism">Autism</option>
-              <option value="ADSD">ADSD</option>
-              <option value="Dyslexia">Dyslexia</option>
-            </select>
-          </div>
+              {isLoading ? "Creating Account..." : "🚀 Sign Up Now!"}
+            </button>
 
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Disease Level</label>
-            <select
-              name="disease_level"
-              value={formData.disease_level}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Level</option>
-              <option value="Level 1">Level 1</option>
-              <option value="Level 2">Level 2</option>
-              <option value="Level 3">Level 3</option>
-            </select>
+            <p className="text-center mt-4 text-gray-600">
+              Already have an account?{' '}
+              <Link to="/login" className="text-purple-600 hover:underline">
+                Log In Here
+              </Link>
+            </p>
           </div>
-
-          <div className="mb-6">
-            <label className="block text-gray-600 mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Gender</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1">Hobbies</label>
-            <input
-              type="text"
-              name="hobbies"
-              value={formData.hobbies}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your hobbies"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
-          >
-            Sign Up
-          </button>
         </form>
       </div>
     </div>

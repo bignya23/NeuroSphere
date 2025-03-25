@@ -18,7 +18,9 @@ const TaskManager = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [scheduleConfirmed, setScheduleConfirmed] = useState(false);
-
+  const [generateTask, setGeneratedTask] = useState([]);
+  const [dayCompleted, setDayCompleted] = useState(false);
+  
   // Generate questions based on current state
   const generateQuestions = () => [
     {
@@ -66,6 +68,38 @@ const TaskManager = () => {
 
   // Get current questions
   const questions = generateQuestions();
+
+  // Load saved schedule and task completion status on component mount
+  useEffect(() => {
+    const savedSchedule = localStorage.getItem("selectedSchedule");
+    const savedTaskStatus = localStorage.getItem("taskCompletionStatus");
+    const lastScheduleDate = localStorage.getItem("scheduleDate");
+    const currentDate = new Date().toDateString();
+    
+    // Check if we have a saved schedule from today
+    if (savedSchedule && lastScheduleDate === currentDate) {
+      try {
+        const parsedSchedule = JSON.parse(savedSchedule);
+        const parsedTaskStatus = savedTaskStatus ? JSON.parse(savedTaskStatus) : {};
+        
+        // Update the selected schedule with completion status
+        const scheduleWithStatus = parsedSchedule.map((task, index) => ({
+          ...task,
+          completed: parsedTaskStatus[index] || false
+        }));
+        
+        setScheduleOptions([scheduleWithStatus]);
+        setSelectedSchedule(0);
+        setScheduleConfirmed(true);
+        setShowResults(true);
+      } catch (error) {
+        console.error("Error loading saved schedule:", error);
+      }
+    } else if (lastScheduleDate && lastScheduleDate !== currentDate) {
+      // Previous day's schedule exists but it's a new day
+      setDayCompleted(true);
+    }
+  }, []);
 
   const handleNext = (key, value) => {
     setResponses((prev) => {
@@ -143,17 +177,18 @@ const TaskManager = () => {
 
     const sendData = async () => {
       try {
-        const token = localStorage.getItem("access_token")
+        const token = localStorage.getItem("access_token");
         const response = await axios.post(
           "http://localhost:8000/api/autism/schedule_generate/",
           { user_schedule: JSON.stringify(user_schedule) },
           {
             headers: {
               "Content-Type": "application/json",
-              //Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );      
+
         // Parse the Schedule string to get the schedule options
         const scheduleData = JSON.parse(response.data.Schedule);
         setScheduleOptions(scheduleData);
@@ -174,6 +209,18 @@ const TaskManager = () => {
 
   const confirmScheduleSelection = () => {
     setScheduleConfirmed(true);
+    
+    // Store the selected schedule in localStorage
+    const selectedScheduleData = scheduleOptions[selectedSchedule];
+    localStorage.setItem("selectedSchedule", JSON.stringify(selectedScheduleData));
+    localStorage.setItem("scheduleDate", new Date().toDateString());
+    
+    // Initialize task completion status in localStorage
+    const initialTaskStatus = {};
+    selectedScheduleData.forEach((_, index) => {
+      initialTaskStatus[index] = false;
+    });
+    localStorage.setItem("taskCompletionStatus", JSON.stringify(initialTaskStatus));
   };
 
   const handleTaskCheck = (taskIndex) => {
@@ -186,10 +233,73 @@ const TaskManager = () => {
           completed: !selectedOption[taskIndex].completed
         };
         newOptions[selectedSchedule] = selectedOption;
+        
+        // Update task completion status in localStorage
+        const taskCompletionStatus = {};
+        selectedOption.forEach((task, idx) => {
+          taskCompletionStatus[idx] = task.completed || false;
+        });
+        localStorage.setItem("taskCompletionStatus", JSON.stringify(taskCompletionStatus));
+        
         return newOptions;
       });
     }
   };
+  
+  const startNewDay = () => {
+    // Clear previous schedule data
+    localStorage.removeItem("selectedSchedule");
+    localStorage.removeItem("taskCompletionStatus");
+    localStorage.removeItem("scheduleDate");
+    
+    // Reset state to start fresh
+    setDayCompleted(false);
+    setStep(0);
+    setResponses({
+      numTasks: 0,
+      tasks: [],
+      addBreaks: "no",
+      numBreaks: 0,
+      breaks: [],
+      dayDescription: "",
+    });
+    setIsSubmitting(false);
+    setScheduleOptions([]);
+    setSelectedSchedule(null);
+    setShowResults(false);
+    setScheduleConfirmed(false);
+  };
+  
+  const checkDayCompletion = () => {
+    if (selectedSchedule !== null && scheduleConfirmed) {
+      const selectedScheduleData = scheduleOptions[selectedSchedule];
+      const allTasksCompleted = selectedScheduleData.every(task => task.completed);
+      
+      if (allTasksCompleted) {
+        setDayCompleted(true);
+      }
+    }
+  };
+  
+  // Check for day completion whenever task completion status changes
+  useEffect(() => {
+    checkDayCompletion();
+  }, [scheduleOptions, selectedSchedule]);
+
+  if (dayCompleted) {
+    return (
+      <div className="p-6 bg-gray-100 mx-auto max-w-xl shadow-md rounded-md text-center">
+        <h2 className="text-2xl font-bold mb-4">Day Completed!</h2>
+        <p className="mb-6">Congratulations on completing your schedule for the day!</p>
+        <button
+          className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700"
+          onClick={startNewDay}
+        >
+          Plan Tomorrow's Schedule
+        </button>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -206,10 +316,13 @@ const TaskManager = () => {
     if (scheduleConfirmed && selectedSchedule !== null) {
       // Show only the selected schedule
       const selectedScheduleData = scheduleOptions[selectedSchedule];
+      const completedTaskCount = selectedScheduleData.filter(task => task.completed).length;
+      const progressPercentage = (completedTaskCount / selectedScheduleData.length) * 100;
       
       return (
-        <div className="p-6  mx-auto max-w-2xl rounded-md">
+        <div className="p-6 mx-auto max-w-2xl rounded-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Your Daily Schedule</h2>
+          <p className="text-center text-gray-600 mb-4">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
           
           <div className="bg-white p-5 rounded-lg shadow-sm">
             <div className="space-y-4">
@@ -254,16 +367,27 @@ const TaskManager = () => {
             <div className="mt-8 text-center">
               <div className="bg-blue-50 p-4 rounded-lg inline-block">
                 <div className="text-sm font-medium text-blue-800">
-                  Progress: {selectedScheduleData.filter(task => task.completed).length} / {selectedScheduleData.length} tasks completed
+                  Progress: {completedTaskCount} / {selectedScheduleData.length} tasks completed
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                   <div 
                     className="bg-blue-600 h-2.5 rounded-full"
-                    style={{ width: `${(selectedScheduleData.filter(task => task.completed).length / selectedScheduleData.length) * 100}%` }}
+                    style={{ width: `${progressPercentage}%` }}
                   ></div>
                 </div>
               </div>
             </div>
+            
+            {progressPercentage === 100 && (
+              <div className="mt-6 text-center">
+                <button
+                  className="px-6 py-3 bg-green-600 text-white rounded-md font-medium hover:bg-green-700"
+                  onClick={() => setDayCompleted(true)}
+                >
+                  Complete Day
+                </button>
+              </div>
+            )}
           </div>
         </div>
       );

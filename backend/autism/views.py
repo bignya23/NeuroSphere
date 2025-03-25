@@ -67,9 +67,8 @@ def autism_chatvoice(request):
     audio_file = request.FILES.get("audio_file")
     print(audio_file)
     
-    user_input = ""
-    
-    # transcribe_audio(audio_file)
+    # playsound.playsound(audio_file)
+    audio_stt = transcribe_audio(audio_file)
     user = request.user
     name = getattr(user, 'name', 'Unknown') 
     email = getattr(user, 'email', 'Unknown')
@@ -86,11 +85,11 @@ def autism_chatvoice(request):
     print(f"Autism VoiceAgent: {response}")
     
     print(response)
-    database_voice.store_chat_history(f"{email}_voice",user_input, response)
+    database_voice.store_chat_history(f"{email}_voice",audio_stt, response)
 
   
     return Response({
-        "file_path" : tts_file
+        "file_path" : "success"
     })
     
 
@@ -102,7 +101,7 @@ def tasks_generate(request):
     conv_hist = database_chat.get_chat_history(f"{user.email}_chat")
     conv_hist += database_voice.get_chat_history(f"{user.email}_voice")
     tasks_list = generate_tasks.generate_tasks(user.name, user.age, user.disease_level, user.hobbies, conv_hist)
-
+    # print(tasks_list)
 
     return Response({"tasks": tasks_list})
 
@@ -123,6 +122,18 @@ def emergency(request):
                 "name": "Parent Contact",
                 "contact": "+1 234 567 8901",
                 "type": "Guardian"
+            },
+            {
+                "id": 3,
+                "name": "Mental Health Support Line",
+                "contact": "+1 800 999 1234",
+                "type": "Helpline"
+            },
+            {
+                "id": 4,
+                "name": "Local Community Support",
+                "contact": "+1 888 555 1234",
+                "type": "Support Group"
             }
         ],
         "nearest_hospitals": [
@@ -132,6 +143,13 @@ def emergency(request):
                 "location": "123 Main St, New York",
                 "contact": "+1 555 678 9012",
                 "navigation_link": "https://maps.google.com/xyz"
+            },
+            {
+                "id": 2,
+                "name": "Hopewell Neurocare Center",
+                "location": "456 Elm St, Boston",
+                "contact": "+1 555 123 4567",
+                "navigation_link": "https://maps.google.com/abc"
             }
         ],
         "my_doctors": [
@@ -144,10 +162,24 @@ def emergency(request):
             },
             {
                 "id": 2,
-                "name": "Dr. Ravi kumar",
+                "name": "Dr. Ravi Kumar",
                 "specialty": "Autism Specialist",
                 "contact": "+1 345 654 3210",
-                "location": "Munbai, India"
+                "location": "Mumbai, India"
+            },
+            {
+                "id": 3,
+                "name": "Dr. John Smith",
+                "specialty": "Child Psychologist",
+                "contact": "+1 456 789 1230",
+                "location": "Chicago, USA"
+            },
+            {
+                "id": 4,
+                "name": "Dr. Aisha Rahman",
+                "specialty": "Neurodevelopment Specialist",
+                "contact": "+1 123 456 7890",
+                "location": "London, UK"
             }
         ]
     })
@@ -159,7 +191,7 @@ def emergency(request):
 def sos_alert(request):
     user = request.user  
     parents_email = user.parents_email  
-
+    #print(parents_email)
     if not parents_email:
         return Response({"error": "No guardian email found."}, status=400)
     subject = "🚨 SOS Alert: Emergency Situation 🚨"
@@ -255,7 +287,7 @@ def voice_interview(request):
 def second_assessment_result(request):
 
     result = request.data.get('question_answer')
-
+    print(result)
     ans_result = accuracy_score(result)
 
     return Response({

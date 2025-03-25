@@ -11,7 +11,9 @@ const ResumeInput = () => {
     education: "",
     skills: "",
     projects: [{ title: "", description: "" }],
-    experiences: [{ role: "", company: "", duration: "", responsibilities: "" }],
+    experiences: [
+      { role: "", company: "", duration: "", responsibilities: "" },
+    ],
   });
 
   const [loading, setLoading] = useState(false);
@@ -52,17 +54,17 @@ const ResumeInput = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      setError("Access token is missing.");
+      setLoading(false);
+      return;
+    }
     try {
       const user_resume_data = {
-        name: formData.name,
-        phno: formData.phone,
-        email: formData.email,
-        linkedin: formData.linkedin || formData.github,
-        education: formData.education,
-        skills: formData.skills,
+        ...formData,
         projects: formData.projects.filter((p) => p.title.trim() !== ""),
-        experience: formData.experiences.filter(
+        experiences: formData.experiences.filter(
           (exp) => exp.role.trim() !== "" && exp.company.trim() !== ""
         ),
       };
@@ -72,7 +74,10 @@ const ResumeInput = () => {
         user_resume_data,
         {
           responseType: "blob",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -87,50 +92,45 @@ const ResumeInput = () => {
   };
 
   return (
-    <div className="flex flex-col flex-grow w-full h-full  p-6">
-      <div className="w-full bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4 text-center">Resume Generator</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="border p-2 rounded" required />
-            <input type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="border p-2 rounded" required />
-            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="border p-2 rounded" required />
-            <input type="text" name="linkedin" placeholder="LinkedIn Profile" value={formData.linkedin} onChange={handleChange} className="border p-2 rounded" />
-            <input type="text" name="github" placeholder="GitHub Profile" value={formData.github} onChange={handleChange} className="border p-2 rounded" />
+    <div className="flex flex-col w-full h-full p-4 overflow-y-auto">
+      <h2 className="text-2xl font-semibold text-center mb-6">Resume Generator</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="border p-2 rounded" required />
+          <input type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className="border p-2 rounded" required />
+          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="border p-2 rounded" required />
+          <input type="text" name="linkedin" placeholder="LinkedIn Profile" value={formData.linkedin} onChange={handleChange} className="border p-2 rounded" />
+          <input type="text" name="github" placeholder="GitHub Profile" value={formData.github} onChange={handleChange} className="border p-2 rounded" />
+        </div>
+
+        <textarea name="education" placeholder="Education" value={formData.education} onChange={handleChange} className="w-full border p-2 rounded" />
+        <textarea name="skills" placeholder="Skills" value={formData.skills} onChange={handleChange} className="w-full border p-2 rounded" />
+
+        <h3 className="text-xl font-semibold">Projects</h3>
+        {formData.projects.map((project, index) => (
+          <div key={index} className="mb-4">
+            <input type="text" name="title" placeholder="Project Title" value={project.title} onChange={(e) => handleChange(e, index, "projects")} className="w-full border p-2 rounded" />
+            <textarea name="description" placeholder="Project Description" value={project.description} onChange={(e) => handleChange(e, index, "projects")} className="w-full border p-2 rounded mt-2" />
           </div>
+        ))}
+        <button type="button" onClick={() => addField("projects")} className="text-blue-600">+ Add Project</button>
 
-          <textarea name="education" placeholder="Education" value={formData.education} onChange={handleChange} className="w-full border p-2 rounded my-2" />
-          <textarea name="skills" placeholder="Skills" value={formData.skills} onChange={handleChange} className="w-full border p-2 rounded my-2" />
+        <h3 className="text-xl font-semibold">Experience</h3>
+        {formData.experiences.map((exp, index) => (
+          <div key={index} className="mb-4">
+            <input type="text" name="role" placeholder="Role" value={exp.role} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded" />
+            <input type="text" name="company" placeholder="Company" value={exp.company} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded mt-2" />
+            <input type="text" name="duration" placeholder="Duration" value={exp.duration} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded mt-2" />
+            <textarea name="responsibilities" placeholder="Responsibilities" value={exp.responsibilities} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded mt-2" />
+          </div>
+        ))}
+        <button type="button" onClick={() => addField("experiences")} className="text-blue-600">+ Add Experience</button>
 
-          <h3 className="text-lg font-semibold mt-4">Projects</h3>
-          {formData.projects.map((project, index) => (
-            <div key={index} className="mb-2 border p-4 rounded">
-              <input type="text" name="title" placeholder="Project Title" value={project.title} onChange={(e) => handleChange(e, index, "projects")} className="w-full border p-2 rounded mb-2" />
-              <textarea name="description" placeholder="Project Description" value={project.description} onChange={(e) => handleChange(e, index, "projects")} className="w-full border p-2 rounded" />
-            </div>
-          ))}
-          <button type="button" onClick={() => addField("projects")} className="w-full mb-2 p-2 bg-blue-500 text-white rounded">Add Project</button>
-
-          <h3 className="text-lg font-semibold mt-4">Experience</h3>
-          {formData.experiences.map((exp, index) => (
-            <div key={index} className="mb-2 border p-4 rounded">
-              <input type="text" name="role" placeholder="Role" value={exp.role} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded mb-2" />
-              <input type="text" name="company" placeholder="Company" value={exp.company} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded mb-2" />
-              <input type="text" name="duration" placeholder="Duration" value={exp.duration} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded mb-2" />
-              <textarea name="responsibilities" placeholder="Responsibilities" value={exp.responsibilities} onChange={(e) => handleChange(e, index, "experiences")} className="w-full border p-2 rounded" />
-            </div>
-          ))}
-          <button type="button" onClick={() => addField("experiences")} className="w-full mb-2 p-2 bg-blue-500 text-white rounded">Add Experience</button>
-
-          <button type="submit" className="w-full bg-green-500 text-white p-2 rounded" disabled={loading}>
-            {loading ? "Generating..." : "Generate Resume"}
-          </button>
-        </form>
-
-        {downloadLink && (
-          <a href={downloadLink} download="resume.pdf" className="block text-center mt-4 p-2 bg-gray-800 text-white rounded">Download Resume</a>
-        )}
-      </div>
+        <div className="flex flex-col lg:flex-row lg:space-x-4">
+          <button type="submit" className="bg-green-500 hover:bg-green-600 text-white p-2 rounded w-full lg:w-1/4" disabled={loading}>{loading ? "Generating..." : "Generate Resume"}</button>
+          {downloadLink && <a href={downloadLink} download="resume.pdf" className="block text-center mt-4 lg:mt-0 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded w-full lg:w-1/4">Download Resume</a>}
+        </div>
+      </form>
     </div>
   );
 };

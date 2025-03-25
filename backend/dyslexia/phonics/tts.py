@@ -8,7 +8,7 @@ from google.api_core.exceptions import GoogleAPICallError
 base_dir = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\audio"
 os.makedirs(base_dir, exist_ok=True) 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\NeuroSphereAI\New folder\NeuroSphereAI\neurosphere-453417-a13fa049f648.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphereai-9c5ea10a21b0.json"
 
 def text_to_speech_female(text):
     try:

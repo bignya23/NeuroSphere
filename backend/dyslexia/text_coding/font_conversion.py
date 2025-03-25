@@ -6,13 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\neurosphere-453417-a13fa049f648.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphereai-9c5ea10a21b0.json"
 
 
 # Define A4 size in pixels at 72 DPI
-def extract_text_from_pdf(file_path):
+def extract_text_from_pdf(file_content):
     """Extracts text from a PDF using Google Document AI."""
-
     project_id = "neurosphere-453417"
     location = "us"
     processor_id = "9b0aee16552bdce0"
@@ -25,10 +24,7 @@ def extract_text_from_pdf(file_path):
 
         resource_name = docai_client.processor_path(project_id, location, processor_id)
 
-        with open(file_path, "rb") as file:
-            image_content = file.read()
-
-        raw_document = documentai.RawDocument(content=image_content, mime_type=mime_type)
+        raw_document = documentai.RawDocument(content=file_content, mime_type=mime_type)
         request = documentai.ProcessRequest(name=resource_name, raw_document=raw_document)
 
         result = docai_client.process_document(request=request)
@@ -50,7 +46,7 @@ def text_conversion(text_input):
     A4_WIDTH, A4_HEIGHT = 595, 842
 
     # Load the OpenDyslexic font
-    font_path = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\dyslexia\education\text_coding\OpenDyslexic-Regular.otf"
+    font_path = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/backend/dyslexia/text_coding/OpenDyslexic-Regular.otf"
     font_size = 15
     font = ImageFont.truetype(font_path, font_size)
 

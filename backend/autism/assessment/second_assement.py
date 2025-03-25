@@ -15,7 +15,7 @@ class Agent(BaseModel):
     output: str = Field(description="Give feedback and accuracy of how the user answered the question")
 
 def accuracy_score(question_answer : str) -> str:
-    prompt_template = QUESTIONS_PROMPT.format(answer=question_answer)
+    prompt_template = QUESTIONS_PROMPT.format(answers=question_answer)
     
     response = client.models.generate_content(
         model='gemini-2.0-flash',
