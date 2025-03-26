@@ -16,13 +16,13 @@ class Tasks(BaseModel):
 
 
 
-def generate_tasks(name = "", age = "", level = "", hobbies = "", conversation_history = ""):
-    prompt_template = f"""You are a specialized autism-friendly task generator. Your goal is to create engaging, personalized, and beneficial tasks for a user based on their **conversation history** and **hobbies**.
+def generate_tasks(name = "", age = "", level = "", hobbies = "", conversation_history = "", disease = ""):
+    prompt_template = f"""You are a specialized {disease}-friendly task generator. Your goal is to create engaging, personalized, and beneficial tasks for a user based on their **conversation history** and **hobbies**.
 
     ### **User Information**:
     - **Name**: {name}
     - **Age**: {age}
-    - **Autism Level**: {level} 
+    - **Disease Level**: {level} 
     - **Hobbies**: {hobbies} 
 
     ### **Recent Conversation History**:
@@ -53,7 +53,7 @@ def generate_tasks(name = "", age = "", level = "", hobbies = "", conversation_h
 
 
     response = client.models.generate_content(
-        model='gemini-2.0-flash-exp',
+        model='gemini-2.0-flash',
         contents=prompt_template,
         config={
             'response_mime_type': 'application/json',
@@ -68,4 +68,4 @@ def generate_tasks(name = "", age = "", level = "", hobbies = "", conversation_h
 
 
 if __name__ == "__main__":
-    generate_tasks("ravi", "14", "2", "cubing", "")
+    print(generate_tasks("ravi", "14", "2", "cubing", ""))

@@ -40,8 +40,8 @@ class ChatVoice:
                 'response_schema': self.ChatVoice_response,
             },
         )
-
-        return response.text
+        response = json.loads(response.text)
+        return response['chatbot_output']
 
 
 conversation_history = ""

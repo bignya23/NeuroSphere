@@ -2,17 +2,21 @@ import os
 from google.cloud import texttospeech
 import time 
 import uuid
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Set the path to your JSON key file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
 
 
 def text_to_speech_female_hindi(text):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
     uuid_ = uuid.uuid4()
+    os.makedirs("../frontend/public/assets", exist_ok=True)
     output_file=f"../frontend/public/assets/female_{uuid_}.mp3"
     voice = texttospeech.VoiceSelectionParams(
         language_code="hi-IN",
@@ -40,11 +44,12 @@ def text_to_speech_female_hindi(text):
 
 
 def text_to_speech_male_hindi(text):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
     uuid_ = uuid.uuid4()
+    os.makedirs("../frontend/public/assets", exist_ok=True)
     output_file=f"../frontend/public/assets/male_{uuid_}.mp3"
     voice = texttospeech.VoiceSelectionParams(
         language_code="hi-IN",

@@ -19,6 +19,10 @@ from google.cloud import speech
 import webrtcvad
 from typing import List
 import base64
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 app = FastAPI()
 
@@ -26,7 +30,7 @@ origins = [
     "http://localhost:5173", 
 ]
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
 
 app.add_middleware(
     CORSMiddleware,

@@ -122,7 +122,7 @@ def tasks_generate(request):
 
     conv_hist = database_chat.get_chat_history(f"{user.email}_chat")
     conv_hist += database_voice.get_chat_history(f"{user.email}_voice")
-    tasks_list = generate_tasks.generate_tasks(user.name, user.age, user.disease_level, user.hobbies, conv_hist)
+    tasks_list = generate_tasks.generate_tasks(user.name, user.age, user.disease_level, user.hobbies, conv_hist, user.disease)
     # print(tasks_list)
 
     return Response({"tasks": tasks_list})

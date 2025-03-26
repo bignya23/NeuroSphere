@@ -4,15 +4,18 @@ import uuid
 from google.cloud import texttospeech
 from google.api_core.exceptions import GoogleAPICallError
 from django.conf import settings
+from dotenv import load_dotenv
+
+load_dotenv()
 
 base_dir = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI"
 os.makedirs(base_dir, exist_ok=True) 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
 
 def text_to_speech_female(text):
     try:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
         client = texttospeech.TextToSpeechClient()
         synthesis_input = texttospeech.SynthesisInput(text=text)
         uuid_ = uuid.uuid4()
