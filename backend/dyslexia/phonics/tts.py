@@ -5,18 +5,15 @@ from google.cloud import texttospeech
 from google.api_core.exceptions import GoogleAPICallError
 
 
-base_dir = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/audio"
-os.makedirs(base_dir, exist_ok=True) 
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphereai-9c5ea10a21b0.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
 def text_to_speech_female(text):
     try:
         client = texttospeech.TextToSpeechClient()
         synthesis_input = texttospeech.SynthesisInput(text=text)
         uuid_ = uuid.uuid4()
-
-      
+        base_dir = os.getcwd()
+        os.makedirs(base_dir, exist_ok=True) 
         output_file = os.path.join(base_dir, f"female_{uuid_}.mp3")
 
         voice = texttospeech.VoiceSelectionParams(
