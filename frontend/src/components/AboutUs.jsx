@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import Footer from "./Footer";
 
 const AboutUs = () => {
   useEffect(() => {
@@ -110,6 +111,8 @@ const AboutUs = () => {
           NeuroSphereAI believes that everyone deserves equal opportunities to succeed, regardless of neurological differences. Join us on our mission for inclusion.
         </motion.p>
       </div>
+      
+      <Footer />
     </div>
   );
 };

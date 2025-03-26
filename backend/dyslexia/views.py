@@ -32,7 +32,7 @@ def font_change_pdf(request):
         temp_file_path = temp_file.name
         
         
-
+    print("text extracting")
     text = extract_text_from_pdf(temp_file_path)
     print("text extracted: ",text)
     text_conversion(text)
