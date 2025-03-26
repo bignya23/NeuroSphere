@@ -43,11 +43,7 @@ const Navbar = () => {
           className="flex items-center text-2xl font-bold text-purple-700"
           onClick={closeMenu}
         >
-          <img
-            src="/logo.webp"
-            alt="NeuroSphereAI Logo"
-            className="w-10 h-10 mr-2"
-          />
+        
           NeuroSphereAI
         </Link>
 

@@ -14,6 +14,7 @@ load_dotenv()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
+
 # Define A4 size in pixels at 72 DPI
 def extract_text_from_pdf(file_content):
     """Extracts text from a PDF using Google Document AI."""
@@ -167,14 +168,14 @@ def text_conversion(text_input):
         pass
     
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    text = """Artificial intelligence (AI) refers to the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals.[1] Such machines may be called AIs.
+#     text = """Artificial intelligence (AI) refers to the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals.[1] Such machines may be called AIs.
 
-    High-profile applications of AI include advanced web search engines (e.g., Google Search); recommendation systems (used by YouTube, Amazon, and Netflix); virtual assistants (e.g., Google Assistant, Siri, and Alexa); autonomous vehicles (e.g., Waymo); generative and creative tools (e.g., ChatGPT """
+#     High-profile applications of AI include advanced web search engines (e.g., Google Search); recommendation systems (used by YouTube, Amazon, and Netflix); virtual assistants (e.g., Google Assistant, Siri, and Alexa); autonomous vehicles (e.g., Waymo); generative and creative tools (e.g., ChatGPT """
 
 
-    extracted_text = extract_text_from_pdf(file_content=r"D:\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
+    extracted_text = extract_text_from_pdf(file_content= r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
 
     print(extracted_text)
     # text_conversion(extracted_text)

@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "./Footer";
 
 const ContactUs = () => {
   return (
@@ -50,7 +51,7 @@ const ContactUs = () => {
       </div>
 
       <h2 className="text-4xl font-semibold text-blue-500 mt-16">Follow Us</h2>
-      <div className="flex justify-center gap-8 mt-8">
+      <div className="flex flex-col md:flex-row justify-center gap-8 mt-8 mb-3 px-3">
         <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">🌐 Website</a>
         <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">📘 Facebook</a>
         <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">🐦 Twitter</a>
@@ -70,6 +71,8 @@ const ContactUs = () => {
           });
         `}
       </script>
+
+      <Footer />
     </div>
   );
 };

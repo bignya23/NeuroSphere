@@ -5,7 +5,7 @@ from google.cloud import texttospeech
 from google.api_core.exceptions import GoogleAPICallError
 
 
-base_dir = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\audio"
+base_dir = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/audio"
 os.makedirs(base_dir, exist_ok=True) 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphereai-9c5ea10a21b0.json"

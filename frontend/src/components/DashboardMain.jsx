@@ -1,19 +1,31 @@
-import React, { useContext } from "react";
-import { BellIcon, LogOutIcon } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import TaskManager from "./TaskManager";
 import DailySchedule from "./DailySchedule";
 
 const DashboardMain = () => {
-  const user = JSON.parse(localStorage.getItem("user"))
-   console.log("from local storage", user)
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [quote, setQuote] = useState("Loading inspirational quote...");
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      try {
+        const response = await fetch("https://api.quotable.io/random");
+        const data = await response.json();
+        setQuote(data.content);
+      } catch (error) {
+        setQuote("Stay positive and keep moving forward!");
+      }
+    };
+
+    fetchQuote();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
       {/* Header Section */}
       <div className="p-6 text-center bg-white shadow-sm rounded-xl mx-4 mt-4 border border-indigo-100">
         <h2 className="text-3xl font-bold text-indigo-800">Welcome, {user.name.toUpperCase()}</h2>
-        <p className="text-xl text-indigo-600 font-medium mt-2">
-          "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."
-        </p>
+        <p className="text-xl text-indigo-600 font-medium mt-2">"{quote}"</p>
         <div className="mt-4 flex justify-center space-x-4">
           <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
             Today: {new Date().toLocaleDateString('en-US', { weekday: 'long' })}

@@ -3,78 +3,27 @@ import { useState, useEffect, useRef } from "react";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [socket, setSocket] = useState(null);
-  const [error, setError] = useState("");
   const messagesEndRef = useRef(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = localStorage.getItem("access_token");
-  const disease = user?.disease;
+  const user = { email: "user@example.com" }; // Dummy user for frontend-only demo
+  const disease = "General Support"; // Dummy chat room name
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    if (!disease) {
-      setError("Unable to access chat room. Please contact support.");
-      return;
-    }
-
-    const fetchChatHistory = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/api/chat/history/${disease}/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setMessages(data);
-        }
-      } catch (error) {
-        setError("Error loading chat history");
-      }
-    };
-
-    let ws;
-    const connectWebSocket = () => {
-      if (socket) return;
-
-      ws = new WebSocket(`ws://localhost:8000/ws/chat/${disease}/`);
-
-      ws.onopen = () => setError("");
-
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        setMessages((prev) => [
-          ...prev,
-          { content: data.message, sender_email: data.sender_email, timestamp: new Date().toISOString() },
-        ]);
-      };
-
-      ws.onerror = () => setError("Connection error. Please try again later.");
-
-      ws.onclose = () => setTimeout(connectWebSocket, 3000);
-
-      setSocket(ws);
-    };
-
-    connectWebSocket();
-    fetchChatHistory();
-
-    return () => {
-      if (ws) ws.close();
-    };
-  }, [disease, token]);
-
   useEffect(scrollToBottom, [messages]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newMessage.trim() && socket?.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ message: newMessage, user_id: user.id }));
+    if (newMessage.trim()) {
+      const newMsg = {
+        content: newMessage,
+        sender_email: user.email,
+        timestamp: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, newMsg]);
       setNewMessage("");
-    } else {
-      setError("Connection lost. Please refresh the page.");
     }
   };
 
@@ -83,12 +32,6 @@ const Chat = () => {
       <div className="bg-blue-600 text-white p-4 rounded-t-lg text-center text-xl font-bold">
         {disease} Support Group Chat
       </div>
-
-      {error && (
-        <div className="text-red-600 p-2 text-center bg-red-100 border border-red-400 rounded-md mb-4">
-          {error}
-        </div>
-      )}
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, index) => (
@@ -121,7 +64,6 @@ const Chat = () => {
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          disabled={!socket || socket.readyState !== WebSocket.OPEN}
         >
           Send
         </button>

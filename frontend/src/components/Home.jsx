@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Footer from './Footer';
 
 const Home = () => {
   useEffect(() => {
@@ -23,8 +24,11 @@ const Home = () => {
 
   return (
     <div className="bg-gray-50">
+      <div className="">
       <Hero />
       <WhatWeDo />
+      </div>
+      <Footer />
     </div>
   );
 };
@@ -224,8 +228,12 @@ const WhatWeDo = () => {
               <span className="text-xl font-medium text-gray-800">{item.title}</span>
             </a>
           ))}
+          
         </div>
+        
       </motion.div>
+
+
     </div>
   );
 };
