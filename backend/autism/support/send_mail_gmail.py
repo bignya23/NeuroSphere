@@ -10,7 +10,7 @@ def send_alert_email(parent_email, subject, message_content):
     sender_email = os.getenv("EMAIL_TOOLS")
     sender_password = os.getenv("EMAIL_PASS")
     smtp_server = "smtp.gmail.com"  
-    smtp_port = 587  # Standard port for TLS
+    smtp_port = 587  
 
     subject = subject
     body = message_content

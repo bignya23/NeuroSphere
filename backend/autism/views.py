@@ -212,13 +212,14 @@ def emergency(request):
 @permission_classes([IsAuthenticated])
 def sos_alert(request):
     user = request.user  
-    parents_email = user.parents_email  
-    #print(parents_email)
+
+    parents_email = getattr(user, 'parents_email', 'Unknown')
+    print(parents_email)
     if not parents_email:
         return Response({"error": "No guardian email found."}, status=400)
     subject = "🚨 SOS Alert: Emergency Situation 🚨"
-    message = f"""
-        {user.name} has triggered an SOS alert. Please check on them immediately.""",
+    message = f"""{user.name} has triggered an SOS alert. Please check on them immediately."""
+    
     send_mail_gmail.send_alert_email(parents_email, subject, message)
 
     return Response({"message": "SOS alert sent successfully."})
