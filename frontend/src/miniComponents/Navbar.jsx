@@ -10,27 +10,38 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const refreshToken = localStorage.getItem("refresh_token");
-      if (refreshToken) {
-        await axios.post(
-          "http://localhost:8000/api/auth/logout/",
-          { refresh_token: refreshToken },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
+  
+      if (!refreshToken) {
+        console.warn("No refresh token found. Redirecting to homepage.");
+        localStorage.clear();
+        setIsAuthenticated(false);
+        navigate("/");
+        window.location.reload();
+        return;
       }
-
+  
+      // Perform logout API call
+      await axios.post(
+        "http://localhost:8000/api/auth/logout/",
+        { refresh_token: refreshToken },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+  
+      console.log("Logout successful.");
+    } catch (error) {
+      console.error("Logout error:", error?.response?.data || error.message);
+    } finally {
       localStorage.clear();
       setIsAuthenticated(false);
       navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-      localStorage.clear();
-      navigate("/");
+      window.location.reload();
     }
   };
+  
 
   const closeMenu = () => setMenuOpen(false);
 

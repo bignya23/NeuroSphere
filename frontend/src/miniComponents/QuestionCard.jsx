@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
-const QuestionCard = ({ question, type, onNext }) => {
-  const [answer, setAnswer] = useState("");
+const QuestionCard = ({ question, type, onNext, currentValue, setCurrentValue }) => {
+  const handleSubmit = () => {
+    if (currentValue.trim() !== "") {
+      onNext(currentValue);
+    }
+  };
 
   return (
     <div className="w-[400px] h-[250px] flex flex-col justify-between mx-auto bg-white shadow-lg rounded-lg p-4 border border-gray-300">
@@ -12,12 +16,12 @@ const QuestionCard = ({ question, type, onNext }) => {
       <input
         type={type}
         className="w-full p-2 rounded-sm border border-gray-300 bg-gray-100"
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
+        value={currentValue}
+        onChange={(e) => setCurrentValue(e.target.value)}
       />
       <button
         className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg self-end"
-        onClick={() => onNext(answer)}
+        onClick={handleSubmit}
       >
         Next
       </button>

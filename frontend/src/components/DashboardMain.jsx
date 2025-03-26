@@ -18,6 +18,8 @@ const DashboardMain = () => {
     };
 
     fetchQuote();
+    
+   
   }, []);
 
   return (

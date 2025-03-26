@@ -135,7 +135,7 @@ def emergency(request):
         "emergency_contacts": [
             {
                 "id": 1,
-                "name": "National Autism Helpline",
+                "name": "National Neurodiverse Helpline",
                 "contact": "+1 800 123 4567",
                 "type": "Helpline"
             },
@@ -161,7 +161,7 @@ def emergency(request):
         "nearest_hospitals": [
             {
                 "id": 1,
-                "name": "Autism Care Hospital",
+                "name": "Neurodiverse Care Hospital",
                 "location": "123 Main St, New York",
                 "contact": "+1 555 678 9012",
                 "navigation_link": "https://maps.google.com/xyz"
@@ -178,14 +178,14 @@ def emergency(request):
             {
                 "id": 1,
                 "name": "Dr. Emily Davis",
-                "specialty": "Autism Specialist",
+                "specialty": "Neurodiverse Specialist",
                 "contact": "+1 987 654 3210",
                 "location": "Los Angeles, USA"
             },
             {
                 "id": 2,
                 "name": "Dr. Ravi Kumar",
-                "specialty": "Autism Specialist",
+                "specialty": "Neurodiverse Specialist",
                 "contact": "+1 345 654 3210",
                 "location": "Mumbai, India"
             },

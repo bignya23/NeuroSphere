@@ -20,7 +20,7 @@ const TaskManager = () => {
   const [scheduleConfirmed, setScheduleConfirmed] = useState(false);
   const [generateTask, setGeneratedTask] = useState([]);
   const [dayCompleted, setDayCompleted] = useState(false);
-  
+  const [currentInputValue, setCurrentInputValue] = useState('');
   // Generate questions based on current state
   const generateQuestions = () => [
     {
@@ -140,7 +140,7 @@ const TaskManager = () => {
 
       return newData;
     });
-
+    setCurrentInputValue(''); 
     setStep((prevStep) => prevStep + 1);
   };
 
@@ -464,6 +464,8 @@ const TaskManager = () => {
           question={questions[step].text}
           type={questions[step].type}
           onNext={(value) => handleNext(questions[step].key, value)}
+          currentValue={currentInputValue}
+          setCurrentValue={setCurrentInputValue}
         />
       </div>
     );

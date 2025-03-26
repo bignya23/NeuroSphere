@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import {
   FiHome,
@@ -24,34 +24,7 @@ const Dashboard = () => {
     name: "John Doe",
     profilePic: "https://randomuser.me/api/portraits/men/45.jpg",
   };
-
-  const handleLogout = async () => {
-    try {
-      const refreshToken = localStorage.getItem("refresh_token");
-
-      if (refreshToken) {
-        await axios.post(
-          "http://localhost:8000/api/auth/logout/",
-          { refresh_token: refreshToken },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
-      }
-
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("user");
-      setIsAuthenticated(false);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-      localStorage.clear();
-      navigate("/");
-    }
-  };
+ 
 
   return (
     <div className="flex h-screen bg-indigo-50">
@@ -163,17 +136,6 @@ const Dashboard = () => {
 
           </ul>
         </nav>
-
-        {/* Logout Button */}
-        <div className="mt-auto p-6 border-t border-indigo-100">
-          <button
-            onClick={handleLogout}
-            className="flex items-center justify-center p-4 text-lg text-white bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 rounded-xl w-full transition-all duration-200 shadow-sm"
-          >
-            <FiLogOut className="mr-4" size={22} /> 
-            <span>Logout</span>
-          </button>
-        </div>
       </aside>
 
       {/* Main Content Area */}

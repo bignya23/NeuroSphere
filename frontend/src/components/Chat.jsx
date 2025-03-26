@@ -5,7 +5,8 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
-  const user = { email: "user@example.com" }; // Dummy user for frontend-only demo
+  
+  const user = JSON.parse(localStorage.getItem("user")) // Dummy user for frontend-only demo
   const disease = "General Support"; // Dummy chat room name
 
   const scrollToBottom = () => {
@@ -44,7 +45,7 @@ const Chat = () => {
                 msg.sender_email === user.email ? "bg-blue-500" : "bg-green-500"
               }`}
             >
-              <p className="font-semibold">{msg.sender_email}</p>
+              <p className="font-semibold">{user.name}</p>
               <p>{msg.content}</p>
               <p className="text-xs mt-1 opacity-80">{new Date(msg.timestamp).toLocaleTimeString()}</p>
             </div>

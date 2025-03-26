@@ -52,26 +52,24 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-purple-300 py-8 font-sans">
-      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-lg p-8 border-4 border-purple-400">
-        <h2 className="text-5xl font-extrabold text-purple-700 text-center mb-6">🌈 Welcome to NeuroSphereAI!</h2>
-        <p className="text-gray-600 text-center mb-8">Create your personalized experience with us</p>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-green-200 to-blue-300 font-sans">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-lg p-6 border-4 border-blue-400">
+        <h2 className="text-4xl font-extrabold text-blue-700 text-center mb-4">Welcome to NeuroSphereAI! 🌿</h2>
+        <p className="text-gray-600 text-center mb-6">Create a personalized experience with us</p>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg animate-pulse">{error}</div>
-        )}
+        {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg animate-pulse">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Object.entries(formData).map(([key, value]) => (
-            <div key={key}>
-              <label className="block text-gray-700 mb-2 capitalize font-semibold">{key.replace('_', ' ')}</label>
+            <div key={key} className="w-full">
+              <label className="block text-gray-800 mb-2 capitalize font-semibold">{key.replace('_', ' ')}</label>
               {key === "password" ? (
                 <input
                   type="password"
                   name={key}
                   value={value}
                   onChange={handleChange}
-                  className="w-full border border-purple-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-purple-400 text-lg"
+                  className="w-full border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-blue-400"
                   placeholder={`Enter your ${key}`}
                   required
                 />
@@ -80,7 +78,7 @@ const Signup = () => {
                   name={key}
                   value={value}
                   onChange={handleChange}
-                  className="w-full border border-purple-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-purple-400 text-lg"
+                  className="w-full border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-blue-400"
                   required
                 >
                   <option value="">Select {key.replace('_', ' ')}</option>
@@ -100,7 +98,7 @@ const Signup = () => {
                   name={key}
                   value={value}
                   onChange={handleChange}
-                  className="w-full border border-purple-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-purple-400 text-lg"
+                  className="w-full border border-blue-300 rounded-lg p-3 focus:outline-none focus:ring-4 focus:ring-blue-400"
                   placeholder={`Enter your ${key}`}
                   required
                 />
@@ -108,22 +106,18 @@ const Signup = () => {
             </div>
           ))}
 
-          <div className="col-span-2 mt-6">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 bg-purple-600 text-white rounded-lg text-xl font-semibold hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300"
-            >
-              {isLoading ? "Creating Account..." : "🚀 Sign Up Now!"}
-            </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="col-span-1 md:col-span-2 w-full py-3 bg-blue-600 text-white rounded-lg text-xl font-semibold hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            {isLoading ? "Creating Account..." : "Sign Up Now! 🚀"}
+          </button>
 
-            <p className="text-center mt-4 text-gray-600">
-              Already have an account?{' '}
-              <Link to="/login" className="text-purple-600 hover:underline">
-                Log In Here
-              </Link>
-            </p>
-          </div>
+          <p className="text-center md:col-span-2 mt-4 text-gray-600">
+            Already have an account?{' '}
+            <Link to="/login" className="text-blue-600 hover:underline">Log In Here</Link>
+          </p>
         </form>
       </div>
     </div>

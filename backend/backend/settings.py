@@ -54,7 +54,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19672.c330.asia-south1-1.gce.redns.redis-cloud.com:19672/0"]
+            "hosts": ["redis://default:DuAvxrrz19KmlCCZIe1wPtj3wE5fKmvd@redis-19131.c62.us-east-1-4.ec2.redns.redis-cloud.com:19131/0"]
         },
     },
 }

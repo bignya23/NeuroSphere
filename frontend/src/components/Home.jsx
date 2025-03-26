@@ -34,7 +34,7 @@ const Home = () => {
 };
 
 const Hero = () => {
-  const heroImages = ["/hero.jpg", "/hero.jpg", "/hero.jpg"];
+  const heroImages = ["/hero.jpg", "/three.jpg", "/one.png"];
 
   return (
     <section className="relative bg-white flex flex-col items-center min-h-screen w-full">
@@ -137,7 +137,7 @@ const WhatWeDo = () => {
       description:
         "We offer support not just for those who are diagnosed, but the wider community.",
       image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "/support.jpg",
       link: "/support",
       buttonText: "View support",
     },
@@ -155,7 +155,7 @@ const WhatWeDo = () => {
       description:
         "Join our inclusive events designed with neurodiverse needs in mind.",
       image:
-        "https://images.unsplash.com/photo-1541178735493-479c1a27ed24?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "/community.jpg",
       link: "/events",
       buttonText: "View events",
     },

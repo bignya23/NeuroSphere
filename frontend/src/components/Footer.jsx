@@ -24,7 +24,7 @@ const Footer = () => {
         {/* Contact Section */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
-          <p className="text-gray-400">Email: <a href="mailto:support@neurosphereai.com" className="hover:text-white">support@neurosphereai.com</a></p>
+          <p className="text-gray-400">Email: <a href="mailto:neurosphere53@gmail.com" className="hover:text-white">neurosphere53@gmail.com</a></p>
           <p className="text-gray-400">Phone: <a href="tel:+18001234567" className="hover:text-white">+1 (800) 123-4567</a></p>
         </div>
       </div>

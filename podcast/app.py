@@ -26,7 +26,7 @@ origins = [
     "http://localhost:5173", 
 ]
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
 
 app.add_middleware(
     CORSMiddleware,
@@ -284,7 +284,6 @@ async def endpoint_user(user_id, user_message,  websocket : WebSocket):
         print(response)
         
         if response['message'] == "chunks":
-         
             await process_audio_stream(websocket) 
             print("audio procesing ended")# Process audio properly
                 # await websocket.send_json({"FINAL": final_text})

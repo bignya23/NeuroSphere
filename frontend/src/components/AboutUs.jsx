@@ -26,7 +26,7 @@ const AboutUs = () => {
 
       <div className="flex flex-col md:flex-row items-center justify-center w-full px-8 py-16 scroll-animate">
         <motion.img 
-          src="/hero.jpg" 
+          src="/about.jpg" 
           alt="Neurodiverse Community" 
           className="w-full md:w-1/2 rounded-lg shadow-lg"
           initial={{ opacity: 0, x: -50 }}
@@ -59,7 +59,7 @@ const AboutUs = () => {
             Our mission is to foster a more inclusive world where neurodiverse individuals can thrive independently.
           </motion.p>
           <motion.img 
-            src="/hero.jpg" 
+            src="/mission.jpg" 
             alt="Inclusive Education" 
             className="w-full md:w-1/2 rounded-lg shadow-lg"
             initial={{ opacity: 0, y: 50 }}
@@ -82,7 +82,7 @@ const AboutUs = () => {
             transition={{ duration: 0.8, delay: index * 0.2 }}
             viewport={{ once: true }}
           >
-            <img src="/hero.jpg" alt={section} className="w-1/3 rounded-lg" />
+            <img src="/edu.jpg" alt={section} className="w-1/3 rounded-lg" />
             <div className="pl-8">
               <h3 className="text-2xl font-semibold text-blue-600">{section}</h3>
               <p className="text-gray-700 leading-relaxed">We offer tailored solutions for {section.toLowerCase()} that enhance independence and improve quality of life.</p>
