@@ -297,7 +297,6 @@ def second_assessment(request):
 
 
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def second_assessment_result(request):

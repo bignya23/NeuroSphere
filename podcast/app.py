@@ -47,11 +47,11 @@ async def root():
 
 
 
-# Audio Streaming Config
-RATE = 16000  # Sample Rate
-BUFFER_SIZE = RATE // 4  # 250ms buffer
-SILENCE_THRESHOLD = 500  # RMS threshold for silence detection
-SILENCE_DURATION = 50 # Seconds of silence to trigger close
+
+RATE = 16000  
+BUFFER_SIZE = RATE // 4 
+SILENCE_THRESHOLD = 500  
+SILENCE_DURATION = 50 
 
 client = speech.SpeechClient()
  # Thread-safe queue

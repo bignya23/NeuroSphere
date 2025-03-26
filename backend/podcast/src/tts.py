@@ -4,7 +4,7 @@ import time
 import uuid
 
 # Set the path to your JSON key file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\tamul-ai\neurosphere-453417-a13fa049f648.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
 
 def text_to_speech_female(text):
     client = texttospeech.TextToSpeechClient()
@@ -40,7 +40,9 @@ def text_to_speech_female_hindi(text):
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
     uuid_ = uuid.uuid4()
-    output_file=f"frontend/src/assets/female_{uuid_}.wav"
+    base_dir = os.getcwd()
+    os.makedirs(f"{base_dir}/audio", exist_ok=True)
+    output_file=f"{base_dir}/audio/female_{uuid_}.wav"
     voice = texttospeech.VoiceSelectionParams(
         language_code="hi-IN",
         name="hi-IN-Chirp3-HD-Aoede",
@@ -61,7 +63,7 @@ def text_to_speech_female_hindi(text):
         out.write(response.audio_content)
     
     print(f"Audio content written to {output_file}")
-    return f"src/assets/female_{uuid_}.wav"
+    return output_file
 
 
 def text_to_speech_male(text):
@@ -100,7 +102,9 @@ def text_to_speech_male_hindi(text):
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
     uuid_ = uuid.uuid4()
-    output_file=f"frontend/src/assets/male_{uuid_}.mp3"
+    base_dir = os.getcwd()
+    os.makedirs(f"{base_dir}/audio", exist_ok=True)
+    output_file=f"{base_dir}/audio/male_{uuid_}.wav"
     voice = texttospeech.VoiceSelectionParams(
         language_code="hi-IN",
         name="hi-IN-Chirp3-HD-Charon",
@@ -122,7 +126,7 @@ def text_to_speech_male_hindi(text):
 
 
     print(f"Audio content written to {output_file}")
-    return f"src/assets/male_{uuid_}.mp3"
+    return output_file
 
 
 
