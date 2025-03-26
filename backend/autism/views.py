@@ -20,6 +20,7 @@ from .Jobsearch.jobsearch import job_search
 import playsound 
 from .assessment.second_assement import accuracy_score
 import tempfile
+import json
 
 User = get_user_model()
 
@@ -48,7 +49,8 @@ def autism_chatbot(request):
     # print(conversation_history)
     response_mail = content_checker(user_input, conversation_history)
     print(f"Response Mail : {response_mail}")
-    if(response_mail == "yes"):
+    response_mail = json.loads(response_mail)
+    if(response_mail['check'] == "yes"):
         print(tools.send_alert_email(parents_email, name, conversation_history))
           
     response = chatbot_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender, user_input=user_input, conversation_history=conversation_history)
@@ -103,7 +105,7 @@ def autism_chatvoice(request):
     response = chat_voice.chatvoice_response(name=name, age=age, hobbies=hobbies, disease=disease, gender=gender,user_input=current_context,conversation_history=conversation_history)
     tts_file = tts.text_to_speech_female(response)
     print(f"Autism VoiceAgent: {response}")
-    
+    print(tts_file)
     print(response)
     database_voice.store_chat_history(f"{email}_voice",current_context, response)
 
@@ -210,13 +212,14 @@ def emergency(request):
 @permission_classes([IsAuthenticated])
 def sos_alert(request):
     user = request.user  
-    parents_email = user.parents_email  
-    #print(parents_email)
+
+    parents_email = getattr(user, 'parents_email', 'Unknown')
+    print(parents_email)
     if not parents_email:
         return Response({"error": "No guardian email found."}, status=400)
     subject = "🚨 SOS Alert: Emergency Situation 🚨"
-    message = f"""
-        {user.name} has triggered an SOS alert. Please check on them immediately.""",
+    message = f"""{user.name} has triggered an SOS alert. Please check on them immediately."""
+
     send_mail_gmail.send_alert_email(parents_email, subject, message)
 
     return Response({"message": "SOS alert sent successfully."})

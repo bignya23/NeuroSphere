@@ -3,25 +3,28 @@ from google.api_core.client_options import ClientOptions
 from google.cloud import documentai
 import os
 from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFont
+import os
+import tempfile
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 
 load_dotenv()
 
-<<<<<<< HEAD
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
-=======
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-f2ef0a56bd2d.json"
->>>>>>> 3005df7 (game added)
 
-
-# Define A4 size in pixels at 72 DPI
-def extract_text_from_pdf(file_content):
+def extract_text_from_pdf(file_path):
     """Extracts text from a PDF using Google Document AI."""
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
     project_id = "neurosphere-453417"
     location = "us"
     processor_id = "9b0aee16552bdce0"
     mime_type = "application/pdf"
 
     try:
+        # Read the PDF file as binary
+        with open(file_path, "rb") as f:
+            file_content = f.read()
+
         docai_client = documentai.DocumentProcessorServiceClient(
             client_options=ClientOptions(api_endpoint=f"{location}-documentai.googleapis.com")
         )
@@ -41,12 +44,7 @@ def extract_text_from_pdf(file_content):
 
 
 def text_conversion(text_input):
-    from PIL import Image, ImageDraw, ImageFont
-    import os
-    import tempfile
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.pagesizes import A4
-
+   
     A4_WIDTH, A4_HEIGHT = 595, 842
 
     # Load the OpenDyslexic font
@@ -171,23 +169,17 @@ def text_conversion(text_input):
         pass
     
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
 #     text = """Artificial intelligence (AI) refers to the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals.[1] Such machines may be called AIs.
 
 #     High-profile applications of AI include advanced web search engines (e.g., Google Search); recommendation systems (used by YouTube, Amazon, and Netflix); virtual assistants (e.g., Google Assistant, Siri, and Alexa); autonomous vehicles (e.g., Waymo); generative and creative tools (e.g., ChatGPT """
 
 
-<<<<<<< HEAD
-    extracted_text = extract_text_from_pdf(file_content= r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
+    extracted_text = extract_text_from_pdf(file_path= r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\test_files\dyslexia\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
 
     print(extracted_text)
-    # text_conversion(extracted_text)
-=======
-#     extracted_text = extract_text_from_pdf(file_path=r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\dyslexia\education\text_coding\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
-
-#     text_conversion(extracted_text)
->>>>>>> 3005df7 (game added)
+    text_conversion(extracted_text)
 
 
 

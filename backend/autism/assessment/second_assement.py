@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from .prompt import QUESTIONS_PROMPT
 import random
 from .questions import QUESTIONS
+import json
 
 load_dotenv()
 
@@ -22,7 +23,9 @@ def accuracy_score(question_answer : str) -> str:
         contents=prompt_template,
         config={'response_schema': Agent, 'response_mime_type': 'application/json'}
     )
-    
-    return response.text
 
+    response = json.loads(response.text)
+
+    return response['output']
+    
 

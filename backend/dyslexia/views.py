@@ -21,7 +21,6 @@ def font_change_pdf(request):
     data = request.FILES.get('pdf_file')
     print(data)
     
-    
     if not data:
         return JsonResponse({"error": "No file uploaded"}, status=400)
 
