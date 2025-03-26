@@ -5,7 +5,7 @@ from pydantic import BaseModel,TypeAdapter, Field
 from typing import List
 from .prompts import STAGES, AGENT_1_PROMPT, AGENT_2_PROMPT, USER_HANDLING_PROMPT, PDF_CONTENT
 import json
-from .tts import text_to_speech_male, text_to_speech_female, text_to_speech_female_hindi, text_to_speech_male_hindi
+from .tts import  text_to_speech_female_hindi, text_to_speech_male_hindi
 import playsound
 import threading
 import queue

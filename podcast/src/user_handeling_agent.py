@@ -7,7 +7,7 @@ from typing import List
 import json
 import playsound
 import threading
-from .tts import text_to_speech_male, text_to_speech_female, text_to_speech_female_hindi, text_to_speech_male_hindi
+from .tts import  text_to_speech_female_hindi, text_to_speech_male_hindi
 from .conv_history import get_chat_history, store_chat_history
 import asyncio
 # from summary import summary_generator

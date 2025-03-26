@@ -72,7 +72,7 @@ const Podcast = () => {
     setIsTaskLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/process-text", {
+      const response = await fetch("http://localhost:8080/process-text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const Podcast = () => {
 
     // Initialize WebSocket if not already initialized
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
-      ws.current = new WebSocket("ws://127.0.0.1:8000/ws");
+      ws.current = new WebSocket("ws://127.0.0.1:8080/ws");
 
       ws.current.onopen = () => {
         console.log("Podcast WebSocket connection established");
