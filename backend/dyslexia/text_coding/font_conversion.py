@@ -14,7 +14,7 @@ load_dotenv()
 
 def extract_text_from_pdf(file_path):
     """Extracts text from a PDF using Google Document AI."""
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
     project_id = "neurosphere-453417"
     location = "us"
     processor_id = "9b0aee16552bdce0"
@@ -48,7 +48,7 @@ def text_conversion(text_input):
     A4_WIDTH, A4_HEIGHT = 595, 842
 
     # Load the OpenDyslexic font
-    font_path = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\backend\dyslexia\text_coding\OpenDyslexic-Regular.otf"
+    font_path = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/backend/dyslexia/text_coding/OpenDyslexic-Regular.otf"
     font_size = 15
     font = ImageFont.truetype(font_path, font_size)
 

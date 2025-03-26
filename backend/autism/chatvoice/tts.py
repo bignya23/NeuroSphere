@@ -3,22 +3,21 @@ import time
 import uuid
 from google.cloud import texttospeech
 from google.api_core.exceptions import GoogleAPICallError
+from django.conf import settings
 
-
-base_dir = r"C:\Users\bigny\OneDrive\Desktop\neuro\NeuroSphereAI\audio"
+base_dir = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/backend/audio"
 os.makedirs(base_dir, exist_ok=True) 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\NeuroSphereAI\New folder\NeuroSphereAI\neurosphere-453417-a13fa049f648.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
 
 def text_to_speech_female(text):
     try:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"/Users/probindhakal/Desktop/NeuroSphereAI/NeuroSphereAI/neurosphere-453417-9278978670e4.json"
         client = texttospeech.TextToSpeechClient()
         synthesis_input = texttospeech.SynthesisInput(text=text)
         uuid_ = uuid.uuid4()
-        base_dir = os.getcwd()
-        os.makedirs(base_dir, exist_ok=True) 
-        output_file = os.path.join(base_dir, f"female_{uuid_}.mp3")
+        os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+        output_file = os.path.join(settings.MEDIA_ROOT, f"female_{uuid_}.mp3")
 
         voice = texttospeech.VoiceSelectionParams(
             language_code="en-US",
@@ -40,8 +39,8 @@ def text_to_speech_female(text):
         with open(output_file, "wb") as out:
             out.write(response.audio_content)
 
-        print(f" Audio saved at: {output_file}")
-        return output_file
+        print(f"Audio saved at: {output_file}")
+        return f"/media/female_{uuid_}.mp3" 
 
     except GoogleAPICallError as e:
         print(f" Google Cloud API error: {e}")

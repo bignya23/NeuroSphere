@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../main";
 import Phonics from "./Phonics";
+import Podcast from "./Podcast";
 
 const Education = () => {
   const [activeTab, setActiveTab] = useState("podcast");
@@ -41,12 +42,7 @@ const Education = () => {
       {/* Content Section */}
       <div className="flex-1">
         {activeTab === "podcast" ? (
-          <iframe
-            src="https://www.tamulai.in"
-            title="Embedded Podcast"
-            className="w-full h-full"
-            allowFullScreen
-          ></iframe>
+          <Podcast />
         ) : (
           <div className="flex items-center justify-center h-full p-6">
             <Phonics />

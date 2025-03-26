@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include  # Added include import
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/chat/', include('chatroom.urls')),
     path('api/auth/', include('auth_chat.urls')), # Fixed the include statement
     path('api/autism/', include('autism.urls')),
     path('api/dyslexia/', include('dyslexia.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
