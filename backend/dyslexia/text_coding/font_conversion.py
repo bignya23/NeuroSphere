@@ -3,11 +3,16 @@ from google.api_core.client_options import ClientOptions
 from google.cloud import documentai
 import os
 from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFont
+import os
+import tempfile
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 
 load_dotenv()
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
 
 # Define A4 size in pixels at 72 DPI
 def extract_text_from_pdf(file_content):
@@ -20,7 +25,7 @@ def extract_text_from_pdf(file_content):
     try:
         docai_client = documentai.DocumentProcessorServiceClient(
             client_options=ClientOptions(api_endpoint=f"{location}-documentai.googleapis.com")
-        )
+        )   
 
         resource_name = docai_client.processor_path(project_id, location, processor_id)
 
@@ -37,12 +42,7 @@ def extract_text_from_pdf(file_content):
 
 
 def text_conversion(text_input):
-    from PIL import Image, ImageDraw, ImageFont
-    import os
-    import tempfile
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.pagesizes import A4
-
+   
     A4_WIDTH, A4_HEIGHT = 595, 842
 
     # Load the OpenDyslexic font
@@ -174,7 +174,7 @@ if __name__ == "__main__":
     High-profile applications of AI include advanced web search engines (e.g., Google Search); recommendation systems (used by YouTube, Amazon, and Netflix); virtual assistants (e.g., Google Assistant, Siri, and Alexa); autonomous vehicles (e.g., Waymo); generative and creative tools (e.g., ChatGPT """
 
 
-    extracted_text = extract_text_from_pdf(file_content= r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
+    extracted_text = extract_text_from_pdf(file_content=r"D:\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
 
     print(extracted_text)
     # text_conversion(extracted_text)
