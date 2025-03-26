@@ -172,7 +172,7 @@ const Podcast = () => {
             if (data.stage) {
               setConversationStage(data.stage);
             }
-
+        console.log(data.audio)
             // Play audio
             if (data.audio) {
               // Stop any currently playing audio
@@ -182,6 +182,7 @@ const Podcast = () => {
               }
 
               const audio = new Audio(data.audio);
+              console.log(audio)
               setIsAudioPlaying(true);
               setCurrentAudio(audio);
 

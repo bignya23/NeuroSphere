@@ -13,7 +13,7 @@ def text_to_speech_female_hindi(text):
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
     uuid_ = uuid.uuid4()
-    output_file=f"../frontend/public/assets/female_{uuid_}.wav"
+    output_file=f"../frontend/public/assets/female_{uuid_}.mp3"
     voice = texttospeech.VoiceSelectionParams(
         language_code="hi-IN",
         name="hi-IN-Chirp3-HD-Aoede",
@@ -34,7 +34,7 @@ def text_to_speech_female_hindi(text):
         out.write(response.audio_content)
     
     print(f"Audio content written to {output_file}")
-    return f"assets/female_{uuid_}.mp3"
+    return f"/public/assets/female_{uuid_}.mp3"
 
 
 
@@ -67,7 +67,7 @@ def text_to_speech_male_hindi(text):
 
 
     print(f"Audio content written to {output_file}")
-    return f"assets/male_{uuid_}.mp3"
+    return f"/public/assets/male_{uuid_}.mp3"
 
 
 

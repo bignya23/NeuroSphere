@@ -26,7 +26,7 @@ origins = [
     "http://localhost:5173", 
 ]
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\tamul-ai\neurosphere-453417-a13fa049f648.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
 
 app.add_middleware(
     CORSMiddleware,
