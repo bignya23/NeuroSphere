@@ -43,17 +43,27 @@ const Navbar = () => {
           className="flex items-center text-2xl font-bold text-purple-700"
           onClick={closeMenu}
         >
-        
           NeuroSphereAI
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex md:items-center space-x-6">
-          <Link to="/" className="text-gray-700 hover:text-purple-600">Home</Link>
-          <Link to="/about-us" className="text-gray-700 hover:text-purple-600">About</Link>
-          <Link to="/contact" className="text-gray-700 hover:text-purple-600">Contact</Link>
+          <Link to="/" className="text-gray-700 hover:text-purple-600">
+            Home
+          </Link>
+          <Link to="/about-us" className="text-gray-700 hover:text-purple-600">
+            About
+          </Link>
+          <Link to="/contact" className="text-gray-700 hover:text-purple-600">
+            Contact
+          </Link>
           {isAuthenticated && (
-            <Link to="/dashboard" className="text-gray-700 hover:text-purple-600">Dashboard</Link>
+            <Link
+              to="/dashboard"
+              className="text-gray-700 hover:text-purple-600"
+            >
+              Dashboard
+            </Link>
           )}
           {isAuthenticated ? (
             <button
@@ -84,11 +94,35 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-300 px-6 py-4 space-y-4">
-          <Link to="/" className="block text-gray-700 hover:text-purple-600" onClick={closeMenu}>Home</Link>
-          <Link to="/about-us" className="block text-gray-700 hover:text-purple-600" onClick={closeMenu}>About</Link>
-          <Link to="/contact" className="block text-gray-700 hover:text-purple-600" onClick={closeMenu}>Contact</Link>
+          <Link
+            to="/"
+            className="block text-gray-700 hover:text-purple-600"
+            onClick={closeMenu}
+          >
+            Home
+          </Link>
+          <Link
+            to="/about-us"
+            className="block text-gray-700 hover:text-purple-600"
+            onClick={closeMenu}
+          >
+            About
+          </Link>
+          <Link
+            to="/contact"
+            className="block text-gray-700 hover:text-purple-600"
+            onClick={closeMenu}
+          >
+            Contact
+          </Link>
           {isAuthenticated && (
-            <Link to="/dashboard" className="block text-gray-700 hover:text-purple-600" onClick={closeMenu}>Dashboard</Link>
+            <Link
+              to="/dashboard"
+              className="block text-gray-700 hover:text-purple-600"
+              onClick={closeMenu}
+            >
+              Dashboard
+            </Link>
           )}
           {isAuthenticated ? (
             <button
