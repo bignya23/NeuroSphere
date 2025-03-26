@@ -12,21 +12,22 @@ from reportlab.lib.pagesizes import A4
 load_dotenv()
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphereai-9c5ea10a21b0.json"
-
-
-# Define A4 size in pixels at 72 DPI
-def extract_text_from_pdf(file_content):
+def extract_text_from_pdf(file_path):
     """Extracts text from a PDF using Google Document AI."""
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
     project_id = "neurosphere-453417"
     location = "us"
     processor_id = "9b0aee16552bdce0"
     mime_type = "application/pdf"
 
     try:
+        # Read the PDF file as binary
+        with open(file_path, "rb") as f:
+            file_content = f.read()
+
         docai_client = documentai.DocumentProcessorServiceClient(
             client_options=ClientOptions(api_endpoint=f"{location}-documentai.googleapis.com")
-        )   
+        )
 
         resource_name = docai_client.processor_path(project_id, location, processor_id)
 
@@ -175,10 +176,10 @@ if __name__ == "__main__":
 #     High-profile applications of AI include advanced web search engines (e.g., Google Search); recommendation systems (used by YouTube, Amazon, and Netflix); virtual assistants (e.g., Google Assistant, Siri, and Alexa); autonomous vehicles (e.g., Waymo); generative and creative tools (e.g., ChatGPT """
 
 
-    extracted_text = extract_text_from_pdf(file_content= r"D:\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
+    extracted_text = extract_text_from_pdf(file_path= r"C:\Users\bigny\OneDrive\Desktop\neuro\latest\NeuroSphereAI\test_files\dyslexia\Notice_End_Sem_Exam_December2024_Syllabus_MA201.pdf")
 
     print(extracted_text)
-    # text_conversion(extracted_text)
+    text_conversion(extracted_text)
 
 
 
