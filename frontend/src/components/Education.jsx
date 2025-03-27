@@ -32,7 +32,7 @@ const Education = () => {
             }`}
             onClick={() => setActiveTab("phonics")}
           >
-            Phonics
+            Font Conversion
           </button>
         ) : (
           ""

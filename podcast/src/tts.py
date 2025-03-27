@@ -7,11 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set the path to your JSON key file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
 
 
 def text_to_speech_female_hindi(text):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
@@ -44,7 +44,7 @@ def text_to_speech_female_hindi(text):
 
 
 def text_to_speech_male_hindi(text):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)

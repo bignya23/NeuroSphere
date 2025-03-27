@@ -164,7 +164,7 @@ const ProfileSection = () => {
 
       <div className="flex items-center mb-8">
         <img
-          src="https://randomuser.me/api/portraits/women/45.jpg"
+          src="https://avatar.iran.liara.run/public"
           alt="Profile"
           className="w-32 h-32 rounded-full mr-6 border-4 border-blue-200"
         />
