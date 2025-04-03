@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Send, Mic, X, Volume2 } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -6,8 +6,28 @@ import { toast } from "react-hot-toast";
 const VoiceAgent = ({ onClose }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null); // null = not asked yet
   const mediaRecorderRef = useRef(null);
   const audioChunks = useRef([]);
+
+  // Check for microphone permission when component mounts
+  useEffect(() => {
+    checkMicrophonePermission();
+  }, []);
+
+  const checkMicrophonePermission = async () => {
+    try {
+      // This will trigger the permission prompt if not already granted
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Immediately stop the stream since we just wanted to check permission
+      stream.getTracks().forEach(track => track.stop());
+      setHasPermission(true);
+    } catch (error) {
+      console.error("Microphone permission denied:", error);
+      setHasPermission(false);
+      toast.error("Microphone access is required for voice agent.");
+    }
+  };
 
   const recordAudio = async () => {
     try {
@@ -47,13 +67,13 @@ const VoiceAgent = ({ onClose }) => {
     try {
       const token = localStorage.getItem("access_token");
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/autism/chatvoice/",
+        "http://34.59.107.23/backend/api/autism/chatvoice/",
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.data.file_path) {
-        const audioUrl = `http://127.0.0.1:8000${response.data.file_path}`;
+        const audioUrl = `http://34.59.107.23/backend${response.data.file_path}`;
         const audio = new Audio(audioUrl);
         audio.play();
         toast.success("Playing the response.");
@@ -70,6 +90,47 @@ const VoiceAgent = ({ onClose }) => {
     }
   };
 
+  // Render permission request if not granted yet
+  if (hasPermission === false) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70">
+        <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-lg">
+          <h2 className="text-2xl font-bold text-blue-600 mb-4">Microphone Access Required</h2>
+          <p className="text-gray-600 mb-6">
+            The voice agent needs microphone permission to work. Please allow microphone access in your browser settings.
+          </p>
+          <div className="flex justify-between">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+            >
+              Close
+            </button>
+            <button
+              onClick={checkMicrophonePermission}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render loading state while checking permission
+  if (hasPermission === null) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70">
+        <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-lg">
+          <h2 className="text-2xl font-bold text-blue-600 mb-4">Checking Microphone Access</h2>
+          <p className="text-gray-600 mb-6">Please allow microphone access when prompted...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render the main interface if permission is granted
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70">
       <div className="bg-white rounded-xl p-8 w-full max-w-md shadow-lg">

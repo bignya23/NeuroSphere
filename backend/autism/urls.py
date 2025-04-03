@@ -12,5 +12,8 @@ urlpatterns = [
     path("schedule_generate/", views.generateSchedule, name="generateSchedule"),
     path("job_search/" , views.job_search_route , name="job_search"),
     path("second_assessment/" , views.second_assessment , name="second_assessment"),
-    path("second_assessment_result/" , views.second_assessment_result , name="second_assessment_result")
+    path("second_assessment_result/" , views.second_assessment_result , name="second_assessment_result"),
+    path("generate_flowchart/" , views.generate_flowchart , name="generate_flowchart"),
+    path("flowchart_chatbot/" , views.flowchart_chatbot , name="flowchart_chatbot"),
+    path("flowchart_pdf/" , views.flowchart_pdf , name="flowchart_pdf")
 ]

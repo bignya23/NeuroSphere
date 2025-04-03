@@ -21,6 +21,7 @@ import playsound
 from .assessment.second_assement import accuracy_score
 import tempfile
 import json
+from .resume_maker.edu import upload_pdf_to_gcs, get_pdf_page_count, generate_points, chatbot_flowchart, extract_content_from_pdf, extract_page_content
 
 User = get_user_model()
 
@@ -311,6 +312,72 @@ def second_assessment_result(request):
     })
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def generate_flowchart(request):
+    result = request.data.get('flowchart_content')
+    response_text = generate_points(content=result)
+
+    print(response_text)
+
+    return Response({
+        "flowchart": response_text
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def flowchart_chatbot(request):
+    query = request.data.get('query')
+    content = request.data.get('content')
+    response_text = chatbot_flowchart(content=content, query=query)
+
+    print(response_text)
+
+    return Response({
+        "chatbot_response": response_text
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def flowchart_pdf(request):
+    user_input = request.FILES.get("pdf-file")
+    print(request.data)
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+        for chunk in user_input.chunks():
+            tmp_file.write(chunk)
+        tmp_file_path = tmp_file.name
+
+    print("Storing temp file done")
+    bucket_name = "mind_map"
+    destination_blob_name = f"pdf-files/{tmp_file_path}.pdf"
+    total_pages = get_pdf_page_count(tmp_file_path) 
+    print(total_pages)
+
+    if total_pages > 20:
+        return Response({"output" : "Pages exceed limit"})
+    
+    upload_pdf_to_gcs(bucket_name, tmp_file_path, destination_blob_name)
+    extracted_content = extract_content_from_pdf(bucket_name, destination_blob_name, total_pages)
+   
+    text_all = ""
+    for i in extracted_content:
+        # print(i)
+        # print("\n\n\n\n")
+        # temp = json.loads(i)
+        page_no = str(i['page_no'])
+        text_all += page_no
+        text_all += i['content']
+       
+ 
+
+    os.remove(tmp_file_path)
+
+    return Response({
+        "output": text_all
+    })
 
 
 
