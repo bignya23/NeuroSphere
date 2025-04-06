@@ -68,17 +68,6 @@ Neurodiverse individuals often face barriers in education, employment, and emoti
 ---
 # Project Setup
 
-## **Project Structure**
-```
-/project-root
-│── /frontend    # React.js frontend
-│── /backend     # Django backend
-│── .env         # Environment variables
-│── requirements.txt  # Backend dependencies
-│── package.json # Frontend dependencies
-│── README.md
-```
-
 ---
 
 ## **1. Setup Instructions**  
