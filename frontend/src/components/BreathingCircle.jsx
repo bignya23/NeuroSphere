@@ -39,10 +39,10 @@ const BreathingCircle = () => {
 
   const speakInstruction = useCallback((text) => {
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.8; // Slower speech rate
-    utterance.pitch = 1.2; // Slightly higher pitch for female voice
-    utterance.volume = 0.8; // 80% volume
-    // Try to set a female voice if available
+    utterance.rate = 0.8; 
+    utterance.pitch = 1.2; 
+    utterance.volume = 0.8; 
+   
     const voices = window.speechSynthesis.getVoices();
     const femaleVoice = voices.find(voice => voice.name.includes('female') || voice.name.includes('Female'));
     if (femaleVoice) {
