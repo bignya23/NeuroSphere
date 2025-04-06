@@ -63,7 +63,7 @@ const App = () => {
   }, [setIsAuthenticated, setUser]);
 
   const disease = user?.disease;
-  console.log(disease)
+  //console.log(disease)
  // console.log(user)
   // Strictly enforce dyslexic font
   useEffect(() => {
@@ -73,7 +73,6 @@ const App = () => {
   }, [disease]);
 
 
-  // console.log(user.disease)
   return (
     <AuthProvider>
       <Router>
@@ -89,7 +88,6 @@ const App = () => {
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        {/* <Footer /> */}
       </Router>
     </AuthProvider>
   );
