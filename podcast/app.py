@@ -58,7 +58,6 @@ SILENCE_THRESHOLD = 500  # RMS threshold for silence detection
 SILENCE_DURATION = 50 # Seconds of silence to trigger close
 
 client = speech.SpeechClient()
- # Thread-safe queue
 
 def calculate_rms(chunk):
     """Calculate RMS value of audio chunk."""
@@ -111,11 +110,11 @@ async def process_audio(audio_queue, websocket : WebSocket):
             for result in response.results:
                 transcript = result.alternatives[0].transcript
                 if result.is_final:
-                    print(f"✅ Final: {transcript}")
+                    print(f" Final: {transcript}")
                     await websocket.send_json({"Final" : transcript})
                     break
                 else:
-                    print(f"⏳ Interim: {transcript}", end="\r")
+                    print(f" Interim: {transcript}", end="\r")
     except Exception as e:
         print(f"STT Error: {e}")
     
@@ -136,14 +135,14 @@ async def process_audio_stream(websocket: WebSocket):
             rms = calculate_rms(chunk)
             if rms < SILENCE_THRESHOLD:
                 silent_chunks += 1
-                print(f"🛑 Silence detected ({silent_chunks}/{chunks_needed})")
+                print(f" Silence detected ({silent_chunks}/{chunks_needed})")
             else:
-                silent_chunks = 0  # Properly reset on speech
-                print("🎙 Speech detected")
+                silent_chunks = 0  
+                print(" Speech detected")
 
             # Close the WebSocket if sustained silence is detected
             if silent_chunks >= chunks_needed:
-                print(f"🚫 {SILENCE_DURATION}s of silence detected, ending loop...")
+                print(f" {SILENCE_DURATION}s of silence detected, ending loop...")
                 break  
 
             # Send to processing
@@ -363,7 +362,7 @@ async def websocket_endpoint(websocket: WebSocket):
             # If user sends "chunks", start audio processing
             if response['message'] == "chunks":
                 await process_audio_stream(websocket) 
-                print("audio procesing ended")# Process audio properly
+                print("audio procesing ended")
                 # await websocket.send_json({"FINAL": final_text})
                 response1 = await websocket.receive_json()
                 print(response1)

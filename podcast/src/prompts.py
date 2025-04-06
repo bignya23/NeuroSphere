@@ -149,4 +149,3 @@ Conversation Stages:
 Let’s keep the conversation engaging and supportive for everyone!
 """
 
-PDF_CONTENT = ""

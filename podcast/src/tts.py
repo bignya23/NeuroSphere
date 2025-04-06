@@ -6,12 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Set the path to your JSON key file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
-
 
 def text_to_speech_female_hindi(text):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+    """This function converts text to speech in female voice"""
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
@@ -44,7 +42,7 @@ def text_to_speech_female_hindi(text):
 
 
 def text_to_speech_male_hindi(text):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
@@ -82,15 +80,6 @@ if __name__ == "__main__":
     print(text_to_speech_female_hindi("""
 Aangan mera, galiyan yeh meri
 Sooni lage har din dopehri
-Taarikhon mein main rahun uljhi si
-Saansein ruki, yeh hawa bhi bairi
-
-Khaali sa daaman tere bin, piya
-Bhar de yeh aangan laut ke, oh, piya
-Kahun, main kahun tujhe, saajna, ke laut aao na
-Dhoondhe hai, dhoondhe tujhe baawra mann, laut aao na
-Ladi mann se, par gayi haar main, darpan mora bhi hai pyaar mein
-Sehej karo mori uljhanein, haan, laut aao na
 
 """))
     end = time.time()
