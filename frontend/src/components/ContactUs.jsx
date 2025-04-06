@@ -1,5 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
+import { Link } from 'react-router-dom';
+
 
 const ContactUs = () => {
   return (
@@ -45,17 +47,17 @@ const ContactUs = () => {
 
       <h2 className="text-4xl font-semibold text-blue-500 mt-16">Other Ways to Reach Us</h2>
       <div className="mt-8 text-gray-700">
-        <p>📍 <strong>Address:</strong> 123 Innovation Street, Tech City, USA</p>
-        <p>📞 <strong>Phone:</strong> +1 (123) 456-7890</p>
+        <p>📍 <strong>Address:</strong> Silchar, Assam</p>
+        <p>📞 <strong>Phone:</strong> +91 99xxxxxxxx</p>
         <p>📧 <strong>Email:</strong> neurosphere53@gmail.com</p>
       </div>
 
       <h2 className="text-4xl font-semibold text-blue-500 mt-16">Follow Us</h2>
       <div className="flex flex-col md:flex-row justify-center gap-8 mt-8 mb-3 px-3">
-        <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">🌐 Website</a>
-        <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">📘 Facebook</a>
-        <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">🐦 Twitter</a>
-        <a href="#" className="text-blue-600 hover:text-blue-800 text-3xl">📸 Instagram</a>
+        <Link to="/" className="text-blue-600 hover:text-blue-800 text-3xl">🌐 Website</a>
+        <Link to="/" className="text-blue-600 hover:text-blue-800 text-3xl">📘 Facebook</a>
+        <Link to="/" className="text-blue-600 hover:text-blue-800 text-3xl">🐦 Twitter</a>
+        <Link to="/" className="text-blue-600 hover:text-blue-800 text-3xl">📸 Instagram</a>
       </div>
 
       {/* Smooth Scroll Effect */}
