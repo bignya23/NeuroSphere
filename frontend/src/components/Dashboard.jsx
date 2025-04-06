@@ -24,7 +24,39 @@ const Dashboard = () => {
     name: "John Doe",
     profilePic: "https://randomuser.me/api/portraits/men/45.jpg",
   };
- 
+
+  useEffect(() => {
+    // Simple one-time reload logic
+    const hasVisited = localStorage.getItem('dashboardFirstVisit');
+    
+    if (!hasVisited) {
+      // Set flag before reloading to prevent reload loops
+      localStorage.setItem('dashboardFirstVisit', 'true');
+      
+      // Reload the page once
+      window.location.reload();
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://34.59.107.23/backend/api/logout/",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      setIsAuthenticated(false);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-indigo-50">
@@ -120,9 +152,7 @@ const Dashboard = () => {
                 <IoLogoGameControllerB className="mr-4 text-indigo-500" size={22}/> 
                 <span>Games</span>
               </Link>
-              
             </li>
-
             <li>
               <Link
                 to="/dashboard/support"
@@ -131,9 +161,8 @@ const Dashboard = () => {
                 <BiSupport className="mr-4 text-indigo-500" size={22}/> 
                 <span>Support</span>
               </Link>
-              
             </li>
-
+           
           </ul>
         </nav>
       </aside>

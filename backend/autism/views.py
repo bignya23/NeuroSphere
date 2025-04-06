@@ -360,23 +360,12 @@ def flowchart_pdf(request):
         return Response({"output" : "Pages exceed limit"})
     
     upload_pdf_to_gcs(bucket_name, tmp_file_path, destination_blob_name)
-    extracted_content = extract_content_from_pdf(bucket_name, destination_blob_name, total_pages)
+    content = extract_content_from_pdf(bucket_name, destination_blob_name, total_pages)
    
-    text_all = ""
-    for i in extracted_content:
-        # print(i)
-        # print("\n\n\n\n")
-        # temp = json.loads(i)
-        page_no = str(i['page_no'])
-        text_all += page_no
-        text_all += i['content']
-       
- 
-
     os.remove(tmp_file_path)
 
     return Response({
-        "output": text_all
+        "output": content
     })
 
 

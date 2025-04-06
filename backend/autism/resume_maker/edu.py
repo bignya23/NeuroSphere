@@ -10,9 +10,9 @@ import base64
 import concurrent.futures
 from google.cloud import storage
 import fitz
+import os
 
-
-vertexai.init(project="neurosphere-453417", location="us-central1")
+# vertexai.init(project="neurosphere-453417", location="us-central1")
 
 
 class Flowchart(BaseModel):
@@ -39,6 +39,8 @@ def upload_pdf_to_gcs(bucket_name, source_file_path, destination_blob_name):
     """
     Uploads a PDF file to a specified GCS bucket.
     """
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_blob_name)
@@ -49,6 +51,8 @@ def extract_content_from_pdf(bucket_name, blob_name, total_pages):
     """
     Extracts text and mathematical equations from a PDF file asynchronously.
     """
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+
     client = genai.Client(
         vertexai=True,
         project="neurosphere-453417",
@@ -84,6 +88,8 @@ def extract_page_content(client, model, gcs_uri, page_number):
     """
     Extracts content from a specific page of the PDF using Gemini API.
     """
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+
     client = genai.Client(
         vertexai=True,
         project="neurosphere-453417",
@@ -117,11 +123,16 @@ def extract_page_content(client, model, gcs_uri, page_number):
 
     
 def generate_points(content: str = ""):
+
+    # vertexai.init(project="neurosphere-453417", location="us-central1")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+
     client = genai.Client(
         vertexai=True,
         project="neurosphere-453417",
         location="us-central1",
     )
+
 
     model_name = "gemini-2.0-flash"
 
@@ -144,7 +155,7 @@ def generate_points(content: str = ""):
                 For topics: Focus on core concepts, applications, and practical understanding
                 For PDFs/documents: Extract main themes, key arguments, and essential information
                 For instructional content: Identify sequential steps, critical techniques, and important warnings
-                For theoretical content: Break down complex ideas into manageable components"""
+                For theoretical content: Break down complex ideas into manageable components."""
 
 
     response = client.models.generate_content(
@@ -163,6 +174,8 @@ class Chatbot_response(BaseModel):
 
 
 def chatbot_flowchart(content: str = "", query : str = ""):
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+
     client = genai.Client(
         vertexai=True,
         project="neurosphere-453417",
