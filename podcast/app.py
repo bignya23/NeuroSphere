@@ -27,18 +27,17 @@ load_dotenv()
 app = FastAPI()
 
 origins = [
-    "http://34.59.107.23",
     "http://localhost:5173", 
 ]
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= r"C:\Users\bigny\OneDrive\Desktop\neuro\final\NeuroSphereAI\neurosphere-453417-9278978670e4.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= os.getenv("GOOGLE_APPLICATION_CREDENTIAL")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Allow only specific origins
-    allow_credentials=True,  # Allow cookies & authentication
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
+    allow_origins=origins, 
+    allow_credentials=True,  
+    allow_methods=["*"],  
+    allow_headers=["*"], 
 )
 
 text_summary = ""

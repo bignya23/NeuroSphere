@@ -67,13 +67,13 @@ const VoiceAgent = ({ onClose }) => {
     try {
       const token = localStorage.getItem("access_token");
       const response = await axios.post(
-        "http://34.59.107.23/backend/api/autism/chatvoice/",
+        "http://127.0.0.1:8000/api/autism/chatvoice/",
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.data.file_path) {
-        const audioUrl = `http://34.59.107.23/backend${response.data.file_path}`;
+        const audioUrl = `http://127.0.0.1:8000/${response.data.file_path}`;
         const audio = new Audio(audioUrl);
         audio.play();
         toast.success("Playing the response.");
