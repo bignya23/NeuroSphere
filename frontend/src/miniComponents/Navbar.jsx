@@ -31,7 +31,7 @@ const Navbar = () => {
         }
       );
   
-      console.log("Logout successful.");
+      //console.log("Logout successful.");
     } catch (error) {
       console.error("Logout error:", error?.response?.data || error.message);
     } finally {
@@ -54,7 +54,7 @@ const Navbar = () => {
           className="flex items-center text-2xl font-bold text-purple-700"
           onClick={closeMenu}
         >
-          NeuroSphereAI
+          NeuroSphere
         </Link>
 
         {/* Desktop Menu */}
