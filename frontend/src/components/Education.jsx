@@ -7,7 +7,7 @@ import MindMap from "./MindMap";
 const Education = () => {
   const [activeTab, setActiveTab] = useState("podcast");
   const { user } = useContext(Context);
-  console.log(user.disease);
+  //console.log(user.disease);
   return (
     <div className="flex flex-col w-full h-screen">
       {/* Tabs Navigation */}
