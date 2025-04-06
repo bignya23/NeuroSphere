@@ -10,7 +10,7 @@ def send_alert_email(parent_email, user_name, message_content):
     sender_email = os.getenv("EMAIL_TOOLS")
     sender_password = os.getenv("EMAIL_PASS")
     smtp_server = "smtp.gmail.com"  
-    smtp_port = 587  # Standard port for TLS
+    smtp_port = 587 
 
     subject = f"Urgent: {user_name} may need support"
     body = f"""
@@ -36,7 +36,7 @@ def send_alert_email(parent_email, user_name, message_content):
 
     try:
         server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()  # Secure the connection
+        server.starttls()  
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, parent_email, msg.as_string())
         server.quit()

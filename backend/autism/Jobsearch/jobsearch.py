@@ -54,13 +54,10 @@ def job_search(profile : str = ""):
     # Sort jobs by similarity score (highest first).
     scored_jobs = sorted(job_listings, key=lambda j: j["match_score"], reverse=True)
 
-    # Select top matching jobs (for example, top 3)
     top_jobs = scored_jobs[:4]
 
-    # Build a response dictionary
     response = {"top_jobs": top_jobs}
 
-    # Convert the response dictionary to a JSON formatted string
     response_json = json.dumps(response, indent=2)
     
     return response_json

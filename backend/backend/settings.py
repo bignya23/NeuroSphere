@@ -40,8 +40,7 @@ AUTH_USER_MODEL = 'auth_chat.User'
 CORS_ALLOW_ALL_ORIGINS = True  # Only for development
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://34.59.107.23",
-    "http://localhost:5173",  # Your React frontend URL
+    "http://localhost:5173",  
 ]
 
 # REST Framework settings
