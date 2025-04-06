@@ -121,7 +121,7 @@ const Podcast = () => {
   // Start the podcast conversation
   const startPodcast = () => {
     if (isPodcastActive) {
-      console.log("Podcast is already active.");
+      //console.log("Podcast is already active.");
       return;
     }
 
@@ -135,7 +135,7 @@ const Podcast = () => {
       ws.current = new WebSocket("ws://127.0.0.1:8080/ws");
 
       ws.current.onopen = () => {
-        console.log("Podcast WebSocket connection established");
+       // console.log("Podcast WebSocket connection established");
         setIsPodcastActive(true);
         setMessages((prev) => [
           ...prev,
@@ -152,7 +152,7 @@ const Podcast = () => {
       ws.current.onmessage = async (event) => {
         try {
           const data = JSON.parse(event.data);
-          console.log("Received WebSocket message:", data);
+         // console.log("Received WebSocket message:", data);
 
           // Handle incoming podcast message
           if (data.speaker && data.text) {
@@ -172,7 +172,7 @@ const Podcast = () => {
             if (data.stage) {
               setConversationStage(data.stage);
             }
-        console.log(data.audio)
+        //console.log(data.audio)
             // Play audio
             if (data.audio) {
               // Stop any currently playing audio
@@ -182,13 +182,13 @@ const Podcast = () => {
               }
 
               const audio = new Audio(data.audio);
-              console.log(audio)
+             // console.log(audio)
               setIsAudioPlaying(true);
               setCurrentAudio(audio);
 
               audio.onended = () => {
                 setIsAudioPlaying(false);
-                console.log("Audio playback completed.");
+                //console.log("Audio playback completed.");
 
                 // Send acknowledgment to server
                 if (ws.current && ws.current.readyState === WebSocket.OPEN) {
@@ -209,7 +209,7 @@ const Podcast = () => {
           // Handle recording-related messages
           if (data.Final) {
             setTranscript((prev) => prev + " " + data.Final);
-            console.log("Final transcript received:", data.Final);
+            //console.log("Final transcript received:", data.Final);
 
             // Close the microphone
             if (audioContextRef.current) {
@@ -221,7 +221,7 @@ const Podcast = () => {
               workletNodeRef.current = null;
             }
             setIsRecording(false); // Stop recording state
-            console.log("Microphone closed.");
+           // console.log("Microphone closed.");
             setIsLoading(true);
             // Send "Yes" response to the server
             const payload = { message: "Yes", input: data.Final };
@@ -233,7 +233,7 @@ const Podcast = () => {
             if (ws.current && ws.current.readyState === WebSocket.OPEN) {
               ws.current.send(JSON.stringify(payload));
             }
-            console.log("send twice to server:", payload);
+           // console.log("send twice to server:", payload);
             // Wait for server confirmation
             const response = await new Promise((resolve) => {
               const listener = (event) => {
@@ -252,7 +252,7 @@ const Podcast = () => {
               ws.current.addEventListener("message", listener);
             });
 
-            console.log("Server response:", response);
+          //  console.log("Server response:", response);
 
             // Call endpoint_user if server confirms
             if (response.message === "Yes") {
@@ -339,7 +339,7 @@ const Podcast = () => {
     setIsRecording(false);
     workletNodeRef.current?.disconnect();
     audioContextRef.current?.close();
-    console.log("🎤 Recording Stopped");
+    //console.log("🎤 Recording Stopped");
   };
 
   return (
