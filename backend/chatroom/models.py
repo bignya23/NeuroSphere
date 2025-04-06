@@ -1,4 +1,3 @@
-# chatroom/models.py
 from django.db import models
 from auth_chat.models import User
 

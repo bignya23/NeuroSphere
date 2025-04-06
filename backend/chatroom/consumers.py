@@ -1,4 +1,3 @@
-#chatroom/consumers.py
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
@@ -31,7 +30,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not user or user.disease != self.disease_type:
             return
 
-        # ✅ Save message only once
         await self.save_message(user, message)
 
         await self.channel_layer.group_send(

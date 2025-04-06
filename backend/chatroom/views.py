@@ -8,11 +8,10 @@ from .models import ChatMessage
 from .serializers import ChatMessageSerializer
 
 
-# chatroom/views.py
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_chat_history(request, disease):
-    # Verify user has access to this disease chat
+
     if request.user.disease != disease:
         return Response(
             {'error': 'Not authorized for this chat room'},
