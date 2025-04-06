@@ -119,8 +119,6 @@ const MindMap = () => {
         { flowchart_content: text }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
-      console.log("Raw API Response:", response.data);
 
       // Parse the nested JSON string
       let parsedData;
@@ -134,9 +132,7 @@ const MindMap = () => {
         console.error("Error parsing flowchart JSON:", parseError);
         throw new Error("Failed to parse mind map data");
       }
-
-      console.log("Parsed Flowchart Data:", parsedData);
-
+      
       // Get the flowchart array
       const flowchartArray = parsedData.flowchart || [];
       
@@ -211,8 +207,6 @@ const MindMap = () => {
       // If we get extracted text content
       if (response.data.output) {
         setPdfInput(response.data.output);
-        console.log("Extracted PDF content:", response.data.output);
-        // Now generate mind map from the extracted text
         await generateMindMapFromText(response.data.output, 'pdf');
       }
   
