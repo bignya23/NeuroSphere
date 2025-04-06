@@ -66,4 +66,95 @@ Neurodiverse individuals often face barriers in education, employment, and emoti
 - **Compute Instances** – Virtual machines for hosting application components
 
 ---
+# Project Setup
+
+## **Project Structure**
+```
+/project-root
+│── /frontend    # React.js frontend
+│── /backend     # Django backend
+│── .env         # Environment variables
+│── requirements.txt  # Backend dependencies
+│── package.json # Frontend dependencies
+│── README.md
+```
+
+---
+
+## **1. Setup Instructions**  
+
+### **Clone the Repository**  
+```sh
+git clone https://github.com/bignya23/NeuroSphere.git
+cd NeuroSphere
+```
+
+---
+
+## **2. Backend Setup (Django)**
+### **Install Dependencies**  
+Ensure Python and virtualenv are installed.  
+```sh
+cd backend
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r ../requirements.txt
+```
+
+### **Apply Migrations**  
+```sh
+python manage.py migrate
+```
+
+### **Run Backend Server**  
+```sh
+python manage.py runserver
+```
+
+---
+
+## **3. Frontend Setup (React.js)**
+### **Install Node.js Dependencies**  
+```sh
+cd ../frontend
+npm install
+```
+
+### **Run React App**  
+```sh
+npm run dev
+```
+
+---
+
+## **4. Environment Variables (`.env` in Root)**
+Create a `.env` file in the root directory with the following content:
+
+```
+GEMINI_API_KEY=""
+GROQ_API_KEY=""
+REDIS_DB_PASS=""
+DJANGO_SECRET_KEY=""
+REDIS_HOST=""
+REDIS_PORT=""
+REDIS_PASSWORD=""
+GOOGLE_APPLICATION_CREDENTIAL=""
+PROJECT_ID=""
+LOCATION="us"
+PROCESSOR_ID=""
+EMAIL_TOOLS=""
+EMAIL_PASS=""
+GEMINI_API_KEY_1=""
+REDIS_DB_PASSWORD=""
+SPEECH_KEY=""
+SEARCH_ENGINE_ID=""
+```
+
+---
+
+## **5. Running the Project**
+- **Start Django backend**: `cd backend && python manage.py runserver`
+- **Start React frontend**: `cd frontend && npm run dev`
+
+
 
