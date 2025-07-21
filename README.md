@@ -45,7 +45,7 @@ Neurodiverse individuals often face barriers in education, employment, and emoti
 ---
 
 
-[Watch the demo video on LinkedIn](https://www.linkedin.com/posts/your_post_id](https://www.linkedin.com/posts/bignya_aiforgood-googlecloud-biasbros-activity-7314649293041147905-XEV6?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEYz8BkB3-VjcJuOCpA-bBHkSRQqrhUYGyo)
+[Watch the demo video on LinkedIn](https://www.linkedin.com/posts/bignya_aiforgood-googlecloud-biasbros-activity-7314649293041147905-XEV6?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEYz8BkB3-VjcJuOCpA-bBHkSRQqrhUYGyo)
 
 ## Tech Stack
 
